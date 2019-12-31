@@ -8,12 +8,12 @@ export default function Template({
   const { frontmatter, html } = markdownRemark
 
   return (
-    <div className="chapter-container">
+    <div className="container">
       <div className="chatper">
         <h1>{frontmatter.title}</h1>
         <div
           className="chapter-content"
-          dangerouslySetInnerHtml={{ __html: html }}
+          dangerouslySetInnerHTML={{ __html: html }}
         />
       </div>
     </div>
