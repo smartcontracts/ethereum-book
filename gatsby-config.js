@@ -12,9 +12,23 @@ module.exports = {
         path: `${__dirname}/src/markdown-pages`,
       },
     },
+    {
+      resolve: `gatsby-transformer-remark`,
+      options: {
+        plugins: [
+          {
+            resolve: `gatsby-remark-images`,
+            options: {
+              maxWidth: 800,
+            },
+          },
+          `gatsby-remark-autolink-headers`,
+        ],
+      },
+    },
     `gatsby-transformer-sharp`,
-    `gatsby-transformer-remark`,
     `gatsby-plugin-react-helmet`,
     `gatsby-plugin-sharp`,
+    `gatsby-plugin-catch-links`,
   ],
 }
