@@ -31,9 +31,9 @@ const Sidebar = () => {
     const pageIndex = page.node.fields.pageIndex.split(',').map(pageIndex => parseInt(pageIndex))
 
     if (pageIndex[0] + 1 > layout.length) {
-      layout.push([page, []])
+      layout.push([{ page: page, pageIndex: pageIndex[0] }, []])
     } else {
-      layout[pageIndex[0]][1].push(page)
+      layout[pageIndex[0]][1].push({ page: page, pageIndex: pageIndex.map(String).join('.') })
     }
     
     return layout
@@ -41,16 +41,27 @@ const Sidebar = () => {
 
   return (
     <nav className="sidebar">
-      <ul>
+    <div className="sidebar-title">THE ETH2 BOOK</div>
+      <ul className="chapters">
         {layout.map((section, index) => {
           return (
             <li key={index}>
-              <Link to={section[0].node.frontmatter.path}>{section[0].node.frontmatter.title}</Link>
+              <Link
+                to={section[0].page.node.frontmatter.path}
+                activeClassName="active"
+              >
+                <b>{section[0].pageIndex}.</b> {section[0].page.node.frontmatter.title}
+              </Link>
               <ul>
-                {section[1].map((page, index) => {
+                {section[1].map(({ page, pageIndex }, index) => {
                   return (
                     <li key={index}>
-                      <Link to={page.node.frontmatter.path}>{page.node.frontmatter.title}</Link>
+                      <Link
+                        to={page.node.frontmatter.path}
+                        activeClassName="active"
+                      >
+                        <b>{pageIndex}.</b> {page.node.frontmatter.title}
+                      </Link>
                     </li>
                   )
                 })}
