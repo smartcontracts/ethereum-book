@@ -1,10 +1,9 @@
 ---
 path: "/chapters/building-blocks/lmd-ghost"
-title: "LMD-GHOST"
+title: "Fork-Choice: LMD-GHOST"
 ---
 
-
-## Fork-Choice Rules
+## Understanding Fork-Choice Rules
 In any blockchcian system we need a way to determine what's the current head of the chain, mmeaning the current canonical chain. This is because it's opossible for there to be forks in the chain, and so we need to know which fork we're supposed to be following. We therefore create a "fork choice rule" that tells us which fork we're supposed to be following. This is basically an algorithm that looks at all of the forks and deterministically tells us which fork is considered the head of the blockchain.
 
 ## Longest-Chain Rule

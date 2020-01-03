@@ -1,6 +1,6 @@
 ---
 path: "/chapters/building-blocks/randomness"
-title: "Randomness"
+title: "Randomness: RANDAO"
 ---
 
 

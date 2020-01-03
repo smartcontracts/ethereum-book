@@ -1,6 +1,6 @@
 ---
 path: "/chapters/building-blocks/bls-signatures"
-title: "BLS Signatures"
+title: "Signatures: BLS"
 ---
 
 
