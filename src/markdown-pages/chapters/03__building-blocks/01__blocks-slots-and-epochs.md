@@ -22,18 +22,18 @@ Although slots are a new concept in the Beacon Chain, we still have the same ide
 
 So, whereas a Proof of Work blockchain might look like this:
 
-![Proof of Work Block Height](./images/pow-height.png)
+![Proof of Work Block Height](./images/blocks-slots-and-epochs/pow-height.png)
 
 The Proof of Stake Beacon Chain will look something like this:
 
-![Proof of Stake Slots and Block Height](./images/pos-height.png)
+![Proof of Stake Slots and Block Height](./images/blocks-slots-and-epochs/pos-height.png)
 
 Here we get an idea of what happens when a slot gets "skipped." Third block (`block 2`) still has a height of two (assuming that the genesis block has a height of zero), but was produced in `slot 4`.
 
 ## Epochs
 Epochs are another new concept within the Eth2 Beacon Chain. Basically, an epoch are is specified number of slots and therefore forms a chunk of time. For example, if each slot is six seconds and each epoch is 64 slots, then each epoch is `6 seconds per slot * 64 slots per epoch = 6.4 minutes per epoch`:
 
-![Proof of Stake Epochs](./images/pos-epochs.png)
+![Proof of Stake Epochs](./images/blocks-slots-and-epochs/pos-epochs.png)
 
 And of course, as with slots, we can determine the current epoch by looking at the amount of time elapsed since the production of the genesis block.
 
