@@ -25,18 +25,13 @@ code {
   border-radius: 3px;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  text-transform: uppercase;
-  text-decoration: underline;
-}
-
 .container {
   padding-right: 15px;
   padding-left: 15px;
   margin-right: auto;
   margin-left: auto;
 }
-@media (min-width: 768px) {
+@media (min-width: 1061px) {
   .container {
     width: 750px;
   }
@@ -44,6 +39,5 @@ h1, h2, h3, h4, h5, h6 {
 
 div.main-content {
   margin-left: 16.5rem;
-  padding-top: 2em;
   padding-bottom: 2em;
 }
