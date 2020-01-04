@@ -3,7 +3,7 @@ path: "/chapters/building-blocks/casper-ffg"
 title: "Finality: Casper FFG"
 ---
 
-## On the Importance of Finality
+## On Finality
 We often take for granted the existence of transactional "finality" in our everyday lives. When we exchange cash for goods or services, for example, it's usually difficult to "revert" a transaction and claw back whatever funds we spent. Merchants might offer refunds in the case that something went wrong with an order, but this is almost certainly conditional on the return or cancellation of the original purchase. Transactions made with credit or debit cards usually follow the same rules, though cards may provide some sort of "chargeback" service in the case a merchant is being uncooperative. Generally speaking, however, most of the transactions we execute through traditional payment methods can be considered final.
 
 Transactional finality is crucial to the proper functioning of an exchange-based society. If there were some non-trivial probability that an electronic transaction could simply disappear into thin air, merchants would likely feel much less comfortable accepting electronic payments. Merchants might be particularly concerned if consumers could abuse this flaw to buy items without actually having to pay for them. It's easy to see why anyone would be weary of such a platform.

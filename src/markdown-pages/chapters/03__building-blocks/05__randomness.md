@@ -11,7 +11,7 @@ Random numbers are obviously key for many of the things we interact with every d
 
 Although the concept of randomness can be confusing, we try to stay clear of any unnecessary technical details. We think anyone can get a good intuition for the ways that computers and, by extension, Ethereum deal with random numbers.
 
-## Uses for Randomness in Eth2
+## Randomness in Eth2
 Randomness keeps the Eth2 trains running on time. Before we explore the general concept of randomness, it's worth getting a feel for the various ways that Eth2 actually makes use of random numbers.
 
 ### Block Proposers
@@ -31,7 +31,7 @@ Although Eth2 does allow users to submit "fraud proofs" in these events, the Bea
 ### Applications
 Many blockchain applications also need good sources of randomness. For example, the various lottery applications already running on Eth1 are only as good as their mechanism for generating random numbers. So far, applications have typically either relied on relatively poor sources of randomness, like block hashes, or attempted to roll their own versions of the random number generation process used in Eth2. We don't want application developers to have to build complex protocols for primitives like randomness, so it's important that Eth2 provides a secure and accessible source of randomness.
 
-## Understanding Randomness
+## On Randomness
 We've spoken a lot about randomness so far, but we haven't really discussed a clear definition of the term. We might have an intuition for the meaning of the word "random," but most of us would probably have a difficult time explaining the concept in detail.
 
 Randomness is interesting because some of its forms are simply "better" than others. A dictionary might describe randomness as something that has a quality of unpredictability, fitting for the highly chaotic experiences of human life. However, certain things appear to be "more" random than others. Weather patterns can seem very random, but we're often able to predict them to some extent. Lottery outcomes are pretty random, but ask anyone to pick a random number between one and ten, and they're probably going pick seven.
@@ -53,9 +53,7 @@ We generally solve this problem by requiring that everyone "commit" to a random 
 
 This improved version of RANDAO is more resistant to attacks, but there's still one problem. The last revealing user could, if they want, simply refuse to publish their original random number. Although this doesn't give the last user effectively infinite attempts to change the output, it does allow them to roll the dice one more time. Instead of getting one fixed result, such an attacker could basically choose between two different results. Generally speaking, the last `n` members could collude to get an additional `2^n` rolls of the dice. Obviously this isn't ideal, as the randomness is somewhat subject to bias, but we have some guarantees about the potential outcomes of these results depending on the amount of the system owned by an attacker.
 
-## VDFs
-We know that RANDAO isn't perfect, but we want to see if it's possible to improve upon it. Some interesting new developments in Cryptography have come where we have the idea of VDFS or verifiable delay functions. The idea behind VDFs is that you are doing a mathematical computation that you must do in serial and cannot parallelize, but that spits out a proof that you did the computation that can be verified in a short period of time. This is sort of coming out of the idea of time-lcok crypto, except that you now have an efficient proof. 
+## Verifiable Delay Functions
+Verifiable Delay Functions, or VDFs, are a novel cryptographic construction developed by researchers at Stanford. VDFs take some `input` value and return an `output` along with a `proof` of correctness for that `output`. VDFs are special in their `output` can only be computed serially, meaning it's impossible to speed up VDF computation time by running the algorithm simultaneously on multiple computers. Although similar constructions can be found in older time-lock mechanisms, VDFs are novel in that their `proof` can be verified very quickly.
 
-So why do we care? well, they giev us a cool thing if we combine it with RANDAO. The idea is that instead of just waiting for the reveals Or not, we wait for the last reveal and then we use the last value as an input to a VDF. This VDF takes a long time to finish, but then spits out the actaul random number that we will use. The point here is that let's say the attacker has the last validator and can choose whether to reveal or not. However, in order to see how the reveal or not will actually influence the random number, the attacker would have to compute the VDF. This takes longer than 1 slot time, so the attacker doesn't gain any advantage by not revealing. Cool!
-
-One issue with VDFs is basically the advantage proportion. Similar to PoW difficulty, VDFs can be tuned to take a ceratin amount of time to compute the result. This takes much less resouces than PoW of course, but the attacker could get an advantage back if they figure out how to significantly decrease the tme to compute ther esult compared to everyone else. As a result, there's a lot of work going on about getting this advantage down to a minimum, and producing a low-cost ASIC that people could buy (just one per validator!) that would ensure the VDF advantage is minimized. 
+VDFs are interesting in their own right, but they shine in combination with RANDAO. As previously discussed, RANDAO is subject to bias if the last validator(s) within each epoch coordinate to hide their RANDAO reveals. We can mitigate this attack by feeding the RANDAO output into a VDF and instead use the VDF output as our final random number. This mitigation works because adversarial validators only have a short amount of time after receiving the current RANDAO value to decide whether or not to reveal their commitment. Without VDFs, these validators simply need to perform a simple computation to make this determination. With VDFs, however, validators would have to perform a computation that's mathematically guaranteed to take much longer than the available time.
