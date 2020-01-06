@@ -3,22 +3,25 @@ path: "/chapters/building-blocks/casper-ffg"
 title: "Finality: Casper FFG"
 ---
 
-## On Finality
 When we exchange cash for goods or services, it's usually difficult to "reverse" our transactions and claw back whatever funds we spent. Merchants might offer refunds in the case that something went wrong with an order, but this is almost certainly conditional on the return or cancellation of the original purchase. In the blockchain world, we often refer to this quality of irreversibility in a transaction as "finality."
 
 Electronic transactions made with credit or debit cards are usually similarly difficult to reverse. Some cards may provide some sort of "chargeback" service, though these are usually only effective if a merchant is being uncooperative. Generally speaking, however, most of the transactions we execute through traditional payment methods tend to be difficult to remove from our monthly statements.
 
 Transactional finality is crucial to the proper functioning of an exchange-based society. If an electronic transaction could simply disappear into thin air, merchants would likely feel much less comfortable accepting electronic payments. Merchants might be particularly concerned if consumers could strategically abuse this flaw to "buy" items without actually having to pay for them. It's easy to see why anyone would be weary of such a platform.
 
+## What *is* Casper FFG?
 Blockchains have always struggled to develop a clear sense of transactional finality. Most systems have only been able to present finality in relatively weak forms. Proof of Work blockchains, for example, usually provide what's often referred to as "probabilistic finality." Blocks in these systems can, in theory, always be forked out of the "canonical" chain if enough resources are diverted into a competing chain, though the actual odds of this decrease quickly as more blocks are added onto the chain.
 
-Proof of Stake blockchains need to provide a similar finality mechanism. However, probabilistic finality is tied to the high cost to produce competing Proof of Work chains. Validators in a Proof of Stake chain can produce blocks with relatively minimal effort, so we can't use the same "work" metric to get a sense of finality. Casper FFG is a novel mechanism that addresses this issue.
+Proof of Stake blockchains need to provide a similar finality mechanism. However, probabilistic finality is tied to the high cost to produce competing Proof of Work chains. Validators in a Proof of Stake chain can produce blocks with relatively minimal effort, so we can't use the same "work" metric to get a sense of finality.
 
-## Casper FFG Guarantees
-Casper FFG, in a nutshell, allows validators to come to consensus about "checkpoints," specific blocks that can't be reverted.
+Casper FFG is, in a nutshell, a protocol that allows validators to vote to have certain blocks "finalized." Casper FFG is unique in that it provides stronger guarantees about finalized blocks that go beyond simple probabilistic finality.
+
+Without further ado, let's look at Casper FFG under the hood.
 
 ## Deposits
-Casper FFG requires that all validators in the system have a **deposit**. Currently, Eth2 validators must submit an initial deposit of 32 ETH. Although all validators start with the same deposit, a validator's deposit can decrease if the validator misbehaves. When we refer to fractions of the total number of validators (e.g., 2/3rds of validators), we're actually referring to the set of validators whose deposits make up that fraction of the total stake. 
+Casper FFG requires that all validators in the system have a **deposit**. Casper FFG relies heavily on the idea of "slashing," or punishing, validators who don't follow the rules. Without any sort of deposit, validators wouldn't have anything to lose. Currently, Eth2 validators must submit an initial deposit of 32 ETH. 
+
+We sometimes refer to a certain fraction of validators (e.g., 2/3rds of validators). Although all validators start with the same deposit, a validator's deposit can increase or decrease. Since we want the influence of a validator to be proportion to their deposit, our fractions actually refer to the set of validators whose deposits make up that fraction of the total stake, and not a fraction of the total number of validators. 
 
 ## Checkpoints
 Checkpoints are specific blocks that validators can attempt to finalize. For the sake of efficiency, Casper FFG doesn't allow every block to be a checkpoint. The Beacon Chain defines only [Epoch Boundary Blocks](/chapters/phase-0/blocks-slots-and-epochs#epoch-boundary-blocks) as checkpoint blocks.
@@ -26,7 +29,7 @@ Checkpoints are specific blocks that validators can attempt to finalize. For the
 ## Votes
 Validators come to consensus about which checkpoints should be finalized by creating and broadcasting **votes**.
 
-The goal of Casper FFG is to create a "chain" of finalized checkpoints. Just as blocks in a blockchain always reference some parent, validators always reference some older checkpoint (the "source") whenever they vote to finalize a new checkpoint (the "target").
+The goal of Casper FFG is to create a "chain" of finalized checkpoints. Just as blocks in a blockchain reference some parent, validators reference some older checkpoint (the "source") whenever they vote to finalize a new checkpoint (the "target").
 
 Votes consist of:
 

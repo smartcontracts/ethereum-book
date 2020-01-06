@@ -3,25 +3,23 @@ path: "/chapters/building-blocks/lmd-ghost"
 title: "Fork-Choice: LMD-GHOST"
 ---
 
-## On Fork-Choice Rules
-Blockchains can fork for any number of reasons. Although we might think about forks as those big, contentious events that create money out of thin air, most forks are relatively short-lived and occur naturally as a result of menial things like network latency. For example, a Proof of Work blockchain might temporarily fork if two users happen to find blocks at the same time.
+Blockchains can fork for any number of reasons. Though forks are often presented as contentious events, most forks are relatively short-lived and occur naturally as a result of menial things (like network latency). For example, a Proof of Work blockchain might temporarily fork if two users happen to find blocks at the same time. Since each fork presents a different version of reality, users need some method, a "fork-choice rule," to determine which fork is the "valid" one.
 
-Validators need some method to determine which fork to keep following at any given time. No matter the specific process a validator uses, we call this decision a "fork-choice rule." Vitalik sums up the concept of a fork-choice rule concisely:
-
-> A fork choice rule is a function, evaluated by the client, that takes as input the set of blocks and other messages that have been produced, and outputs to the client what the “canonical chain” is.
-
-The "original" fork-choice rule was the "longest-chain" rule, which effectively tells clients to follow whichever fork has the most number of blocks. For example, the longest-chain rule would pick `Block F` as the current head in the following chain:
+## The Longest-Chain Rule
+The very first fork-choice rule was the Bitcoin's "**longest-chain rule**," or LCR. The LCR tells us, as we might infer from the name, to follow the longest chain:
 
 ![Longest Chain Rule](./images/lmd-ghost/lcr.png)
 
-This method works well in the context of a Proof of Work blockchain because blocks take a lot of computational resources to produce. In practice, Proof of Work blockchains tweak this rule slightly so that clients follow whichever chain has the most "work" behind it, though the two metrics are often aligned.
+Since Proof of Work blocks take a lot of computational resources to produce, this method gives us a relatively strong assurance that we're following the chain with the most invested value. However, the LCR leaves plenty of room for improvement.
 
 ## GHOST
-GHOST (Greedy Heaviest Observed Subtree) is an alternative to the longest-chain rule. Unlike the longest-chain rule, GHOST factors in uncle blocks, blocks which are forks of a chain but don't extend the length of the chain. In the following diagram, `Block B'` is an uncle of the longest chain (headed by `Block D`) because it builds off of one of its components (`Block A`):
+**GHOST** (Greedy Heaviest Observed Subtree) is an alternative to the longest-chain rule. GHOST, unlike the LCR, doesn't simply look at the length of a chain, but also factors in any of its **uncle blocks**.
+
+An uncle block to a chain is any block that builds upon a block in the chain, but isn't actually part of the chain itself. For example, in the following diagram, `Block B'` is an uncle of the longest chain (headed by `Block D`) because it builds on one of its components (`Block A`):
 
 ![Uncle Blocks](./images/lmd-ghost/uncle-blocks.png)
 
-Uncle blocks are important because, even they don't extend the chain directly, they imply that the creator of the uncle block meant to extend that chain. If we simply ignore uncle blocks, then we're wasting the work put into these blocks by their creators. 
+Uncle blocks are not unusual occurrences. The main Eth1 chain is currently approximately ten million blocks long and has almost one million uncles. Though uncle blocks don't directly add to the length of a chain, they do imply that the creator of the uncle block meant to extend that chain. If we simply ignore uncle blocks, then we're wasting the work put into these blocks by their creators. 
 
 The GHOST fork-choice rule finds the head canonical chain by the following algorithm:
 
@@ -57,9 +55,7 @@ Here, `Validator B` has caused GHOST to pick their own chain, simply because the
 Since we're only considering the last message from `Validator B`, LMD-GHOST ignores the longer chain and correctly lands on the block created by `Validator D`.
 
 ### Saved-Message Attacks
-Validators are only allowed to make a single vote per epoch. However, validators could still attempt to circumvent this system by withholding votes from previous epochs and releasing them all at once in a later epoch. LMD-GHOST doesn't count two votes from the same validator on the same chain, but it will allow a validator to switch between two chains. 
-
-TODO: ADD MORE CONTENT AND EXPOSITION
+Validators are only allowed to make a single vote per epoch. However, validators could still attempt to circumvent this system by withholding votes from previous epochs and releasing them all at once in a later epoch. LMD-GHOST won't count two votes from the same validator on the same chain, but it will allow a validator to flip-flop between two different chains.
 
 We generally limit this sort of attack by requiring that clients ignore any votes older than the previous epoch. We only take into account votes made in the current or previous epoch. 
 

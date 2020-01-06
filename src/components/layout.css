@@ -21,6 +21,8 @@ a {
 }
 
 code {
+  position: relative;
+  bottom: 2px;
   padding: 0.2em 0.4em;
   margin: 0;
   font-size: 85%;

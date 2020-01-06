@@ -15,9 +15,9 @@ The Beacon Chain is, perhaps unsurprisingly, still composed of **blocks**. Unlik
 ## Slots
 ![Proof of Stake Slots and Block Height](./images/blocks-slots-and-epochs/pos-height.png)
 
-The Beacon Chain also consists of **slots**, periods of time in which a validator has the right to produce a block. The Beacon Chain assigns a validator to produce a block during each slot in advance of the actual slot time. If a validator fails to produce a block during their assigned slot, then the validator assigned to the next slot will produce a block instead.
+The Beacon Chain also consists of **slots**, periods of time in which a validator has the right to produce a block. The Beacon Chain assigns a validator to slots in advance of the actual slot time. If a validator fails to produce a block during their assigned slot, then the validator assigned to the next slot will produce a block instead.
 
-Slots are currently defined to be 12 seconds long. The first block in the Beacon Chain, the genesis block, includes a "start time." We can always compute the current slot by looking at how much time has passed since that initial starting time. For example, if each slot is 12 seconds long and the genesis block was created 1200 seconds ago, then the current slot is `1200 seconds / 12 seconds = slot 100`.
+Slots are currently defined to be 12 seconds long. The first block in the Beacon Chain, the genesis block, includes a "start time." We can compute the current slot by looking at how much time has passed since that initial starting time. For example, if each slot is 12 seconds long and the genesis block was created 1200 seconds ago, then the current slot is `1200 seconds / 12 seconds = slot 100`.
 
 It's worth noting that, although we often use slots to reference to specific Beacon Chain blocks, we still maintain the traditional idea of block height. In the above diagram, the third block (`block 2`) has a height of two (assuming that the genesis block has a height of zero), even though it was produced in `slot 4`.
 
