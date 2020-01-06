@@ -4,20 +4,25 @@ title: "Finality: Casper FFG"
 ---
 
 ## On Finality
-We often take for granted the existence of transactional "finality" in our everyday lives. When we exchange cash for goods or services, for example, it's usually difficult to "revert" a transaction and claw back whatever funds we spent. Merchants might offer refunds in the case that something went wrong with an order, but this is almost certainly conditional on the return or cancellation of the original purchase. Transactions made with credit or debit cards usually follow the same rules, though cards may provide some sort of "chargeback" service in the case a merchant is being uncooperative. Generally speaking, however, most of the transactions we execute through traditional payment methods can be considered final.
+We often take transactional "finality" for granted in our everyday lives. When we exchange cash for goods or services, for example, it's usually difficult to "revert" a transaction and claw back whatever funds we spent. Merchants might offer refunds in the case that something went wrong with an order, but this is almost certainly conditional on the return or cancellation of the original purchase.
 
-Transactional finality is crucial to the proper functioning of an exchange-based society. If there were some non-trivial probability that an electronic transaction could simply disappear into thin air, merchants would likely feel much less comfortable accepting electronic payments. Merchants might be particularly concerned if consumers could abuse this flaw to buy items without actually having to pay for them. It's easy to see why anyone would be weary of such a platform.
+Electronic transactions made with credit or debit cards usually follow the same rules. Some cards may provide some sort of "chargeback" service, though these are usually only effective if a merchant is being uncooperative. Generally speaking, however, most of the transactions we execute through traditional payment methods are difficult to reverse.
 
-Blockchains have, as a result, long attempted to develop a clear sense of transactional finality. Unfortunately, most systems have only been able to present relatively weak forms of finality. Proof of Work blockchains, for example, provide what's often referred to as "probabilistic finality." Transactions in these systems always have some probability of disappearing into thin air, although the actual odds of this happening decrease as time goes on. 
+Transactional finality is crucial to the proper functioning of an exchange-based society. If an electronic transaction could simply disappear into thin air, merchants would likely feel much less comfortable accepting electronic payments. Merchants might be particularly concerned if consumers could strategically abuse this flaw to buy items without actually having to pay for them. It's easy to see why anyone would be weary of such a platform.
+
+Blockchains have always struggled to develop a clear sense of transactional finality. Most systems have only been able to present relatively weak forms of finality. Proof of Work blockchains, for example, provide what's often referred to as "probabilistic finality." Blocks in these systems can, in theory, always be forked out of the "canonical" chain if enough resources are diverted into a competing chain. The actual odds of a block being forked out of the canonical chain decrease quickly as more blocks are created on top of that block.
 
 Proof of Stake blockchains need to provide a similar finality mechanism. However, the probabilistic finality of Proof of Work is tied to the high cost to produce competing chains. Validators in a Proof of Stake can produce blocks with a simple signature, so we can't use the same "work" metric to get a sense of finality. Casper FFG is a novel mechanism that attempts address this issue, and Eth2 adapts it into the context of a Proof of Stake blockchain.
 
-Casper FFG, in a nutshell, allows validators to come to agreement about the finality of certain blocks. Crucially, Casper FFG goes beyond the probabilistic finality of Proof of Work blockchains and provides a more "real" sense of finality. Casper FFG allows validators to come to consensus about "checkpoints," blocks which cannot be reverted without great cost. Specifically, Casper FFG guarantees two properties:
+## Casper FFG Guarantees
+
+Casper FFG, in a nutshell, allows validators to come to consensus about "checkpoint" blocks. Casper FFG goes beyond the probabilistic finality of Proof of Work blockchains and guarantees two key properties:
 
 1. "Accountable Safety" - Two conflicting checkpoints cannot be finalized unless 1/3 of validators have lost their deposit and
 2. "Plausible Liveness" - It will always be possible to finalize a new checkpoint as long as 2/3 of validators are following the protocol
 
-We'll discuss the proofs for these properties in more detail later in this section. First, however, we'll take a look at the fundamentals behind the Eth2 Proof of Stake system that enable Casper FFG.
+## Justifications
+
 
 ## Checkpoints
 Checkpoints are the poitns at which the network considers a block and all of its ancestors to be finalized. Checkppoints happen at ebbs. Checkpoints happen during special conditions called justifications are linked. The idea of justifications is that there's a concept of a source and a target. A source is a previously justified block. A target is the next block to be justified. Justifications are official once there are sufficient votes for a justification, in ETh2 case its 2/3 of the validator set. For example, see the following diagram.

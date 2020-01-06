@@ -20,8 +20,10 @@ module.exports = {
             resolve: `gatsby-remark-images`,
             options: {
               maxWidth: 800,
+              linkImagesToOriginal: false,
             },
           },
+          `gatsby-remark-images-zoom`,
           `gatsby-remark-autolink-headers`,
         ],
       },
