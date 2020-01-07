@@ -69,11 +69,27 @@ Let's see how LMD-GHOST deals with the previous example:
 Since we're only considering the *latest* message from each validator, we only count a single block created `Validator B`. As a result, LMD-GHOST ignores the longer chain and correctly lands on the block created by `Validator D`.
 
 ### Saved-Message Attacks
+```text
+TASK: Explain the attacks in more detail, including diagrams.
+```
+
 Validators are only allowed to make a single vote per epoch. However, validators could still attempt to circumvent this system by withholding votes from previous epochs and releasing them all at once in a later epoch. LMD-GHOST won't count two votes from the same validator on the same chain, but it will allow a validator to flip-flop between two different chains.
 
 We generally limit this sort of attack by requiring that clients ignore any votes older than the previous epoch. We only take into account votes made in the current or previous epoch. 
 
 ### Interactions with Casper FFG
+```text
+TASK: Move this section into Casper FFG, since the order has flipped.
+```
+
+```text
+TASK: Explain the logic behind this interaction.
+```
+
+```text
+TASK: Go through an example of the interaction with FFG.
+```
+
 LMD-GHOST doesn't allow validators to circumvent blocks finalized by Casper FFG. In order to accomplish this, we run LMD-GHOST according to the following process:
 
 1. Find the last finalized block.

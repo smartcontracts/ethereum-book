@@ -12,6 +12,10 @@ Signatures are pretty much what they sound like. Much like physical signatures, 
 
 Unlike with physical signatures, however, we don't actually reveal this private key when we create a cryptographic signature. Instead, all private keys have an associated "public key" that can be used to verify that a given signature comes from the corresponding private key, without revealing anything about the private key itself.
 
+```text
+TASK: Improve this diagram. Meant to be a placeholder.
+```
+
 ![Wholesome Signatures](./images/bls-signatures/wholesome-sigs.png)
 
 ## Signatures in Eth2: A Conundrum
@@ -22,6 +26,10 @@ Traditionally, we haven't had much of a problem determining which *specific* sig
 Eth2, however, is designed to operate at a scale significantly higher than that of traditional blockchains. We sometimes run into situations where we need to verify hundreds of thousands, of not millions, of signatures within a single epoch. At 65 bytes and two milliseconds per signature, it'd take six megabytes of storage and a full *30 minutes* to verify one million ECDSA signatures. Our Beacon Chain deserves better.
 
 ## BLS to The Rescue
+```text
+QUESTION: How much detail do we want to go into here? How important is it that readers understand the underlying math behind BLS? Is it "good enough" to simply explain the properties of BLS?
+```
+
 Researchers at Stanford, yes, the same ones who came up with VDFs, created a novel signature scheme that makes Eth2 possible. The "Boneh-Lynn-Shacham," or BLS, signatures are, in many ways, just like the traditional signatures used in other blockchains. However, they provide two key properties not found in other signature schemes.
 
 BLS signatures allow us to combine any number of signatures on any number of messages into a *single* signature with a constant size. Although these signatures are slightly larger than ECDSA signatures (96 bytes instead of 65 bytes), this means that we no longer need megabytes worth of space in blocks dedicated purely to signatures.

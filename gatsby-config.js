@@ -23,6 +23,12 @@ module.exports = {
               linkImagesToOriginal: false,
             },
           },
+          {
+            resolve: `gatsby-remark-prismjs`,
+            options: {
+              classPrefix: `language-`,
+            }
+          },
           `gatsby-remark-images-zoom`,
           `gatsby-remark-autolink-headers`,
         ],

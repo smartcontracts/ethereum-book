@@ -75,6 +75,11 @@ Here, we prevent validators from creating votes that "cross over" one another. F
 Slashing conditions are enforced in special transactions on the Beacon Chain. Validators are incentivized to reveal malicious behavior because they're rewarded if they can provide proof that another validator created votes that violated any of the above conditions.
 
 ## Casper FFG Guarantees
+```text
+TASK: Expand this section significantly.
+TASK: Go through the proofs for each of the guarantees.
+```
+
 These slashing conditions give us our Casper FFG guarantees:
 
 1. "Accountable Safety" - Two conflicting checkpoints cannot be finalized unless 1/3 of validators have lost their deposit
