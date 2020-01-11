@@ -4,6 +4,10 @@ html, body {
   padding: 0;
 }
 
+hr {
+  margin: 24px 0;
+}
+
 p {
   margin-top: 42px;
   margin-bottom: 0px;
