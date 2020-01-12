@@ -5,6 +5,7 @@ nav.sidebar {
   height: 100%;
   width: 16.5rem;
   border-right: 1px solid lightgray;
+  overflow-y: auto;
 }
 
 nav.sidebar ul {

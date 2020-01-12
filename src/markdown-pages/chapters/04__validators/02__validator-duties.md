@@ -46,3 +46,48 @@ Validator includes attestatioks in a block. Validators are incentivized to do th
 
 ### Slashing Validators
 Validators also update the list of slashes if they have proof that a person should be slashed. Validators get a reward for doing this, which is nice. This is the incentive. Validators generally want to keep this information for themselves because they get the reward. So they will be watching for bad behavior by themselves as a result. Possible that someone will just do this anyway??
+
+
+## Creating Attestations
+
+Validators also need to create attestations, or votes, about specific blocks. This is related to LMD ghost and FFG. in an epoch, we use the RANDAO value to break the list of validators evenly across each block during the next epoch. So we know one block in advance. This is tuneable. 
+
+Then, the validator is responsible for downloading the block at slot+1/2t and checking that it satisfies all of the required conditions. Namely, they will check that there aren't too few or many exits and deposits, slashing was valid, etc. Look here for a complete list of the validity conditions within each block. If the block is valid, they will sign off on the block and broadcast this to the network.
+
+Attestations are cool because not only do they sign off on a block, they also implicitly sign off on all parents of the block. And therefore, also sign off on the justification link within the EBBs for finalization. So one signature, multiple actions. 
+
+## Creating Blocks
+
+One of the most important duties of the validator is to create new blocks. Let's explore the various pieces of the Beacon Chain that the validator is responsible for updating within each block.
+
+### Exits
+Validators are responsible for including any exits by other validators in the system. Exits can take three different forms, voluntary, insufficient balance, and slashed. If another validator created a message saying they wanted to be exited, then we put this into the block and they'll be exited a few blocks later. If a validator runs out of balance, similar. In both of these cases, validators are naturally incentivized to do this because it reduces the total number of validators in the system and therefore increase the reward per validator (including themselves).
+
+We only process [TODO] exits per block, validators won't accept the block if more or less are processed. Up to number pending. An exit is usually marked before it actually goes into effect, we can mark as many as we want but won't be processed until queue goes out.
+
+### Eth1 Data
+Validators need to include Eth1 data in each block. What they do is basically "vote" for a given Eth1 deposit contract root. The Beacon Chain holds a vote that is tallied every [TODO] epochs. If some deposit root gets 2/3rds of votes by stake over that time period, then it is considered the current valid deposit root.
+
+In order to make sure that the system converges on a specific vote, we have a "pile on" vote system. Validators will basically have three options. If no Eth1 data because at the start of the vote, they get their own Eth1 data. If there is Eth1 data but vote period has only just started, we pick whichever is the least stale. If the vote period is long underway, we pick whichever has the most votes. Easy.
+
+We make sure to follow the Eth1 chain by a safe distance (1000 blocks, ~4 hours) so that we don't get a reorg on Eth1 chain that messes up the Eth2 chain. This distance is long enough that there really has never been a reorg this big so we just assume that it'll be safe and won't mess the chain up. If a reorg did happen, then we'd have a bad situation in which a validator is part of the chain but doesn't have a deposit on the Eth1 chain possibly.
+
+### Deposits
+This is an important part of the process. Validators are responsible for processing deposits in the deposit contract. We get the list of people who have deposited and haven't been processed yet. Then we process [TODO] of the validators, or as many as are left if less than this. Validators won't attest to the block if they don't include the required amount. defined by CHURN.
+
+### Slashed Exits
+Validators also include any slashings in the block. This only happens if the block proposer has evidence that a validator should be slashed. When this happens, the block proposer gets a reward for including the evidence as a portion of the slashed amount. In order to incentivize this behavior. 
+
+Slashings are interesting because they require that the validator actually have additional evidence. Since slashable validators won't actively share evidence of their bad actions (if they're smart), validators are going to be responsible for checking this for themselves. This is an additional cost for the validator, but again we reward them with some of the reward.
+
+### Including Attestations
+So part of the block as well is the attestaions. The way this works is that the validator will look at the network for attestations of the last few blocks that haven't been included yet. Especially the previous block, since that's the one that won't have any included attestations yet. The validator waits for signatures and will aggregate themselves, but aggregations will also be sent across the network.
+
+Once the validator collects signatures, they add it to the block. Since it's cheaper to have fewer aggregations that have more component signatures, we want to add micro-incentives that basically reward people for including (1) good aggregations with many signatures and (2) recent aggregations. The less recent the aggregations, the less the reward. The total amount rewarded is about 1/8 of the reward that goes to the aggregators, so not insignificant.
+
+### Randao reveal
+like we talked about, validators reveal a randao thing. We said vaguely that validators doa  commit-reveal. Generally speaking, a cryptographic commitment can take many forms. For example, we can create a commitment in a sense by requriing that the reveal be a signature on a known value. In this sense, we can verify that the signature was in fact on the known value and therefore the signature is a reveal on that commitment.
+
+In our case, we say that the block producers signs the current block height. Simple enough also because it doesn't erquire that we have producers actually broadcast any sort of commitment. 
+
+

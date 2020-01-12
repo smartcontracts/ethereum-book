@@ -1,8 +1,23 @@
 ---
 path: "/chapters/notes"
-title: Notes
+title: "Notes"
 ---
 
+TODO:
+- SSZ
+- Merkle Trees
+- Design Rationale
+- Custody Game
+- Honest Validator Assumption
+- Weak Subjectivity
+- Storage Rent
+- Fraud Proofs
+- Swap-or-Not
+- Guide for Eth2 Developers
+- Guide for Eth2 Validators
+- Scaling in General (l1 vs l2)
+
+# Validator Guide
 Before anyone can become a Beacon Chain validator, they need to create some BLS key pairs. Validators have two key pairs, for security reasons. The first of these pairs is a validator's withdrawal credentials, which are only used for withdrawing funds from the staking system. The second of these pairs is a validator's public key, which is used for all other validator actions, like creating blocks or attestations.
 
 The purpose of this multi-key setup is primarily for security. Since validator public keys will need to be easily accessible to a system connected to the internet ("hot storage"), they are more vulnerable than keys kept disconnected from any network ("cold storage"). By creating a separate withdrawal key that can be kept in cold storage, an attacker is much less likely to be able to steal funds from a validator by withdrawing to their own address. If the attacker gets access to the private key used for attestations or blocks, they can only cause the validator to receive a penalty, which shouldn't wipe out the validator's funds as long as they leave the system early enough.
@@ -11,151 +26,78 @@ The Eth1 deposit contract has already been specified, so we're able to take a lo
 
 There is currently no way to get your deposit back from Eth2 once you've submitted it on Eth1. You should be aware of this so that you know that! Also, we'll talk about it mroe later, but in Phase 0 there is no way to actually withdraw your funds from Eth2.
 
-# Validator Duties
+Ethereum is, perhaps, one of the most ambitious distributed software projects of all time. From its humble beginnings in 2014, Ethereum has grown to attract thousands of developers and billions of dollars. Development of Ethereum can likely be credited with many of the fundamental research developments in the distributed systems space over the last five years. 
 
-## Creating Attestations
+Ethereum is also, however, significantly too limited in its current form to achieve its grand vision of decentralized finance. Ethereum's limitations arise from several fundamental roadblocks. 
 
-Validators also need to create attestations, or votes, about specific blocks. This is related to LMD ghost and FFG. in an epoch, we use the RANDAO value to break the list of validators evenly across each block during the next epoch. So we know one block in advance. This is tuneable. 
+The primary goal of any blockchain system is to ensure that account balances remain accurate. Blockchains achieve this goal by introducing the concept of a shared transactional ledger. In short, all transactions on a blockchain system are broadcast to all parties within the system. Parties who wish to, say, find the balance of a particular account need only execute each transaction in order to determine the final state of the system.
 
-Then, the validator is responsible for downloading the block at slot+1/2t and checking that it satisfies all of the required conditions. Namely, they will check that there aren't too few or many exits and deposits, slashing was valid, etc. Look here for a complete list of the validity conditions within each block. If the block is valid, they will sign off on the block and broadcast this to the network.
+Unfortunately, this immediately causes certain issues. Each transaction needs to be both downloaded and executed. As a result, we are limited in the total number of transactions the system can handle by the size of each transaction in bytes (bandwidth, how much a user can download) and the computational complexity of the transaction (cycles, how much a user can execute). 
 
-Attestations are cool because not only do they sign off on a block, they also implicitly sign off on all parents of the block. And therefore, also sign off on the justification link within the EBBs for finalization. So one signature, multiple actions. 
+Currently, we find that Ethereum can handle approximately XX transactions per second, though exact throughput is highly dependent on the contents of the transactions. Although it's not clear how many transactions per second we really need, it is clear that this current number simply isn't enough. When we're up against these limitations, we need to start thinking outside the box. 
 
-## Creating Blocks
+Eth2 is the umbrella name of a series of improvements to Ethereum that would allow the system to process significantly more transactions without sacrificing the security. It introduces a new proof-of-stake consensus mechanism. It also introduces the concept of "shard chains," separated blockchains that can interact with one another and draw security from a common source, but don't need to execute the transactions of other chains. 
 
-One of the most important duties of the validator is to create new blocks. Let's explore the various pieces of the Beacon Chain that the validator is responsible for updating within each block.
+Eth2 introduces the large new change from PoW to PoS. PoW has been shown to be a wasteful consensus mechansim. Although there are still plenty of debates about the actual difference in wastefulness, these debates really don't matter because PoW is *clearly* bad PR. When we're up against global warming and it's really starting to make changes to our environment, there's a need to move away from something that *obviously* wastes energy and toward something that *most likely* doesn't waste nearly as much. It looks better.
 
-### Exits
-Validators are responsible for including any exits by other validators in the system. Exits can take three different forms, voluntary, insufficient balance, and slashed. If another validator created a message saying they wanted to be exited, then we put this into the block and they'll be exited a few blocks later. If a validator runs out of balance, similar. In both of these cases, validators are naturally incentivized to do this because it reduces the total number of validators in the system and therefore increase the reward per validator (including themselves).
+Anyway, PoS introduces new concepts into the Ethereum ecosystem. Mainly, we'll no longer have miners who run GPUs. Instead, people will have to lock assets into Ethereum and will then be given the power to produce blocks on Ethereum.
 
-We only process [TODO] exits per block, validators won't accept the block if more or less are processed. Up to number pending. An exit is usually marked before it actually goes into effect, we can mark as many as we want but won't be processed until queue goes out.
+Several options for scaling Ethereum have been presented in its lifetime. Most notably, we've seen the development of supernodes, L2, and shard chains. Each of these options carry trade-offs, though all increase the throughput of Etherum as a whole. 
 
-### Eth1 Data
-Validators need to include Eth1 data in each block. What they do is basically "vote" for a given Eth1 deposit contract root. The Beacon Chain holds a vote that is tallied every [TODO] epochs. If some deposit root gets 2/3rds of votes by stake over that time period, then it is considered the current valid deposit root.
+Supernodes are one such concept. In a supernode system, we require that there exist a few nodes that can execute every single transaction. Of course, this is not feasible for the average user. The average user could keep track of a small subset of the total transactions, but they would have to trust the set of supernodes to correctly store and execute all of the transactions if they want to download any new ones. This is bad because it decreases the total number of parties that could cause the system to act in a faulty way.
 
-In order to make sure that the system converges on a specific vote, we have a "pile on" vote system. Validators will basically have three options. If no Eth1 data because at the start of the vote, they get their own Eth1 data. If there is Eth1 data but vote period has only just started, we pick whichever is the least stale. If the vote period is long underway, we pick whichever has the most votes. Easy.
+One fundamental thing that we want to maintain in a scaled Ethereum is the avoidance of any sort of centralization. When a scaling mechanism requires that we hand control over to a few entities with resources, we tend to avoid that solution. Supernodes are one such solution. Generally speaking, supernodes are the idea that we should create a few nodes that can actually handle mass amounts of data. Basically, we simply accept the idea that there must be a party capable of executing every transaction that goes through the system. Of course, these systems are brittle because they're highly subject to coersion. We always want to maximize the number of parties that need to be compromised before the system as a whole becomes compromised. The average user cannot run and operate the scale of node that a supernode requires.
 
-We make sure to follow the Eth1 chain by a safe distance (1000 blocks, ~4 hours) so that we don't get a reorg on Eth1 chain that messes up the Eth2 chain. This distance is long enough that there really has never been a reorg this big so we just assume that it'll be safe and won't mess the chain up. If a reorg did happen, then we'd have a bad situation in which a validator is part of the chain but doesn't have a deposit on the Eth1 chain possibly.
+Various other proposals, called L2 proposals, because they live on top (on another "layer") have been proposed over the years. Generally, these proposals insert some sort of information into Ethereum ("commitments") but do some additional execution outside of Ethereum. For example, plasma, payment channels, state channels, whatever. 
 
-### Deposits
-This is an important part of the process. Validators are responsible for processing deposits in the deposit contract. We get the list of people who have deposited and haven't been processed yet. Then we process [TODO] of the validators, or as many as are left if less than this. Validators won't attest to the block if they don't include the required amount. defined by CHURN.
+Layer 2 proposals go hand-in-hand with Eth2. These proposals do not forgo the need for a construction like Eth2, in fact, they complement Eth2 very well. 
 
-### Slashed Exits
-Validators also include any slashings in the block. This only happens if the block proposer has evidence that a validator should be slashed. When this happens, the block proposer gets a reward for including the evidence as a portion of the slashed amount. In order to incentivize this behavior. 
+[https://notes.ethereum.org/@vbuterin/rkhCgQteN]
+Eth2 was designed with several key principles in mind. Namely, these principles are simplicity, stability, sufficiency, security, and light-client verifiability.
 
-Slashings are interesting because they require that the validator actually have additional evidence. Since slashable validators won't actively share evidence of their bad actions (if they're smart), validators are going to be responsible for checking this for themselves. This is an additional cost for the validator, but again we reward them with some of the reward.
+Simplicity is at the core of Eth2 development. Proof of Stake and sharding are complex constructions. As with any project, complexity is often at odds with accessiblity. As a result, Simplicity is one of the most important things to keep in mind durign ETh2 devgelopment. Simplicity is also key because it minimizes cost and reduces security risks. 
 
-### Including Attestations
-So part of the block as well is the attestaions. The way this works is that the validator will look at the network for attestations of the last few blocks that haven't been included yet. Especially the previous block, since that's the one that won't have any included attestations yet. The validator waits for signatures and will aggregate themselves, but aggregations will also be sent across the network.
+[https://radicalxchange.org/blog/posts/2018-11-26-4m9b8b/]
+One thing with simplicity is that it allows protocol designers to easily convince users that parameter choices are legitimate. Central planning has come to be considered an undesirable thing. However, someone needs to make *some* decisions about certain things. Especially when that comes to parameters about how the system should work. For example, block times have been an extremely contentious thing. When a system is complex, there are more dials and knobs to be turned. The more dials to turn, the more decisions we have to make right now. AS vbuterin says, we know little and we should not design systems that demand us to know a lot. Simple protocols also have fewer moving parts. Also, simple protocols achieve legitimacy more easily because parameter tuning can be more easily justified. We don't want protocol designers to have weak justifications for lots of paramters, we want protocol designers to have strong justifications for a few parameters. When there are a lot of knobs to be turned, there might be certain knobs that seem useless but actually have a large impact, opening the door for capture by private interests. Fewer parameters = better systems!
 
-Once the validator collects signatures, they add it to the block. Since it's cheaper to have fewer aggregations that have more component signatures, we want to add micro-incentives that basically reward people for including (1) good aggregations with many signatures and (2) recent aggregations. The less recent the aggregations, the less the reward. The total amount rewarded is about 1/8 of the reward that goes to the aggregators, so not insignificant.
+[Above should really be expanded into its own section]
 
-### Randao reveal
-like we talked about, validators reveal a randao thing. We said vaguely that validators doa  commit-reveal. Generally speaking, a cryptographic commitment can take many forms. For example, we can create a commitment in a sense by requriing that the reveal be a signature on a known value. In this sense, we can verify that the signature was in fact on the known value and therefore the signature is a reveal on that commitment.
+Stability is obviously a key component of any system. These protocols shouldn't be changed for a long time, especially because it's so contentious to make these changes. Innovation should be pushed to higher layers that don't impact all users. We don't want things to be super flexible at the base layer because that just causes even more debate. Again, more flexibility means more complexity, means more dials to turn. 
 
-In our case, we say that the block producers signs the current block height. Simple enough also because it doesn't erquire that we have producers actually broadcast any sort of commitment. 
+[Add section on innovation at higher layers?]
 
+Sufficiency means that it's possible to build many different types of applications on the same base layer. This isn't about making the protocol ridiculously flexible, it's about making sure that an extremely simple base layer can still support an interesting set of applications. We obviously don't want to just focus in on a single application, having the EVM was really what set Ethereum apart from other blockchain projects. So there's a sweet spot in simplicity. It's also cool that we can sort of abstract these things apart so that the complexity is happening at a higher level (EEs).
 
+Security is what guarantees that your pile of money will still exist tomorrow. We really want to amke sure that Eth2 is robust against many different classes of attacks. We want to preempt as many of these attacks as possible before releasing a new thingy. Obviously there's a point at which we want to stop with security, so that's a consideration. But there are many that we can actually preement like network latency, faults, motvations.
 
+Light clients are important because many users won't have the hardware or don't want to have the hardware that can actually verify a ton of data on the blockchain. Light clients should be able to verify things under certain conditions. Otherwise, users would have to carry beefy machines around with them all the time, which obviously won't happen. We need to be realistic with what we expect from our users. This follows from defence in depth. Light clients are clients that only verify a subset of all the data,  and don't get full guarantees but should get as many guarantees as possible. We can't have everyone with light clients or the system wouldnt work. So it's also about the middle ground between "full nodes" and "super nodes", in that "full nodes" should be accessible to users but users shouldn't *have* to use them whereas supernodes are generally inaccessible to most users.
 
-# Intro to Building Blocks
-So let's get right into Eth2 why don't we. We are starting off with the core building blocks behind the Beacon Chain. Since the Beacon Chain is the main part of the Eth2 ecosystem before shards. 
+[https://vitalik.ca/general/2018/08/26/layer_1.html]
+Let's talk about tradeoffs between l1 and l2. We want to find a sweet spot where there are sufficiently many features at L1 that innovation is possible, but that most crazy stuff happens at L2. 
 
-We're going to talk about a few different things. First were going to explore the general structure of the beacon chain. The beacon chain is a little different from Eth1 in that it isn't just structured as a series of blocks. We'll expain later. We introduce core ideas like validators too and the main things that they have to do at a high-level.
+- l2 arguments:
+    - reduced base layer complexity
+    - reduced need to modify consensus layer
+        - reduces complexity
+    - more flexibility
+- l1 arguments:
+    - reduced stalled progress
+    - reduced compleixty maybe?
+    - L1 needs to be at least somewhat powerful to support l2
 
-Next we look at some of the tools validators use in Eth2. These are things like cryptographic tools necessary for making Eth2 a reality and the mechanism that Eth2 uses to select validators for their various roles. Basically, we're covering first how validators actually do what they need to do from a technical perspective and then we cover how the beacon chain choses certain validators to do these things.
+We want to carefully balance these two. Primary inclusions in the philosophy of Eth2 are:
+- quasi-Turing-complete and richly-stateful execution environments
+    - to build l2 applications
+- scalable data availability and computation
+    - doesn't limit us to techniques like plasma that have trouble generalizing
+- fast block times
+    - doesn't limit us to channels for fast transactions
 
-After this we look at the ways that PoW has to change in PoS. These are mainly about things like coming to agreement about which blocks are the valid ones and which ones not to follow. This is because we always have forks in blockchain systems and we need to pick which fork to follow. We also talk about FFG, which is a system meant to create a sense of "finality" or irreversibility about specific blocks and punishes any validators who try to go back on their word.
+other features left to L2 are, because rapid innovation:
+- privacy
+- high-level languages
+- scalable state storage
+- signature schemes
 
-These really form the core of the Beacon Chain. It's what allows the beacon chain to run properly.
-
-# Networking
-
-networking is critical for any blockchain system, mainly peer to peer networking. Without a network, there's no way to communicate. Without communcation, there's no way to agree about things or even talk about what we want to agree about. 
-
-We want peer to peer networks because theyre more resilient to attack. The idea in a server-client system is that there's a direct connection between two parties where the server sort of acts like a hub for connections. This is vulnerable to attack because if the server goes down, the whole system goes down. Instead, we want a system where every node is pretty much equal and therefore the network can recover around failures.
-
-Networks usually consist of two pieces. There's a physical component, which is the wires or communication links between nodes (wires, wifi, whatever). Then theres a logical component (protocol) which determines how people can talk to one another. Just having wires means nothng. If I send you morse code, you dont really know what it means unless you understand morse code. Plus, you also don't know what it means unless you understand english too. Same idea. We come up with a basic system for sending messages (packets) and then we come up with a protocl on top. 
-
-## Libp2p
-Eth1 used a custom protocol called devp2p. Devp2p had many issues and so there was a big push to upgrade the system. Eth2 decided to use a newer thing called libp2p.
-
-Libp2p is pretty cool. The main idea behind libp2p is a series of logical connections. SO the idea here is taht we sort of abstract the underlying communication line (wire, wifi, whatever) and just say we have a "connection." This is really cool because it means that nodes can communicate over any number of physical lines, including bluetooth or even snail mail (though that one might be too slow). It's robust no matter the underlying scheme. Devp2p really didn't have this idea.
-
-Libp2p also lets us do some stuff called channels and subsriptions. Basically, on eth2 theres certain information that only some people care about. For example, block producers care about attestations, but users probably don't really care about those attestations untilt hey're actually included ina  block. A producer can simple subscribe to this whereas the user decides not to. We only need the data we care about, and its much more efficient. Libp2p introduces a very optimal algorithm for sharing messages in a gossipy way that doesn't duplicate messages over and over and introduce a lot of network lag and weight.
-
-libp2p also lets us do a thing where peers can relay connections for other peers. For example, let's say I have a connection to Alice who has a connection to bob, but im unable to get a direct conneciton to bob. I can still communicate to bob in a secure way, and alice will just relay our messages on our behalf. Cool!
-
-Libp2p is great but has some downsides too. It's complex and much bigger than devp2p. The spec is really big and it's also a moving target that hasn't been completely set in stone yet. We also have to implement a lot of optional components and we use non-traditional transports since we want eth2 be able to run everywhere. That said, teams have been doing a great job with the project so far and have managed to successfully implement basic interop between clients. It makes eth2 stronger! It has support from otehr big institutions and is definitely ahead of the pack in many ways.
-
-Networks need discovery mechanisms, which basically means two things. it means you need to find which computers on the internet you can actually talk to, and it also means you need to find the capabilities of those computers. For example there might be different comptuers in the network that do different things. We could have a computer that is a validator, who has access to blocks and such, and a computer that is just watching the network for the sake of some sort of analysis. Each computer therefore needs to tell the world what sort of capabilities it has, so that other computers can ask for data or results or whatever.
-
-libp2p uses a system called kadamelia which is ok but not perfect. Eth2 needs a better discovery mechanism so it uses a different thing called discovery v5, whicha llows for both capability advertising and topic advertising (I have acceess to this infromation). It's more flexible than kademelia and is also nice because it's shared with eth1 and reduces development cost.
-
-We have certaint ypes of requests that peole can make for example ask for a given block by its root, ask for a range of blocks for sync.
-
-One thing thats interesting is taht although it us under the rest of the system, we do need to coordinate any sort of forks to the networking protocol. Let's say we want to update how we advertise a given topic. If only some participants follow this upgrade, we could have a network split. Therefore not good and must coordinate forks to the same level as changing soenthing like block structure on beacon chain.
-
-# Light Clients
-
-Light clients are basically software than can consumer a blockchain data with requirements logarithmic to the size of the blockchain. Usually when you're consuming an individual blockchain, you need to look at the entire blockchain in order to figure out what's going on. We want to be able to allow clients to figure out what's going on under some assumptions without needing the space or computaitonal requirements to download the whole chain.
-
-Generally speaking this is improtant for low-resoruce evinronments like phones. We can't jsut put gigabytes worht of blockchain data on a phone and it would take forever to verify it all at least for now.
-
-# Light Clients
-
-So generally speaking, what are light clients exactly? How do they work? Why do we care about them in the first place?
-
-Light clients are pieces of software that can consume blockchain data with requirements logarithmic to the size of the blockchain state. What does logarithmic mean here? So the idea here is that let's say the blockchain state expands by a multiple of two, it's twice as large as it previously was. Instead of requiring that the client now have twice as much storage space or twice as much computational power, we instead want the client to only have log(n) this amount.
-
-Why do we care? Well, blockchains are really big. On the order of several gigabytes, usually. We want people to still be able to access blockchains in the context of low-power environments like smart phones. Even though smart phones are getting better and better, the average person only has a relatively weak mobile processor. However, if we don't support access from such an environment, then we automatically exclude communities with fewer resources.
-
-Besides low-power environments, light clients also allow us to embed within other blockchains (which really are low-power envs). This allows us to efficiently query data from Eth2 shards within another blockchain, meaning we get better interop between chains. Blockchains will probably follow a power-distribution of usage, so we will likely have a few widely used chains and many lesser-used chains. As a result, we really want to push forward any sort of interop and this has historically been an issue for Eth2.
-
-Why is this hard? The main idea behind blockchains is that we want to verify everything that's going on in order to verify that the whole chain is valid. This is basically like auditing the entire history of things. Sharding helps us because it allows us to only audit the shards we care about, but it's not good enough in most instances. It's still too big for low-capacity environments.
-
-What's the basic strategy? Merkle trees, which basically allow us to store pieces of information in a way that the amount of computation/data to access any one element is logarithmic with the total size of the dataset. We can combine merkle trees with multiproofs, which allow us to access several elements simultaneously with even more efficiency gains by looking at intersections in the proof elements.
-
-In Proof of Work, this is somewhat easier because everything that we need to get a sense of validity of a block is stored in the block header, mainly the work which we can verify by hashing the header. This acts as a solid proxy for the validity of the block. 
-
-Unfortunately this is harder in Proof of Stake since there is not such a clear proxy. We need to figure out two questions, how do we get updated "trusted" roots and how do we do this succinctly? So the key insight here is that if we get 2/3rds of stake on a given block, then we can trust all previous blocks. However this requires that we actually know who's validating, which means we need to build up a sense of the true validator set.
-
-So how do we find the true validator set? We need somewhere that tells us who the validators are. Crosslink committees happen every block, but their signatures get aggregated so we can't see who they are. Shard committees get shuffled less often, once every 27 hours. 
-
-[TODO] I really don't get this part. ^^^
-
-This works, but unfortunately it only really gives us a weaker sense fo security. How much?
-
-Once we've figured out the validator set, we can start syncing blocks. We basically look at our local list of validators and their stake, and then we see which validators have signed off on a given block and make sure 2/3rds are there. 
-
-After we've synced, we still need to get to the specific data that we want. We only have the headers for each blocks, which are a small fixed size, now we want to maybe access some data inside the block. For example, we might want to find the state root or maybe we want to see a token balance inside of some EE.
-
-We can do this becuase of SSZ. It's Simple Serialize and the nice idea is that it makes everything into big ol merkle tree. Everything is structured into nice objects that can be easily merklized and then accessed using a Merkle proof. We just need to ask for a given object and someone with the full data can give us the object plus a proof that verifies the object was actually included in the block.
-
-[TODO] Security analysis??
-
-EEs: Will anyone be able to create them? This is an open question. I mean, anyone will be able to create EEs but the question is mainly whether to initially only launch one or two main EEs. There are arguments either way, if we launch with many EEs then there's a bigger risk that one of them goes wrong because we can't just focus development resources on the few EEs.
-
-Personally, I think the best model is to launch with 1-2 EEs and allow others to create EEs later on after maybe a few months. This way we can still allow people to create novel EEs but the initial launch of Eth2 is least likely to be marred by a bad EE.
-
-## Eth2 Failure Modes
-
-### Bad Proposer, Good Committee
-Bad proposer produces a bad shard block. Good committee will reject this block and nothing happens.
-
-### Bad Proposer, Bad Committee
-Bad proposer producers a bad shard block. Bad committee accepts block and it becomes part of canonical state.
-
-Possible to recover via fraud proofs, though this requires heavy rollbacks of the chain. We also have some ideas for a rollup type system in which clients have more subjectivity about the state of the chain and can choose to apply fraud proofs (?).
-
-# Project Areas
-
-## Eth2 Clients
-- LodeStart
-- Quilt
-
-## Eth2 Research Areas
-- Fee markets
-- Signature aggregation algorithms
-
-
+[https://github.com/ethereum/wiki/wiki/Proof-of-Stake-FAQ]
+Why PoS?
