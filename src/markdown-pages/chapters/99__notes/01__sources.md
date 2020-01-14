@@ -20,6 +20,7 @@ title: "Sources"
 ## Randomness
 - [Two Point Oh: Randomness, Bruno Škvorc](https://web.archive.org/web/20191103205050/https://our.status.im/two-point-oh-randomness/)
 - [Two Point Oh: Justification and Finalization](https://our.status.im/two-point-oh-justification-and-finalization/)
+- [RANDAO GitHub](https://github.com/randao/randao/tree/25cfefe1adea1aeafce933cd4700cd3f150311c6)
 
 ## Phase 0
 - [Eth2 Phase 0 Technical Deep Dive](https://www.youtube.com/watch?v=N5DdClfLQfw)

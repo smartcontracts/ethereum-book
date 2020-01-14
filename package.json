@@ -15,6 +15,7 @@
     "gatsby-remark-autolink-headers": "^2.1.21",
     "gatsby-remark-images": "^3.1.39",
     "gatsby-remark-images-zoom": "^1.1.0",
+    "gatsby-remark-mathjax": "^1.0.0",
     "gatsby-source-filesystem": "^2.1.40",
     "gatsby-transformer-remark": "^2.6.45",
     "gatsby-transformer-sharp": "^2.3.7",

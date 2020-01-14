@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { graphql } from "gatsby"
 
 import Layout from "../components/layout"
@@ -9,6 +9,13 @@ export default function Template({
 }) {
   const { markdownRemark } = data
   const { frontmatter, html } = markdownRemark
+
+  useEffect(() => {
+    const MathJax = window.MathJax
+    if (MathJax !== undefined) {
+      MathJax.Hub.Queue(['Typeset', MathJax.Hub])
+    }
+  })
 
   return (
     <Layout>

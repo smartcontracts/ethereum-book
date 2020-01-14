@@ -46,7 +46,95 @@ The simplest version of RANDAO is to have each member of a group come up with a 
 
 ![Open RANDAO Mix](./images/randomness/randao-mix-open.png)
 
+What exactly does it mean to "mix" these numbers? We effectively need to define some function of the form:
+
+$$
+(input_1, input_2, \ldots, input_n) \rightarrow output
+$$
+
+Where $output$ is going to be equally manipulated by each $input$.
+
+It's easy to think of "bad" mixing functions. For example, we wouldn't want to use a function that blatantly ignores certain inputs or only takes into account some bits of specific inputs.
+
+One standard mixing algorithm is simply to XOR each value in order:
+
+$$
+input_1 \oplus input_2 \oplus \ldots \oplus input_n = output
+$$
+
+We can also write this equation as:
+
+Let's go through this mixing function with a simple example. We want to run a RANDAO round with four participants. Each participant gets to pick a random number with a total of 8 bits (1 byte) for simplicity. We ask each participant for their random number, and we get the following values: 00110101, 11110011, 00001010, 10110100. 
+
+Now, in order to mix these values, we apply an XOR operation to each element one by one. We execute each XOR left-to-right and use the result of the previous XOR as the input to the next one.
+
+$$
+\begin{eqnarray} 
+00110101 \oplus 11110011 = 11000110 \\
+11000110 \oplus 00001010 = 11001100 \\
+11001100 \oplus 10110100 = 01111000
+\end{eqnarray} 
+$$
+
+Our final random value is therefore 01111000.
+
+We could also use a cryptographic hashing function, like `sha256` within our mixing function as our replacement for XOR. We use a "plus" sign here, but we're really referring to the concatenation of the two values. If our hash function gives an output longer than the size we want, we simply take the first few bits that satisfy our size requirement.
+
+$$
+hash(input_n + hash(input_{n-1} + \ldots hash(input_2 + input_1)))
+$$
+
 Unfortunately, there's a flaw here. Someone could simply wait to see all of the other numbers before picking their own! Since our "mixing" algorithm needs to be known in advance (we wouldn't be able to verify that the numbers were actually mixed correctly otherwise), the last person to pick can freely test out numbers until they find one they like.
+
+Let's demonstrate how someone could attack RANDAO using our XOR method. We'll use the same example of four participants, and our first three participants have chosen the same original values: 00110101, 11110011, 00001010.
+
+However, our last participant can see these values and knows what our mixing function is. Let's say our last participant wants to pick a "random" input such that the final output value will be 11111111. First, they can simply use the XOR function to find the current value:
+
+$$
+\begin{eqnarray} 
+00110101 \oplus 11110011 = 11000110 \\
+11000110 \oplus 00001010 = 11001100
+\end{eqnarray} 
+$$
+
+Next, they simply need to pick some number $x$ such that $11001100 \oplus x = 11111111$. When performing an XOR operation, we can get all 1s if we just pick the 1's complement of that number, in this case 00110011. Our attacker chooses this number as their input, and as expected:
+
+$$
+11001100 \oplus 00110011 = 11111111
+$$$
+
+Our attacker was able to fully determine the output number with only a little math.
+
+If we use the mixing algorithm with a hashing function, the attacker's task becomes a little more difficult. Let's use the same numbers as above to demonstrate.
+
+$$
+\begin{eqnarray}
+sha256(11110011 + 00110101) = 438f0d9d4843b13780f4c12f58d8c0b529632ab9b58c9ceca2448e817d5c0330 \\
+sha256(438f0d9d4843b13780f4c12f58d8c0b529632ab9b58c9ceca2448e817d5c0330 + 00001010) = 5d2a20f524210a8a5ca1c186d245f94cca2cb27ccc450a290a4e2fce4a7f93ab
+\end{eqnarray} 
+$$
+
+An attacker now needs to find some input string that, when hashed alongside our current output, gives an output that starts with `FF`. Since `sha256` is designed so that it's effectively impossible to "guess" what its output will be, our attacker will need to test out a bunch of potential values. Interestingly, there is no possible 8 bit value that, when hashed alongside the output, gives us a value starting with `FF`! However, it is possible to get a value of 00000000 (starts with `00`) if we pick 01000101:
+
+$$
+sha256(5d2a20f524210a8a5ca1c186d245f94cca2cb27ccc450a290a4e2fce4a7f93ab + 01000101) = 00ec3dd5399bf1e1867d3fca18f30e117f8e48805ba5f941019b213f3040e2df
+$$
+
+It's clear that certain mixing algorithms are better than others. Generally speaking, we prefer to use this hashing method because it's not as easy to "cheat" the final value. An attacker definitely needs to grind out potential values in order to find a specific interesting value.
+
+One way to implement a commitment is simply to use a hash function:
+
+$$
+commitment = hash(value)
+$$
+
+We can't get $value$ from $commitment$, but if we have $possible_value$ then we can easily check that $hash(possible_value) = commitment$ and therefore $possible_value = value$.
+
+For example, let's say our first participant gives a commitment using `sha256` of 86f3445a32f0f77fa03bfd481bf7d8a249f394e6301eaaa40a9eae205e2b43c9. Later, they reveal their number to be 10100011. We do a simple check and, indeed, the hash of 10100011 is 86f3445a32f0f77fa03bfd481bf7d8a249f394e6301eaaa40a9eae205e2b43c9, and therefore the committed value was correct.
+
+An issue with this sort of commitment scheme is that it requires the party actually create and give this commitment to other parties in advance. Another way to create commitments is to use a cryptographic signature that's deterministic. If we know all signatures are deterministic, then we can create a commitment out of the signature on some known value. For example, we can give everyone an order in the selection process and require that their input value be the signature of their position in the order. Since signatures are just 0s and 1s, we can parse this as a random input.
+
+Here let's say that our first participant is required to make their input based on a signature on the number 00000001 (one). The participant gives the signature [TODO] and we `verify(signature, public_key, 00000001)`. If this check returns false, we reject the reveal as invalid.
 
 So how do we fix this? We use an old schoolyard trick: get everyone to write down their numbers before putting them together.
 
@@ -71,7 +159,19 @@ Generally speaking, though, "commit-reveal" RANDAO is "good enough" for the purp
 ### An Aside: Verifiable Delay Functions
 It's possible to improve upon the "commit-reveal" version of RANDAO using some more fancy math. Although not currently included in the official Eth2 specification, Verifiable Delay Functions, or VDFs, were developed by researchers at Stanford in 2018 to this end. VDFs are, effectively, algorithms that take a long time to execute and can't be sped up by running the algorithm on multiple computers at the same time.
 
-VDFs take some `input` value and return an `output` along with a `proof` of correctness for that `output`. Although it takes a long time to compute the `output`, it only takes a short period of time to use the `proof` to verify that the `output` was, indeed, correct. We can tune a parameter in the VDF to change the amount of time that an average computer will take to find an `output`.
+VDFs have the following function signature:
+
+$$
+input \rightarrow (output, proof)
+$$
+
+VDFs have a corresponding verification algorithm that, given `proof` tells us whether `output` is correct for the given `input`:
+
+$$
+(input, output, proof) \rightarrow \{true, false\}
+$$
+
+Although it takes a long time to compute the `output`, it only takes a short period of time to use the `proof` to verify that the `output` was, indeed, correct. We can tune a parameter in the VDF to change the amount of time that an average computer will take to find an `output`.
 
 VDFs are interesting in their own right, but they shine in combination with RANDAO. Instead of simply using the result of RANDAO as our random number, we can first feed this result into a VDF and use the `output` as our final random number.
 

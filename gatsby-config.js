@@ -25,6 +25,7 @@ module.exports = {
           },
           `gatsby-remark-images-zoom`,
           `gatsby-remark-autolink-headers`,
+          `gatsby-remark-mathjax`,
         ],
       },
     },
