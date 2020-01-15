@@ -46,64 +46,123 @@ The simplest version of RANDAO is to have each member of a group come up with a 
 
 ![Open RANDAO Mix](./images/randomness/randao-mix-open.png)
 
-What exactly does it mean to "mix" these numbers? We effectively need to define some function of the form:
+### Mixing Functions
+RANDAO systems need some sort of "mixing" function that input values from each participant and produces some output value. In a very high-level sense, mixing functions always take the form:
 
 $$
-(input_1, input_2, \ldots, input_n) \rightarrow output
+\text{mix}(\text{input}_1, \text{input}_2, \ldots, \text{input}_n) \rightarrow \text{output}
 $$
 
-Where $output$ is going to be equally manipulated by each $input$.
+Where each $\text{input}$ value corresponds to a number contributed by a RANDAO participant.
 
-It's easy to think of "bad" mixing functions. For example, we wouldn't want to use a function that blatantly ignores certain inputs or only takes into account some bits of specific inputs.
+When picking a mixing function, we need to be careful to preserve the key property that each input value has equal "influence" on the output value. We can get an intuitive feel for this property by looking for "bad" mixing functions. We clearly want to avoid, for example, mixing functions that completely throw out every second input value or simply always return the same constant output value.
 
-One standard mixing algorithm is simply to XOR each value in order:
+```text
+NOTE: A more rigorous explanation of mixing functions can be found at (https://tools.ietf.org/html/rfc4086#section-5)
+QUESTION: Should we go into further detail about the mathematical concepts behind a "strong" mixing function?
+```
+
+The inputs to our RANDAO system are numbers, so we can represent them as strings of zeros and ones (bits). We can therefore create a simple mixing algorithm with the Exclusive Or ("XOR," written mathematically as $\oplus$) function, which takes two input bits and produces a single output bit according to the following table:
+
+| Input 1 | Input 2 | Output |
+|---------|---------|--------|
+| 0       | 0       | 0      |
+| 0       | 1       | 1      |
+| 1       | 0       | 1      |
+| 1       | 1       | 0      |
+
+For example, reading from our table, $1 \oplus 0 = 1$.
+
+Our RANDAO inputs are typically going to be larger than just a single bit. When operating on inputs with multiple bits, we use the same notation:
+
+$$
+1010 \oplus 1001 = \text{?}
+$$
+
+However, we apply the XOR operation "bitwise," i.e., we compute the nth bit of the output as the XOR of the nth bit of each input. For instance, from our above formula, the first bit of our output will be equal to $1 \oplus 1 = 0$.
+
+Completing this calculation bit-by-bit:
+
+$$
+\begin{eqnarray} 
+1 \oplus 1 = 0 \\
+0 \oplus 0 = 0 \\
+1 \oplus 0 = 1 \\
+0 \oplus 1 = 1
+\end{eqnarray} 
+$$
+
+Which gives us:
+
+$$
+1010 \oplus 1001 = 0011
+$$
+
+We can also perform XOR operations on multiple inputs by moving from left to right:
+
+$$
+\begin{eqnarray} 
+01 \oplus 10 \oplus 00 = \\
+(01 \oplus 10) \oplus 00 = \\
+11 \oplus 00 = 11
+\end{eqnarray} 
+$$
+
+Using our knowledge about XOR, we can create a simple RANDAO mixing function as follows:
 
 $$
 input_1 \oplus input_2 \oplus \ldots \oplus input_n = output
 $$
 
-We can also write this equation as:
+Let's go through this mixing function by diving into an example. We're going to use this function as part of a RANDAO system with four participants. Each of our participants gets to pick a random number by selecting eight random bits (corresponding to the integers 0 - 255 when converted to decimal).
 
-Let's go through this mixing function with a simple example. We want to run a RANDAO round with four participants. Each participant gets to pick a random number with a total of 8 bits (1 byte) for simplicity. We ask each participant for their random number, and we get the following values: 00110101, 11110011, 00001010, 10110100. 
-
-Now, in order to mix these values, we apply an XOR operation to each element one by one. We execute each XOR left-to-right and use the result of the previous XOR as the input to the next one.
+Our participants give us 00110101, 11110011, 00001010, and 10110100 as inputs, so our mixing function need to determine:
 
 $$
-\begin{eqnarray} 
-00110101 \oplus 11110011 = 11000110 \\
-11000110 \oplus 00001010 = 11001100 \\
+00110101 \oplus 11110011 \oplus 00001010 \oplus 10110100 = \text{?}
+$$
+
+We compute our XOR values left-to-right:
+
+$$
+\begin{eqnarray}
+00110101 \oplus 11110011 \oplus 00001010 \oplus 10110100 = \\
+((00110101 \oplus 11110011) \oplus 00001010) \oplus 10110100 = \\
+(11000110 \oplus 00001010) \oplus 10110100 = \\
 11001100 \oplus 10110100 = 01111000
 \end{eqnarray} 
 $$
 
-Our final random value is therefore 01111000.
+And our final random value is, therefore, 01111000.
 
-We could also use a cryptographic hashing function, like `sha256` within our mixing function as our replacement for XOR. We use a "plus" sign here, but we're really referring to the concatenation of the two values. If our hash function gives an output longer than the size we want, we simply take the first few bits that satisfy our size requirement.
-
-$$
-hash(input_n + hash(input_{n-1} + \ldots hash(input_2 + input_1)))
-$$
-
-Unfortunately, there's a flaw here. Someone could simply wait to see all of the other numbers before picking their own! Since our "mixing" algorithm needs to be known in advance (we wouldn't be able to verify that the numbers were actually mixed correctly otherwise), the last person to pick can freely test out numbers until they find one they like.
-
-Let's demonstrate how someone could attack RANDAO using our XOR method. We'll use the same example of four participants, and our first three participants have chosen the same original values: 00110101, 11110011, 00001010.
-
-However, our last participant can see these values and knows what our mixing function is. Let's say our last participant wants to pick a "random" input such that the final output value will be 11111111. First, they can simply use the XOR function to find the current value:
+This XOR mixing algorithm isn't our only option, of course. We can also use a cryptographic hash function to combine the various input elements:
 
 $$
-\begin{eqnarray} 
-00110101 \oplus 11110011 = 11000110 \\
+hash(input_n + hash(input_{n-1} + \ldots hash(input_2 + input_1))) = output
+$$
+
+### Attacking RANDAO
+We've gone through a basic RANDAO demonstration, but our system has a fatal flaw. If our participants can see the inputs from other participants, then the very last participant to submit an input has a massive advantage.
+
+Let's demonstrate how someone might execute this attack against our simple XOR system. We'll use the same example of four participants, and our first three participants have chosen the same original values (00110101, 11110011, and 00001010).
+
+Our last participant can see these three values, so they can easily compute the current result of our mixing function:
+
+$$
+\begin{eqnarray}
+00110101 \oplus 11110011 \oplus 00001010 = \\
+(00110101 \oplus 11110011) \oplus 00001010 = \\
 11000110 \oplus 00001010 = 11001100
 \end{eqnarray} 
 $$
 
-Next, they simply need to pick some number $x$ such that $11001100 \oplus x = 11111111$. When performing an XOR operation, we can get all 1s if we just pick the 1's complement of that number, in this case 00110011. Our attacker chooses this number as their input, and as expected:
+Our attacker can easily pick an input to change the output into any value they'd like. For example, if our attacker wants to generate an output value of 11111111, they can simply flip each of the bits (turn each zero into a one) in the current value:
 
 $$
 11001100 \oplus 00110011 = 11111111
-$$$
+$$
 
-Our attacker was able to fully determine the output number with only a little math.
+The attacker can use this same method to pick any output number they'd like. Clearly this isn't a very good way to generate random numbers.
 
 If we use the mixing algorithm with a hashing function, the attacker's task becomes a little more difficult. Let's use the same numbers as above to demonstrate.
 

@@ -79,3 +79,9 @@ LMD-GHOST doesn't allow validators to circumvent blocks finalized by Casper FFG.
 1. Find the last finalized block.
 2. Find the highest-epoch justified block that is a descendent of the finalized block.
 3. Run LMD-GHOST from the block found in step (2).
+
+## Extras
+Forks formally: two blocks such that parent(block) == parent(block2).
+
+Uncles formally: two blocks such that parent(block) inset history(block2)
+

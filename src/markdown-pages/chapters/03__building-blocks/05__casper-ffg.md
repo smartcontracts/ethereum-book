@@ -80,3 +80,52 @@ These slashing conditions give us our Casper FFG guarantees:
 1. "Accountable Safety" - Two conflicting checkpoints cannot be finalized unless 1/3 of validators have lost their deposit
 2. "Plausible Liveness" - It will always be possible to finalize a new checkpoint as long as 2/3 of validators are following the protocol
 
+## Extras
+
+Proof:
+defns:
+conflicting:
+- two nodes in distinct branches
+
+from Assumptions:
+1. if s1 => t1, s2 => t2 distinct supermajority links; then h(t1) != h(t2)
+2. if s1 => t1, s2 => t2 distinct supermajority links; then h(s1) < h(s2) < h(t2) < h(t1) cannot hold
+
+We get:
+1. t.e. at most one supermajority link s => t with h(t) = n
+2. t.e. at most one justified checkpoint w/ height n
+
+Theorem 1: two conflicting checkpoints cannot both be finalized
+1. let a_m with justified a_m+1 where h(a_m) + 1 = h(a_m+1) and b_n with justified b_n+1 where h(a_m) + 1 = h(a_m+1)
+2. Suppose a_m and b_n in conflict and wlog h(a_m) < h(b_n), because if h(a_m) == h(b_n) then 1/3 validators violated condition ONE (1/3 vote A, 1/3 vote B, could not possibly get == unless remaining 1/3 vote both)
+3. Let r  = chain of checkpoints for supermajority link chain for b_1 => b_n+1
+4. no h(b_i) equals h(a_m) or h(a_m+1) because violates property (4)
+5. Let j be lowest integer s/t/ h(b_j) > h(a_m+1) then h(b_j-1) < h(a_m+1) or h(b_j-1) == h(a_m) which violates condition ONE
+6. Implies supermajority link from epoch less than h(a_m) to epoch greater than h(a_m+1) which incompatible with link bet. a_m to a_m+1
+
+Theorem 2: Supermajority links can always be added when 2/3 avail
+1. Let a be justified checkpoint w/ greatest height
+2. Let b be targest checkpoint w/ greatest height for which any validator has made a vote
+3. Any checkpoint a' descenent of a with h(a') == h(b) + 1 can be justified w/o violating commandments
+4. Then a' can be finalized by adding link from a' to a'' direct child w/o violating commandments
+XX. i.e.: THERE is no way for the chain to stall 
+
+Dynamic validator sets:
+- 
+
+Long range attacks:
+- Validators can withdraw deposits b/c dynamic, can finalize conflicting checkpoints w/o fear of being slashed b/c already widhtrawn money
+- Basically solved by not reverting finalized blocks and sync frequency (order of months)
+- Introduce max delay where guaranteed to have heard
+- slashing violation at time t then reject blocks w timestamp > t + 2delay part of chains not including this evidence
+- Clients refuse to finalize future blocks or blocks too far in the past
+- Pick whichever checkpoint came frist if no intersect between windows
+- if intersecting windows, guarnateed evidence by 2delay, reject blocks > 4delay w/o evidence in chain, if w > 4delay then guarnateed to be slashed if malfeasant in whatever chain accepted
+- attacker creates block BEFORE withdrawal b/c slashing won't matter,
+- if network delays can cause clients to disagree (corrupted propsoal mechanism => prevent evidence inclusion => prevents finality)
+
+Inactivity leak:
+- Solves issue where > 1/3 go offline
+- Simplest formula would just drain validators who arent voting
+- Could also do a dynamic leak (ETH2)
+- Introduces scenario where two chains could be finalized w/ conflciting blocks, introduciton of weak subjectivity

@@ -27,3 +27,34 @@ Researchers at Stanford, yes, the same ones who came up with VDFs, created a nov
 BLS signatures allow us to combine any number of signatures on any number of messages into a *single* signature with a constant size. Although these signatures are slightly larger than ECDSA signatures (96 bytes instead of 65 bytes), this means that we no longer need megabytes worth of space in blocks dedicated purely to signatures.
 
 BLS signatures, perhaps more importantly, also allow us to verify any number of signatures on the *same* message in constant time. Once aggregated, one million signatures on the same message can be verified in the about the same amount of time as a single signature on that message. Since validators are often signing the same message (a given block, perhaps), this optimization is extremely useful within the context of Eth2.
+
+## Extras
+Signature schemes have three algorithms in combination, each probabilistic polynomial:
+
+G: key generator, generates a public key and corresponding private key on input 1^n where n is security parameter
+
+$$
+G(\text{security_parameter}) \rightarrow (\text{public_key}, \text{private_key})
+$$
+
+S: Returns a signature on inputs pk and string
+
+$$
+S(\text{private_key}, \text{message}) \rightarrow \text{signature}
+$$
+
+V: Outputs accepted or rejected on public key, message, signature
+
+$$
+V(\text{public_key}, \text{message}, \text{signature}) \rightarrow \{\text{accepted}, \text{rejected}\}
+$$
+
+Correctness:
+
+$$
+Pr[ (pk, sk) \leftarrow G(1^n), V(pk, x, S(sk, x)) = \text{accepted}] = 1
+$$
+
+$$
+Pr[ (pk, sk) \leftarrow G(1^n), (x, t) \leftarrow A^{S(sk, -)}(pk, 1^n), x notin Q, V(pk, x, t) = accepted] < negligible
+$$

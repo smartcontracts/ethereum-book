@@ -86,3 +86,17 @@ div.chapter ol {
   margin-top: 42px !important;
   margin-bottom: 0px !important;
 }
+
+table {
+  margin: 0 auto;
+  margin-top: 42px;
+  border-collapse: collapse;
+}
+
+table, th, td {
+  border: 1px solid black;
+}
+
+th, td {
+  padding: 5px;
+}

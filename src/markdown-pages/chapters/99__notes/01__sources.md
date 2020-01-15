@@ -38,6 +38,7 @@ title: "Sources"
 
 ## BLS
 - [BLS12-381 For The Rest Of Us, Ben Edgington](https://hackmd.io/@benjaminion/bls12-381)
+- [Digital Signature](https://en.wikipedia.org/wiki/Digital_signature)
 
 ## Ewasm
 - [State Execution in Eth 2.0](https://www.youtube.com/watch?v=8H1TCbW0LJQ)
@@ -47,6 +48,7 @@ title: "Sources"
 - [Minimal Light Client Design](https://github.com/ethereum/eth2.0-specs/blob/1a450c5a12c2b10bae0400818bc5257418afd2cf/specs/phase1/light-client-sync.md)
 
 ## Simple Serialize (SSZ)
+- [SimpleSerialize (SSZ)](https://github.com/ethereum/eth2.0-specs/blob/1a450c5a12c2b10bae0400818bc5257418afd2cf/ssz/simple-serialize.md)
 - [Eth2 Light Clients: How Light is Light?: SSZ, Cayman Nava](https://hackmd.io/@wemeetagain/SkuswKu_r#SSZ-Simple-Serialize)
 
 ## Ecosystem
