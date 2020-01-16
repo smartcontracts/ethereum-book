@@ -1,5 +1,5 @@
 ---
-path: "/chapters/validators/validator-duties"
+path: "/chapters/beacon-chain/validator-duties"
 title: "Validator Duties"
 ---
 

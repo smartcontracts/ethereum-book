@@ -1,6 +1,6 @@
 ---
-path: "/chapters/building-blocks/lmd-ghost"
-title: "Fork-Choice: LMD-GHOST"
+path: "/chapters/proof-of-stake/lmd-ghost"
+title: "LMD GHOST"
 ---
 
 Whenever we have blockchains, we have **forks**. Forks, in a general sense, are points at which multiple blocks reference the same parent.

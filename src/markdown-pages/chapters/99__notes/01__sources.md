@@ -15,6 +15,8 @@ title: "Sources"
 - [What is Ethereum's Uncle Rate and Why Does It Matter?, ETH Gas Station](https://ethgasstation.info/blog/ethereum-uncle-rate/)
 
 ## LMD GHOST
+- [Rewriting History: A Brief Introduction to Long Range Attacks, Evangelos Deirmentzoglou](https://web.archive.org/web/20200115212240/https://blog.positive.com/rewriting-history-a-brief-introduction-to-long-range-attacks-54e473acdba9?gi=bd92d364dce3)
+- [Long Range Attacks, and a new Fork Choice Rule, Alexander Skidanov](https://web.archive.org/web/20200115204848/https://nearprotocol.com/blog/long-range-attacks-and-a-new-fork-choice-rule/)
 - [Decoy-Flip-Flop Attack on LMD GHOST, Ryuya Nakamura](https://web.archive.org/web/20191212052921/https://ethresear.ch/t/decoy-flip-flop-attack-on-lmd-ghost/6001)
 
 ## Randomness

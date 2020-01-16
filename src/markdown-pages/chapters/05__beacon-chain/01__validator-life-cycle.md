@@ -1,5 +1,5 @@
 ---
-path: "/chapters/validators/validator-life-cycle"
+path: "/chapters/beacon-chain/validator-life-cycle"
 title: "Validator Life-Cycle"
 ---
 

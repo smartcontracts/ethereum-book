@@ -1,6 +1,6 @@
 ---
-path: "/chapters/building-blocks"
-title: "Eth2 Building Blocks"
+path: "/chapters/proof-of-stake"
+title: "Proof of Stake in Eth2"
 ---
 
 So let's get right into Eth2 why don't we. We are starting off with the core building blocks behind the Beacon Chain. Since the Beacon Chain is the main part of the Eth2 ecosystem before shards. 

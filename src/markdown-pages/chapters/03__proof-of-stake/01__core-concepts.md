@@ -1,6 +1,6 @@
 ---
-path: "/chapters/building-blocks/blocks-slots-and-epochs"
-title: "Structure: Blocks, Slots, and Epochs"
+path: "/chapters/proof-of-stake/core-concepts"
+title: "Core Concepts"
 ---
 
 Blocks and slots and epochs, oh my!

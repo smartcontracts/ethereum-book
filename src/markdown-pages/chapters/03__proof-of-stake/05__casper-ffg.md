@@ -1,6 +1,6 @@
 ---
-path: "/chapters/building-blocks/casper-ffg"
-title: "Finality: Casper FFG"
+path: "/chapters/proof-of-stake/casper-ffg"
+title: "Casper FFG"
 ---
 
 When we exchange cash for goods or services, it's usually difficult to "reverse" our transactions and claw back whatever funds we spent. Merchants might offer refunds in the case that something went wrong with an order, but this is almost certainly conditional on the return or cancellation of the original purchase. In the blockchain world, we often refer to this quality of irreversibility in a transaction as "finality."
