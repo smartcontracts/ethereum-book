@@ -3,48 +3,6 @@ path: "/chapters/proof-of-stake/attack-surfaces"
 title: "Attack Surfaces"
 ---
 
-This is where things really get interesting. Our block proposers are making blocks, and our block producers are creating attestations. Nice.
-
-Well, we can't just stop there. Just like in Proof of Work, it's always possible that we get a fork in the chain. One validator might make a block but then it doesn't get published to the rest of the network in time. We have to handle forks! 
-
-Before we start to actually handle forks though, it's important to see that there are some potential attacks in this design unless we explicitly design them out.
-
-One attack is called the long range attack. And the way this attack works is, basically, taking advantage of dynamic validator sets. Since our validators are allowed to withdraw their funds, once they've withdrawn their funds they're no longer part of the system now but they were indeed part of the system in the past. Hmm..
-
-What this problem creates is that a validator doesn't have anything at stake right now, they can try to mess with the network without fear of getting slashed since they already withdrew their funds! So how could this be used for an attack? 
-
-Okay so basically, this has to do with something called weak sujbectivity. Let's say I'm a client who has never downloaded the Eth2 blockchain. I start off with the genesis chain, but there might be forks in the network and I don't know which one to follow. So let's say a user starts a withdrawal at block 100. From that fork onward, we can basically ignore any sort of additional blocks from that user. But we don't even know if that fork is canonical! We have a different fork where the user did *not* submit a withdrawal, which might be the canonical one everyone is currently using.
-
-On this other chain, we still accept blocks created by the validator even though we ignore them in the first chain. So the problem ends up being this: what do we do about this other chain? How can we tell which one is actually valid? 
-
-So it really depends, firstly, on our fork choice rule. We can't decide between forks without one! So let's say we're using the longest chain rule, which will demonstrate the attack. Our person withdraws at block 100, so we ignreo everyhting on that. Except on our other chain they don't withdraw. 
-
-
-Now the attacker needs to create a longer chain than our otehr chain in order to be successful. Let's say there are four people on the network. Three are still behaving, one is a baddie.
-
-Okay so how can they do the attack? Simplest version might be to create "future" blocks. Basically, we can just simulate what will happen in the future since we don't need to rely on inputs from anyone else, which means we just create blocks with future timestamps. We send those blocks to our clients, who see a bunch of blocks (billynz) and accept it as the longest chain! 
-
-We can pretty easily solve this issue by requiring that clients check block timestamps before accepting blocks. Generally speaking, it's pretty easy to see that a block supposedly created tomorrow is invalid, unless you're so disconnected from the rest of the world that you can't properly synchronize clocks. But generally, we don't need to worry about this on the scale of earth. Even humans could generally tell you the date, and it'd be pretty easy to see that a block is coming from tomorrow. So we don't really need to worry about this specific attack.
-
-okay well that one's solved, so what now? Not so fast. Well, let's say our randomness is good and our system will only pick our baddie once every four blocks on the other fake chain. At this rate, they'll never catch up! Womp. We're going to be making blocks withotu skipping a beat, so maybe we'll catch up if somehow the real network ends up stalling, maybe there are a lot of forks, maybe people aren't making blocks, whatever. There's some sort of low probability that we catch up, depending on other people on the other chain. Let's say that 2/3rds of the people on the other chain are online, so we get 1 block for every like 2-3 that they get.
-
-We might get sort of lucky, if we have close to 50% of the total stake, we're more likely to get lucky. Although this attack gets more effectice when more withdraw, our first new mechanism will be used to prevent the attack on the shorter term. Let's look at an example we might want to prevent. Let's say our chain gets built on by two validators, who build on the same parent but because of high latency they're siblings and not building on each other. Our chain hasn't gotten any longer, which means that if we used LCR then we could be in some doo doo. 
-
-
-
-We can't just create a bunch of blocks alone, but what if we could get someone else in on the attack? Okay so let's say that our friendo, bobby boy, also used to be a validator on the network. Well they no longer validate, so they don't really care about their key. We'll buy it off of them for cheap! Probably not much, sort of depends on external factors but obviously not going to be nearly as much as bb had staked. Or, we can just hack their key somehow. Either way.
-
-Now with this extra key, we get to produce even more blocks on our little fake network. Now we're producing 2 blocks for every 2-3 they're making!
-
-
-We can go evenf urther. Let's say everyone who was online at that time has withdrawn, and we figure out how to buy keys or hack all of their keys. We have full control of the chain, we're gonna make a block in every single slot! 4 blocks for every 2-3 of theirs? We're gonna outpace these mfs in absolutely no time.
-
-Check out the damage we did! Boom baby, we just came back from the dead and now we have a whole chain to ourselves.
-
-This is all basically like a 51% attack in a proof of work blockchain. The big difference is that the attack gets cheaper from a specific block as more people withdraw their keys in that validator pool. 
-
-Ooof. So how do clients know not to follow this bad chain?
-
 Okay let's try to organize this section a little better.
 
 Our basic Eth2 setup selects block proposers to create blocks during slots, and attestation committees to vote on these blocks. All's well as long as there's only one blockchain to follow, but, as we know, we can always have forks.
@@ -63,16 +21,31 @@ Validators are incentivized to include this evidence to some extent, simply beca
 
 So which fork should validators build on?
 
-Generally speaking, since our attestation committees are small, it becomes increasingly unlikely that two forks will have an equal number of votes. Since our assumption is that 2/3rds of validators are honest, we can assume also that 2/3rds will only vote on whichever fork has more votes at any given time. With a properly sized committee, we can always ensure that there will be *some* winning fork between two blocks that validators can continue to build on. 
+Well, we might think to use the Longest Chain Rule. However, this introduces certain interesting attack surfaces. Our assumption is that 2/3rds of validators are honest. For the sake of simplicity, let's also assume that all of these validators are online all the time. Even if this is the case, network latency can cause certain problems. For example, imagine that there's some latency and two validators create a fork simply because the second validator hasn't seen the first block in time. 
 
-So we first want to start out with a basic fork maybe? Just to show that it's possible? Hmm okay yeah let's start with a basic fork and introduce the idea of slashing. We'll have a validator vote on two different chains and get slashed for it. Thing is, we don't just want to slash people for voting on two chains, because this introduces a problem where if this happens naturally, the chain can get stuck. So we add a second rule that says if 2/3rds vote on the other chain, then it's ok for others to switch their votes to the other chain.
+So here we're going to assume that latency is high enough that only every other block extends the length of the chain. We're also only assuming that 2/3rds of validators are honest, so there's 1/3rd trying to attack the network. We have a malicious validator who wants to cause some trouble in the network. Let's say they create a "secret" chain and also don't fulfill their blocks on the primary chain. On the secret chain, they're only going to be able to make blocks 1/3rd of the time, but they're not going to have this same issue with latency because they only need to talk to themselves.
 
-Where does weak subjectivity come in? I think weak subjectivity really only comes in when there are dynamic validator sets. So let's introduce an attack where the whole original validator set switches out and they end up colluding to make a different chain. Basically the reason this works is that there's a time limit for including slashing messages on-chain. Why? Well, since validators can always withdraw their funds, there's really no point in looking further than a certain number of blocks. Here's one way of looking at it. On our original chain, the validator is going to try to withdraw their funds as quickly as possible after doing something slashable, mainly because there's a risk-free way of just transferring to another account so you don't get slashed. The assumption here is that any logical party will just withdraw their funds as quickly as possible. There's really just no *point* in looking further.
+Now our chain might end up looking like this, where both chains end up being the same length simply because there's some network latency! 
 
-On our second chain, we sort of face the same dilemma. We could theoretically look further, but presumably the "secret" chain validators will rotate out before publication so that their funds can't get slashed anyway. So slashing alone can't really solve the issue, even though they did do something slashable, it wasn't recorded on the chain.
+If we use the longest chain rule, then both chains are equally good. However, this seems really bad. Why should 1/3rd of validators be able to create an equally good chain simply because of some latency?
 
-So let's first go through the case that it's just a few validators who have withdrawn. It's actually still possible for them to catch up under certain conditions! Basically, network conditions mean we're occasionally going to get uncle blocks that don't extend the length of the chain. Our minority can catch up to the other chain ("eventually") because they're not going to drop any blocks. So even if an equal number of people are on both chains, one is just centralized and more efficient. 
+This is where we introduce a new fork choice rule, LMD GHOST.
 
-So where does this first problem lead us? We have a couple of issues here. We can solve the problem of the minority beating the majority by using a different fork choice rule, LMD GHOST: introduce ehre.
+-- LMD HERE --
 
-So we solved that problem, but what happens if the other chain isn't a minority anymore? The attacker got access to many more keys, and since we only assume 2/3rds are honest, we only need > 2/3rds of keys. So now it's possible that our secret chain fools LMD-GHOST. Introduce FFG here as a way to prevent forks longer than a certain time period. Then go into how this introduces the problem of weak subjectivity because really both chains will have checkpoints saying to ignore the other chain. Checkpoints can't just be when 2/3rds vote on a block, because there's a liveness issue in which an attacker could just keep splitting their vote so that no chain ever gets 2/3rds votes.
+LMD GHOST fixes a lot of issues and captures more information in the case of high latency. However, we still run into issues because of the idea of dynamic validator sets. We really don't want our set of validators to be fixed. Otherwise, there really wouldn't be any way for new validators to join the system.
+
+As a result, we want validators to be able to withdraw their funds eventually. However, this introduces an interesting problem! After a validator has withdrawn their funds from the chain, they have no disincentive to try to sign slashable messages, because there's nothing to be slashed. An attacker could use this to interesting effect. 
+
+Let's say we have the following chain. At the genesis block, we have a set of validators containing A, B, and C. However, the main chain has progressed and the validators have already withdrawn their funds and been replaced by D, E, and F. Now, ABC want to execute an attack. Since they don't care about being slashed on the main chain, they can start creating blocks from the block before they submitted their withdrawal.
+
+We now have a dilemma because LMD GHOST runs into issues as soon as this second fork exists. Under normal conditions, the validators would've been slashed. However, since the validators already withdrew on the main chain there's no slashing messages. And, on this second chain, the validators can simply withdraw and rotate to new accounts so that there's now way to slash them even once they make the secret chain public.
+
+Since LMD GHOST sees 3/3 signatures on the secret chain and 3/3 signatures on the main chain, both chains are equally good. So how do we address this problem? We introduce the idea of checkpoints.
+
+-- FFG HERE --
+
+Although FFG gives us checkpoints, there's an issue. If we know the current validator set and we're up to date with the network, then we're never going to revert past a checkpoint and all is good. However, clients who haven't synchronized within the withdrawal period have an outdated view of the validator pool and could be susceptible to this attack! What this means is that there's no way for the client to distinguish between two chains without consulting an outside party.
+
+This is the idea of weak subjectivity, which means that a client basically needs to ask other people which of the chains to select. Weak subjectivity only applies if we're a new client or haven't synced within the withdrawal period. Effectively we need to rely on social graphs to ask people what the "legitimate" eth2 chain, which isn't something you need to worry about in a proof of work blockchain.
+
