@@ -3,60 +3,33 @@ path: "/chapters/proof-of-stake/lmd-ghost"
 title: "LMD GHOST"
 ---
 
-Whenever we have blockchains, we have **forks**. Forks, in a general sense, are points at which multiple blocks reference the same parent.
+We just discussed the way in which slashing is used to discourage explicitly malicious chain forks. However, we can also get forks during normal chain operation. For instance, we might have a fork if network latency is high enough that one validator creates a block before receiving the previous validator's block.
 
-![Uncle Blocks](./images/lmd-ghost/uncle-blocks.png)
-
-Blockchains can fork for any number of reasons. Though forks are often presented as contentious events, most forks are relatively short-lived and occur naturally as a result of menial things (like network latency). Forks present us with two potential versions of history, so it's important that we only pick one. But which do we pick?
-
-Whichever fork we choose to follow, the method we use to determine the "valid" fork is called our "fork-choice rule."
+In such a case, it's important that validators know which fork to continue building upon. Just as in our Eth1 chain, we need to define some sort of fork choice rule that directs us to the "right" chain at any given time.
 
 ## An Old Friend: The Longest-Chain Rule
 The very first fork-choice rule was Bitcoin's "**longest-chain rule**," or the LCR. The LCR tells us, as we might infer from the name, to follow the longest chain:
 
 ![Longest Chain Rule](./images/lmd-ghost/lcr.png)
 
-Since Proof of Work blocks take a lot of computational resources to produce, this method gives us a relatively strong assurance that we're following the chain with the most invested value. However, the LCR leaves plenty to be desired.
+Since we don't have the concept of "difficulty" in Proof of Stake, we need to slightly modify the LCR to decide between each potential block by the number of attestations weighted by stake.
 
-## GHOST
-**GHOST** (Greedy Heaviest Observed Subtree) is an alternative to the longest-chain rule. GHOST, unlike the LCR, doesn't simply look at the length of a chain, but also factors in any **uncle blocks**.
+Let's imagine we have a simple chain fork as follows:
 
-An uncle block to a chain is any block that *builds upon some block in that chain*, but isn't actually part of the chain itself. Let's go through this by example. In the following diagram, duplicated from above, we have a fork at `Block A`:
+Here, Validator B created a block on top of Block 1 during Slot 1, but perhaps Validator C didn't see that block and therefore also created another block on top of Block 1 in Slot 2. 4/5 of the members of the attestation committee voted for Block 1, but 5/5 members of the committee voted for Block 2. Using the Longest Chain Rule, we'd easily be able to select Block 2 as the "correct" chain.
 
-![Uncle Blocks](./images/lmd-ghost/uncle-blocks.png)
+Although the Longest Chain Rule is fine in many cases, there are a few instances in which the rule actually creates some undesired effects. We've discussed our honest majority assumption, which states that at least 2/3rds of validators are assumed to be honest. For the sake of simplicity, let's also assume for now that all of these validators are online.
 
-Here, we say that `Block B'` is an *uncle of the chain headed by* `Block D` because it builds on one of its components (in this case, `Block A`).
+We can demonstrate a simple attack if we have particularly high network latency over an extended period of time. We'll give our theoretical attacker 1/3rd of total stake. Our attacker is refusing to publish blocks on the main network, so the network only progresses when an honest validator is selected to create a block. Our remaining validators with 2/3rds of the stake are always producing blocks during their assigned slots, but, due to network latency, we end up with so many forks that only every other block is extending the length of the primary chain.
 
-Uncle blocks are not unusual occurrences. The main Eth1 chain is currently approaching ten million blocks in length and has almost *one million* uncles. But why do we care about them?
+To abuse the Longest Chain Rule, our attacker can create a "secret" chain in which they always create blocks during their assigned slots. Since all of the validators on this secret chain are controlled by the attacker, there's no concern about latency and they'll always extend one chain during each slot.
 
-Though uncle blocks don't directly add to the length of a chain, they *do* imply that the creator of the uncle block meant to extend that chain. Which chain would you follow, a chain with two blocks and no uncles or a chain with one block and a thousand uncles? If we simply ignore uncle blocks, then we're "wasting" the work put into these blocks by their creators. 
+Our attacker hasn't created blocks or voted on both networks, so we can't slash them for any of their behavior. However, if we use the longest chain rule, then both chains are equally good. Some simple network latency has allowed an attacker with only 1/3rd of the total stake to create a chain that can compete with 2/3rds of the network.
 
-Here's how GHOST finds the "best" fork to follow:
+## The New Kid on the Block: LMD-GHOST
+We discussed GHOST and [TODO] in the context of Eth1. As we know, GHOST chooses between different forks depending on the total number of blocks in each fork. This method works well within a Proof of Work environment where blocks are difficult to produce.
 
-1. First, we start at the genesis block.
-2. Next, we look at all of the available forks from the current block, if any.
-3. If there are no more blocks in the chain, we select the current block as the head of our chain and stop our search.
-4. If we only have one potential chain (no forks), then we move onto the next block.
-5. If we have more than one potential chain (a fork), then we move on to the first block of the fork with the most *total* blocks, including uncle blocks.
-4. Head back to step (2) with our current block.
-
-### GHOST vs. LCR
-GHOST often agrees with the longest-chain rule:
-
-![GHOST and LCR Agree](./images/lmd-ghost/lcr-ghost-agree.png)
-
-Here, the LCR picks `Block F` because it's part of the longest chain (six blocks in total). Our GHOST rules really only apply at `Block B`, where we have our first fork. The chain after `Block C'` has a total of three blocks, whereas the chain after `Block C` has a total of four blocks. GHOST therefore moves onto `Block C` and doesn't find any other forks until stopping at `Block F`.
-
-However, in some cases, GHOST will disagree with the longest-chain rule: 
-
-![GHOST and LCR Disagree](./images/lmd-ghost/lcr-ghost-disagree.png)
-
-In this chain, the LCR picks `Block G` because it's part of the longest chain (seven blocks). GHOST diverges from the LCR after `Block B`. Although the chain following `Block C` is longer at five blocks, there are a total of *six* blocks in the fork starting at `Block C'` when we count uncle blocks.
-
-## LMD-GHOST
-GHOST chooses between different forks depending on the total number of blocks in each fork. This method works well within a Proof of Work environment where blocks are difficult to produce.
-
-Proof of Stake validators, however, need only create a single signature to produce a block. If we simply looked at the total number of blocks in a chain, then a validator could easily attack the network by creating many blocks in a row:
+We could try to use GHOST as an alternative to the Longest Chain Rule in our chain, but we'd quickly run into problems because uncle blocks are costless. If we simply count the weight of uncle block by counting attestations on those blocks, then our attacker could once again attack the network as long as latency is just a little higher so that blocks are being produced at a lower rate.
 
 ![Validator Attacks GHOST](./images/lmd-ghost/validator-attacks-ghost.png)
 
@@ -68,17 +41,13 @@ Let's see how LMD-GHOST deals with the previous example:
 
 Since we're only considering the *latest* message from each validator, we only count a single block created `Validator B`. As a result, LMD-GHOST ignores the longer chain and correctly lands on the block created by `Validator D`.
 
+Using LMD-GHOST, we finally get to a fork choice rule that prevents the minority from out-running the majority.
+
 ### Saved-Message Attacks
 Validators are only allowed to make a single vote per epoch. However, validators could still attempt to circumvent this system by withholding votes from previous epochs and releasing them all at once in a later epoch. LMD-GHOST won't count two votes from the same validator on the same chain, but it will allow a validator to flip-flop between two different chains.
 
 We generally limit this sort of attack by requiring that clients ignore any votes older than the previous epoch. We only take into account votes made in the current or previous epoch. 
 
-### Interactions with Casper FFG
-LMD-GHOST doesn't allow validators to circumvent blocks finalized by Casper FFG. In order to accomplish this, we run LMD-GHOST according to the following process:
-
-1. Find the last finalized block.
-2. Find the highest-epoch justified block that is a descendent of the finalized block.
-3. Run LMD-GHOST from the block found in step (2).
 
 ## Extras
 Forks formally: two blocks such that parent(block) == parent(block2).

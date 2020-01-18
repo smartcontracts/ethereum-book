@@ -3,10 +3,6 @@ path: "/chapters/proof-of-stake/basic-operation"
 title: "Basic Operation"
 ---
 
-- Core operation
-    - Proposers, attestation committees, voting, honest majority
-    - Dynamic validator pools
-
 Ok so what exactly will we talk about in this chapter? What we basically want to communicate is the basic functionality of the beacon chain. This includes things like how block proposers get to be selected, what attestation committees do in a nutshell, votes, etc
 
 What has been covered so far is only limited to the absolute basics like blocks/slots/and what validators are. SO what we want to do here is say initially what validators do:

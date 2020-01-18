@@ -101,3 +101,20 @@ other features left to L2 are, because rapid innovation:
 
 [https://github.com/ethereum/wiki/wiki/Proof-of-Stake-FAQ]
 Why PoS?
+
+## Finality
+
+When we exchange cash for goods or services, it's usually difficult to "reverse" our transactions and claw back whatever funds we spent. Merchants might offer refunds in the case that something went wrong with an order, but this is almost certainly conditional on the return or cancellation of the original purchase. In the blockchain world, we often refer to this quality of irreversibility in a transaction as "finality."
+
+Electronic transactions made with credit or debit cards are usually similarly difficult to reverse. Some cards may provide some sort of "chargeback" service, though these are usually only effective if a merchant is being uncooperative. Generally speaking, however, most of the transactions we execute through traditional payment methods tend to be difficult to remove from our monthly statements.
+
+Transactional finality is crucial to the proper functioning of an exchange-based society. If an electronic transaction could simply disappear into thin air, merchants would likely feel much less comfortable accepting electronic payments. Merchants might be particularly concerned if consumers could strategically abuse this flaw to "buy" items without actually having to pay for them. It's easy to see why anyone would be weary of such a platform.
+
+## What *is* Casper FFG?
+Blockchains have always struggled to develop a clear sense of transactional finality. Most systems have only been able to present finality in relatively weak forms. Proof of Work blockchains, for example, usually provide what's often referred to as "probabilistic finality." Blocks in these systems can, in theory, always be forked out of the "canonical" chain if enough resources are diverted into a competing chain, though the actual odds of this decrease quickly as more blocks are added onto the chain.
+
+Proof of Stake blockchains need to provide a similar finality mechanism. However, probabilistic finality is tied to the high cost to produce competing Proof of Work chains. Validators in a Proof of Stake chain can produce blocks with relatively minimal effort, so we can't use the same "work" metric to get a sense of finality.
+
+Casper FFG is, in a nutshell, a protocol that allows validators to vote to have certain blocks "finalized." Casper FFG is unique in that it provides stronger guarantees about finalized blocks that go beyond simple probabilistic finality.
+
+Without further ado, let's look at Casper FFG under the hood.

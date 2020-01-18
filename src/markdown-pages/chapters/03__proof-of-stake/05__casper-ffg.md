@@ -3,20 +3,19 @@ path: "/chapters/proof-of-stake/casper-ffg"
 title: "Casper FFG"
 ---
 
-When we exchange cash for goods or services, it's usually difficult to "reverse" our transactions and claw back whatever funds we spent. Merchants might offer refunds in the case that something went wrong with an order, but this is almost certainly conditional on the return or cancellation of the original purchase. In the blockchain world, we often refer to this quality of irreversibility in a transaction as "finality."
+LMD-GHOST successfully prevents a minority from outrunning a majority, but things start to get a little dicey when we consider that validators are allowed to withdraw their funds. Since we don't want to ossify the network into a certain elite that owns most of the stake, we want the ability for new validators to join the system and other validators to leave it. 
 
-Electronic transactions made with credit or debit cards are usually similarly difficult to reverse. Some cards may provide some sort of "chargeback" service, though these are usually only effective if a merchant is being uncooperative. Generally speaking, however, most of the transactions we execute through traditional payment methods tend to be difficult to remove from our monthly statements.
+Unfortunately, the problem with allowing validators to leave the system is that once they've withdrawn their funds, they can carry out slashable behavior without any downside on the main chain since their funds are already gone. We could try to slash these users on the main chain, but they don't have any funds available to be slashed.
 
-Transactional finality is crucial to the proper functioning of an exchange-based society. If an electronic transaction could simply disappear into thin air, merchants would likely feel much less comfortable accepting electronic payments. Merchants might be particularly concerned if consumers could strategically abuse this flaw to "buy" items without actually having to pay for them. It's easy to see why anyone would be weary of such a platform.
+This opens us up to the possibility that a set of withdrawn validators could try to execute an attack on the chain from before the time that they actually withdrew their funds. At that point in time, they still had the right to create blocks even if they don't now. Effectively, these attackers are trying to rewrite history. 
 
-## What *is* Casper FFG?
-Blockchains have always struggled to develop a clear sense of transactional finality. Most systems have only been able to present finality in relatively weak forms. Proof of Work blockchains, for example, usually provide what's often referred to as "probabilistic finality." Blocks in these systems can, in theory, always be forked out of the "canonical" chain if enough resources are diverted into a competing chain, though the actual odds of this decrease quickly as more blocks are added onto the chain.
+Let's look at a worst-case scenario. Imagine a chain in which validators ABC controlled 100% of the stake at time 0 and withdrew some time later. Now, validators DEF control 100% of stake. Validators ABC want to execute an attack, so they start creating another chain from block 0. They're not worried about getting slashed on the main chain, and they can avoid getting slashed on the secret chain by rotating their funds into new accounts before making the second chain public. 
 
-Proof of Stake blockchains need to provide a similar finality mechanism. However, probabilistic finality is tied to the high cost to produce competing Proof of Work chains. Validators in a Proof of Stake chain can produce blocks with relatively minimal effort, so we can't use the same "work" metric to get a sense of finality.
+A client who sees both of these chains is no longer able to make a decision between the chains. Both chains are "equally" good in their eyes, so LMD-GHOST can't properly decide which chain to follow. Even if this chain is made public much later then the original chain, LMD-GHOST now needs to take this new information into account and stalls.
 
-Casper FFG is, in a nutshell, a protocol that allows validators to vote to have certain blocks "finalized." Casper FFG is unique in that it provides stronger guarantees about finalized blocks that go beyond simple probabilistic finality.
+We address this problem with the introduction of Casper FFG. Effectively, Casper FFG is a mechanism that prevents users from reverting blocks after a certain period of time. Since this chain would need to come from a long time ago to ensure that a majority of the members have withdrawn their funds, users can effectively refuse to follow this fork simply because it's too old.
 
-Without further ado, let's look at Casper FFG under the hood.
+Casper FFG allows the network to "finalize" certain blocks, and any clients who see these finalized blocks will refuse to consider any earlier forks. As long as the amount of time to withdraw a majority of stake is greater than the amount of time to finalize a block, an attacker won't be able to carry out a long range attack.
 
 ## Deposits
 Casper FFG requires that all validators in the system have a **deposit**. Casper FFG relies heavily on the idea of "slashing," or punishing, validators who don't follow the rules. Without any sort of deposit, validators wouldn't have anything to lose. Currently, Eth2 validators must submit an initial deposit of 32 ETH. 
@@ -129,3 +128,26 @@ Inactivity leak:
 - Simplest formula would just drain validators who arent voting
 - Could also do a dynamic leak (ETH2)
 - Introduces scenario where two chains could be finalized w/ conflciting blocks, introduciton of weak subjectivity
+
+
+### Interactions with Casper FFG
+LMD-GHOST doesn't allow validators to circumvent blocks finalized by Casper FFG. In order to accomplish this, we run LMD-GHOST according to the following process:
+
+1. Find the last finalized block.
+2. Find the highest-epoch justified block that is a descendent of the finalized block.
+3. Run LMD-GHOST from the block found in step (2).
+
+## Weak Subjectivity
+Although FFG gives us checkpoints, there's an issue. If we know the current validator set and we're up to date with the network, then we're never going to revert past a checkpoint and all is good. However, clients who haven't synchronized within the withdrawal period have an outdated view of the validator pool and could be susceptible to this attack! What this means is that there's no way for the client to distinguish between two chains without consulting an outside party.
+
+This is the idea of weak subjectivity, which means that a client basically needs to ask other people which of the chains to select. Weak subjectivity only applies if we're a new client or haven't synced within the withdrawal period. Effectively we need to rely on social graphs to ask people what the "legitimate" eth2 chain, which isn't something you need to worry about in a proof of work blockchain.
+
+Weak subjecitivty is a highly debated topic in the blockchain world. Most arguments come especially from the world of Proof of Work blockchains in which we avoid this problem entirely by relying on an "objective" metric like physical hardware used to create hashes. The idea here is that any set of people with 51% of hardware generally controls the "reality" of the chain. However, my view is that this effectively ignores the way in which consensus is a social process and is actually much stickier than we want. We *want* people to be able to create competing versions of "reality" if they have different worldviews, not simply to state that the correct version is whoever has the most "stuff" because this makes social progress much bloodier.
+
+## Catastrophic Crashes
+Casper FFG operates effectively as long as most of the honest users are online. However, if more than half of honest users drop offline at the same time, then the malicious 1/3rd of stake is no longer a minority of the active members. This allows the malicious 1/3rd to create a chain that's equally as good as the chain still being produced by the remaining 1/3rd controlled by honest users, even if we use LMD GHOST.
+
+We can recover from this sort of crash by introducing the idea of an inactivity leak. Effectively, an inactivity leak is simply a small punishment for any user who's offline when they're supposed to create a block or sign an attestation. From the perspective of our primary chain, a full 2/3rds of users are offline in a Catastrophic Crash because 1/3rd is truly offline and the other 1/3rd are malicious and trying to make another chain. The idea here is that over time, offline users will lose enough of their funds that the remaining 1/3rd of honest users will eventually come to fully own the stake on the primary network.
+
+Although this allows FFG to continue finalizing blocks after a catastrophic crash, it also allows two chains to finalize blocks at the same time. Both chains look identical from each others perspectives, so this makes sense, really. Once again this means that users would have to rely on the social graphs w/r/t weak subjectivity in order to determine which of the two chains to continue following. It might even be that neither is "malicious" in any real sense.
+
