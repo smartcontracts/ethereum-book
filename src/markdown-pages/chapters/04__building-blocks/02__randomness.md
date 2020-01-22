@@ -1,11 +1,7 @@
 ---
 path: "/chapters/building-blocks/randomness"
-title: "Randomness: RANDAO"
+title: "RANDAO"
 ---
-
-We just explored the basic structure of the Beacon Chain. We briefly mentioned the fact that the Beacon Chain assigns validators to each slot. So how does the Beacon Chain actually do that?
-
-It all comes down to **randomness**.
 
 ## Wait, What *is* Randomness?
 Our lives seem to be punctuated by an endless stream of random events. Whether we're thinking about packing an umbrella for that trip next week, or just sitting down for a game of D&D, we're taking small gambles every day.

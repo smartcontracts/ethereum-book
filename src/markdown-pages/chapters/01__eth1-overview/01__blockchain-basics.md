@@ -39,5 +39,3 @@ TODO: Expand on why blocks fix issue with referencing previous state.
 We form our eponymous block "chains" because blocks themselves need to be ordered. Each block of transactions must always reference some previous "parent" block. The initial state on which transactions within a block operate is based on the output state of the parent block. 
 
 Of course, our blockchain must have some first block that doesn't reference a parent block. We usually refer to this as the "genesis" block.
-
-## Creating Blocks

@@ -1,9 +1,7 @@
 ---
 path: "/chapters/building-blocks/bls-signatures"
-title: "Signatures: BLS"
+title: "BLS Signatures"
 ---
-
-We just learned how the Beacon Chain assigns validators to different slots. So, let's say we're waiting for a specific validator to create a block during some slot. We receive a block that appears to be created by that validator. How do we check that the block actually came from the validator and not someone *pretending* to be the validator? It's time discuss **cryptographic signatures**. 
 
 ## Signatures 101
 Cryptographic signatures, or simply "signatures," are a key component of any blockchain. If you've ever interacted with a smart contract or sent crypto to someone, then you've created a signature!
