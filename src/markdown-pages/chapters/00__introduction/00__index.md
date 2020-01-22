@@ -3,6 +3,10 @@ path: "/chapters/introduction"
 title: "Introduction"
 ---
 
+```text
+DRAFT STATUS: 1/5
+```
+
 ## An Introductory Note
 Dear Reader,
 
