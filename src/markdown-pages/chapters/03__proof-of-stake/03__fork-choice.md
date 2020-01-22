@@ -31,7 +31,7 @@ TODO: Image with lopsided forks.
 Unfortunately, the realities of a blockchain network leave this fork-choice rule open to attack.
 
 ### High-Latency Attacks
-Imagine a scenario, for instance, in which a malicious validator controls $\frac{1}{3}$ of the stake on our network. This attacker wants to create a competing chain that somehow overcomes the primary chain.
+Imagine a scenario, for instance, in which a malicious validator controls $\smash{\frac{1}{3}}$ of the stake on our network. This attacker wants to create a competing chain that somehow overcomes the primary chain.
 
 If the primary chain is operating smoothly, then the Longest Chain Rule prevents the attacker from getting very far. Even if the attacker refuses to publish blocks on the primary chain, thereby leaving an empty slot every third block on average, the attacker can only create one block for every two created on the primary chain. Furthermore, these blocks will only have half of the votes, on average, of primary chain blocks.
 
@@ -45,13 +45,13 @@ The Longest Chain Rule starts to show weakness, however, in the presence of part
 TODO: Image with attacker's chain and small latency fork.
 ```
 
-An attacker can use this latency to their advantage. As latency increases, the primary chain extends in length more and more slowly. If latency reaches four times the slot length, then the primary chain will, on average, only extend by one block (with $\frac{2}{3}$ votes) for every two blocks (with $\frac{1}{3}$ votes each) on the attacker's chain.
+An attacker can use this latency to their advantage. As latency increases, the primary chain extends in length more and more slowly. If latency reaches four times the slot length, then the primary chain will, on average, only extend by one block (with $\smash{\frac{2}{3}}$ votes) for every two blocks (with $\smash{\frac{1}{3}}$ votes each) on the attacker's chain.
 
 ```text
 TODO: Image with attacker's chain and large latency fork.
 ```
 
-At any higher latency, the attacker's chain will quickly begin to outpace the primary chain, even though the attacker only controls $\frac{1}{3}$ of the total stake. The Longest Chain Rule doesn't seem to accurately capture the will of the majority as latency increases.
+At any higher latency, the attacker's chain will quickly begin to outpace the primary chain, even though the attacker only controls $\smash{\frac{1}{3}}$ of the total stake. The Longest Chain Rule doesn't seem to accurately capture the will of the majority as latency increases.
 
 ```text
 TODO: Image with attacker's chain and massive latency fork, LCR picks attacker.
@@ -72,7 +72,7 @@ LMD GHOST often agrees with the Longest Chain Rule.
 TODO: Image LMD GHOST agrees with LCR.
 ```
 
-However, LMD GHOST addresses the attack vector for the Longest Chain Rule because a minority chain can never receive more votes than a majority chain. The attacker's chain from our previous example can never receive more than $\frac{1}{3}$ votes, no matter the length of the chain.
+However, LMD GHOST addresses the attack vector for the Longest Chain Rule because a minority chain can never receive more votes than a majority chain. The attacker's chain from our previous example can never receive more than $\smash{\frac{1}{3}}$ votes, no matter the length of the chain.
 
 ```text
 TODO: Image for attacker failing under LMD GHOST.
@@ -89,13 +89,13 @@ So far, our chain has slashing rules that prevent validators from creating multi
 
 An attacker with sufficient stake could abuse this fact to cause a prolonged fork. An attacker could "save" votes by refusing to publish them during previous slots and then later "release" these votes to manipulate the fork decisions of other validators.
 
-For instance, take the following situation in which an attacker with $\frac{1}{3}$ stake has not published votes for several slots in a row.
+For instance, take the following situation in which an attacker with $\smash{\frac{1}{3}}$ stake has not published votes for several slots in a row.
 
 ```text
 TODO: Image for saved messages.
 ```
 
-At this point, the attacker has accumulated $\frac{1}{3}$ votes for each of the missed slots. The attacker then waits for a fork in the chain, perhaps due to network latency, and publishes $\frac{1}{3}$ votes in favor of one of the two blocks. 
+At this point, the attacker has accumulated $\smash{\frac{1}{3}}$ votes for each of the missed slots. The attacker then waits for a fork in the chain, perhaps due to network latency, and publishes $\smash{\frac{1}{3}}$ votes in favor of one of the two blocks. 
 
 ```text
 TODO: Image for publication of initial votes.
