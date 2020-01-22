@@ -3,6 +3,10 @@ path: "/chapters/eth1-overview/proof-of-work"
 title: "Proof of Work"
 ---
 
+```text
+DRAFT STATUS: 1/5
+```
+
 ## Consensus Mechanisms
 All blockchain systems must define some process through which new blocks can be added to the chain. Indeed, without such a process, the blockchain fails to progress and is, effectively, useless.
 

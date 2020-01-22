@@ -3,6 +3,10 @@ path: "/chapters/proof-of-stake/core-concepts"
 title: "Core Concepts"
 ---
 
+```text
+DRAFT STATUS: 2/5
+```
+
 Proof of Stake chains, in a nutshell, attempt to replicate the functionality of Proof of Work chains without the reliance on wasteful computational processes. We can make several useful analogies to Proof of Work in order to get a better understanding of the core components of Proof of Stake.
 
 ## Validators

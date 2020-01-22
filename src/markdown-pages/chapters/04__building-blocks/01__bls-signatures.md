@@ -3,6 +3,10 @@ path: "/chapters/building-blocks/bls-signatures"
 title: "BLS Signatures"
 ---
 
+```text
+DRAFT STATUS: 1/5
+```
+
 ## Signatures 101
 Cryptographic signatures, or simply "signatures," are a key component of any blockchain. If you've ever interacted with a smart contract or sent crypto to someone, then you've created a signature!
 

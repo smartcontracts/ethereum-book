@@ -3,6 +3,10 @@ path: "/chapters/introduction/motivation"
 title: "Motivation"
 ---
 
+```text
+DRAFT STATUS: 1/5
+```
+
 ## Why do we care about blockchain systems?
 We can't talk about blockchain systems without first exploring the concept of *value*.
 We don't often understand exactly *what* value is or *how* value works, but we rarely go a day without exchanging it.

@@ -3,6 +3,10 @@ path: "/chapters/proof-of-stake/casper-ffg"
 title: "Casper FFG"
 ---
 
+```text
+DRAFT STATUS: 2/5
+```
+
 The solution to the long range attack is, effectively, to introduce a new rule that prevents clients from reverting any block created more than `n` blocks ago, where `n` is the amount of time for $\smash{\frac{2}{3}}$ of validators to withdraw their funds. The mechanism within Eth2 that provides this functionality is **Casper FFG**.
 
 ## Checkpoints
