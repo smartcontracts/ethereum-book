@@ -15,6 +15,6 @@ Execution environments can be thought of as small ecosystems in which users and 
 
 Execution environments can, and most likely will, be built in a manner that allows for interaction with other environments. An app on one environment could, for example, be allowed to transfer an asset to an app on another environment. These interactions will even be possible for EE instances on different shards, via some form of cross-shard communication.
 
-For reasons related to efficiency and accessibility, all execution environments are compiled to an assembly language called Ewasm. Ewasm is a subset of the popular WebAssembly (wasm) langauge, and is, as a result, significantly more developer-friendly than the EVM. Particularly, this move to Ewasm opens the door for smart contracts written in widely used programming languages like C, C++, and Rust.
+For reasons related to efficiency and accessibility, all execution environments are compiled to an assembly language called Ewasm. Ewasm is a subset of the popular WebAssembly (wasm) language, and is, as a result, significantly more developer-friendly than the EVM. Particularly, this move to Ewasm opens the door for smart contracts written in widely used programming languages like C, C++, and Rust.
 
 Later within this book, we deeply explore Ewasm and execution environments. We take a focused look at the components of an EE and its various responsibilities. We then additionally walk through a simple EE implementation as we come to understand the process of building and deploying execution environments.
