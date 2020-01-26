@@ -4,13 +4,17 @@ title: "Execution Environments"
 ---
 
 ```text
-DRAFT STATUS: 0/5
+DRAFT STATUS: 1/5
 ```
 
-Eth2 introduces a model of Execution Environments, which is different from the EVM we are familiar with. Basically, instead of one fixed virtual machine, we have a system that allows people to develop their own virtual machines. Each machine is called an Execution Environment or EE. These environments are written and compiled into an assembly language called Ewasm. Anyone can deploy their own EE as long as they pay some value for doing so and a rent for continuing to operate.
+Although the EVM was a massive improvement over the fixed or limited transaction types in older blockchains, it too ultimately proved limiting in some respects. The EVM was built from the ground up as a special-purpose environment for applications on Ethereum. Certain quirks in the design of the EVM, such as the use of 256-byte words as opposed to traditional 32-byte or 64-byte words, reduced overall performance in comparison to other virtual machines. Furthermore, the EVM's custom instruction set necessitated entirely new compilers and smart contract programming languages.
 
-EEs can really be anything. Someone could build an EE that duplicates the functionality of the EVM. Simiarly, someone could build Bitcoin Script as an EE. Basically, it defines what sort of applications users can build. This gives us much more flexibility than the EVM because we can try out new models outside the EVM and aren't restricted to only the functionality provided by that one EVM. We can also use this sort of system to upgrade an EE and just move balances into an upgraded EE if this is desired by users. Basically, it's a new way of doing things that goes even further than the EVM to be general purpose.
+Eth2 attempts to expand on the flexibility of Ethereum with the introduction of **execution environments**, often abbreviated as **EEs**. Effectively, execution environments are an abstraction of the role played by the EVM in Eth1. Under this model, users can create their own framework for the execution of code on Ethereum. One could, for instance, create an execution environment that emulates the behavior of the EVM. The EE concept is primarily intended to spur innovation in the types of software one can run on Ethereum.
 
-We can have more than one EE per shard. EEs can be built to interact with one anther. By sending messages to one another on the same shard or on different shards, EEs can pass information and transfer assets to one another. This is very flexible.
+Execution environments can be thought of as small ecosystems in which users and applications interact. Instances of EEs are deployed onto shards, and applications and assets exist as code and data within these instances. Many EEs can exist on the same shard, and the specific code that defines a given EE can be used within many different instances.
 
-We explore the details of EEs, their operation, applications in Eth2, and more later in the book.
+Execution environments can, and most likely will, be built in a manner that allows for interaction with other environments. An app on one environment could, for example, be allowed to transfer an asset to an app on another environment. These interactions will even be possible for EE instances on different shards, via some form of cross-shard communication.
+
+For reasons related to efficiency and accessibility, all execution environments are compiled to an assembly language called Ewasm. Ewasm is a subset of the popular WebAssembly (wasm) langauge, and is, as a result, significantly more developer-friendly than the EVM. Particularly, this move to Ewasm opens the door for smart contracts written in widely used programming languages like C, C++, and Rust.
+
+Later within this book, we deeply explore Ewasm and execution environments. We take a focused look at the components of an EE and its various responsibilities. We then additionally walk through a simple EE implementation as we come to understand the process of building and deploying execution environments.
