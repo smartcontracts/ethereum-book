@@ -4,7 +4,7 @@ title: "Content"
 ---
 
 ```text
-DRAFT STATUS: 0/5
+DRAFT STATUS: 1/5
 ```
 
 Eth2 is a sprawling technical undertaking with countless moving parts. In creating an educational resource about this subject, we've spent significant time and energy developing a content flow intended to make Eth2 accessible to a wide and diverse audience. In this introductory section, we provide an outline of this book in order to give readers a taste of what's to come.
