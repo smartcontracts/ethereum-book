@@ -4,27 +4,32 @@ title: "Proof of Stake"
 ---
 
 ```text
-DRAFT STATUS: 0/5
+DRAFT STATUS: 1/5
 ```
 
-Proof of Stake is the basis of Eth2. It's what makes Eth2 very different from Eth1 and allows it to scale significantly without the environmentally unfriendly ideas behind Proof of Work. Proof of Stake is a big shift from Proof of Work, and we will explore the core of Proof of Stake in detail later in the book. First, however, we want to give a high-level understanding of Proof of Stake.
+Proof of Work blockchain protocols have faced significant backlash in the past several years. Many critics point to the protocol's excessive energy consumption as cause for concern over its long-term sustainability. At the time of writing, for context, Proof of Work mining on Bitcoin alone consumes power at an annual rate comparable to that of the country of Austria. Such a wasteful protocol is likely to find little sympathy in the modern socio-political reality of global warming.
 
-The core concept behind Proof of Stake is that we replace the "work" metric of Proof of Work that implicitly measures investment in the system via computational resources with a "stake" metric that explicitly measures investment via capital lockup. Instead of miners, we introduce new users called validators who are tasked with maintaining the system. Validators have a stake that is used as collateral and can be rewarded or punished for successfully or unsuccessfully completing relevant actions.
+Proof of Stake is an alternative to Proof of Work that attempts to minimize energy consumption and simultaneously increase overall protocol security. The fundamental basis of Proof of Stake is the replacement of implicit measures of capital investment ("work") with explicit ones. Instead of miners with thousands of machines, Proof of Stake systems utilize validates who explicitly lock capital into the system.
 
-Validators have the role of creating and validating blocks in the network. We use various incentive mechanisms to ensure that blocks are created and validated in a timely manner.
+Proof of Stake models are not all alike, however. Many different Proof of Stake systems were developed prior to the onset of serious Eth2 development. Eth2 uses a unique Proof of Stake protocol that follows from a strong design rationale. The key principles of this rationale, detailed below, are intended to ensure that Eth2 remains useful and relevant far into the foreseeable future.
 
-Proof of Stake chains need new verisons of the fork-choice rules that we use in Proof of Work. This is to ensure that the chain functions correctly. Some of the ideas used in Proof of Work need to be modified to correctly work within Proof of Stake. Often, a simple translation of these rules will not function properly in a Proof of Stake system.
+## Eth2 Design Rationale
 
-Major advantages of Proof of Stake include better security, reduced risk of centralization, and energy effiicnecy. There are basic types of Proof of Stake consensus algorithms, mainly lumped into chain-based or BFT based. 
+### Simplicity
+Eth2 strives to be as simple as possible while still maintaining a sufficient level of utility. Simplicity has impacts on various levels of the Eth2 ecosystem. Critically, it reduces the cost to understand and develop implementations of the protocol. This additionally reduces the risk of security flaws in either the protocol itself or a specific implementation thereof.
 
-A chain-based Proof of Stake selects validators to produce blocks during a time period and assigns them the right to that time period. The blocks point to a previous block, and the chain grows.
+### Stability
+Eth2 is designed to remain relatively unchanged for a long period of time. Changes to a blockchain base layer require wide-spread agreement and carry significant social costs. Changes of this scale to a project as influential as Ethereum are, as of Eth2, entirely unprecedented.
 
-A BFT based PoS is where validators are randomly selected to produce blocks but the process of agreeing on which block is canonical happens in a multi-round system where people put votes. At the end of the process, validators agree on which chain is correct permanently. The key difference between this and chained is that the decision between which chain is correct does not depend on the length or size of the chain.
+### Sufficiency
+Somewhat along the same vein as stability, Eth2 is constructed to support a maximally wide class of applications. This requirement ensures that Eth2 is genuinely useful for most users and that additional changes are not needed to support common use-cases.
 
-Eth2 uses a mix of these two systems.
+Blockchain systems must find a balance between complexity on the base layer and application layers. If the base layer is too simplistic, then applications must often replicate seemingly basic functionality and bear the cost of increased complexity. Eth2 purposefully pushes certain functionality onto the base layer as to reduce overall complexity on applications.
 
-One of the key benefits of Proof of Stake is that we don't use as much electricity and therefore we can secure the chain with less extra cost in the form of rewards.
+### Security
+Users expect their financial services and providers to be robust to attack, and Eth2 is no exception. The Eth2 protocol attempts to take into account as many potential attack vectors as possible. Much of Eth2 has been constructed from the ground up to be provably secure under a number of common and uncommon network conditions.
 
-Another benefit is that it opens up new techniques to actively avoid cartels or other mechanisms that can be used to manipulate the chain. Mainly, because there's more control over the economics of the system and less reliance on some external economic device. This leads into the idea of certain punishments against validators that make 51% attacks more expensive. Such a system does not exist in Proof of Work because we cannot "destroy" someone's mining rig for misbehaving.
+### Accessibility
+Eth2 tries to maximize accessibility with support for efficient light clients. This requires certain protocol features be specifically designed with light clients in mind. Improved accessibility brings Eth2 closer to the vision of "Ethereum Everywhere," even in the context of resource-constrained environments.
 
-We discuss the full treatment of the Proof of Stake protocol in Eth2 later in the book.
+From these principles, Eth2 has developed an intuitive Proof of Stake protocol that provides several major advantages over Proof of Work. Particularly, Eth2's Proof of Stake is more energy efficient, more robust to centralization, and generally more secure than its Proof of Work predecessor. Many of these advantages stem from the ability to actively punish misbehaving validators, as we will discover in our deep-dive of the protocol.

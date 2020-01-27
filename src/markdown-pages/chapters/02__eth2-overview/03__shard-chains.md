@@ -7,14 +7,8 @@ title: "Shard Chains"
 DRAFT STATUS: 0/5
 ```
 
-Shard chains are blockchains in which user-level transactions occur. The beacon chain has functionality that assigns validators to shard chains. These chains can hold a lot of transaction data and can even interact with one another. Users can interact with as few or many shards as they'd like, and are not limited to any individual shard. This is where users will interact with the system if they are not validating the chain.
+Eth1 and most other blockchains follow a traditional structure in which a single blockchain is responsible for providing all the functionality within the system. Eth2 moves away from this model with the introduction of shard chains. Whereas the Beacon Chain can be thought of as Eth2's "system chain," shard chains are Eth2's "application chains."
 
-Shard models can take various different ideas. One model for sharding is a tree structure in which shards have parent shards and children shards. Data flows between the shards like this:
+Shard chains coexist with the Beacon Chain and rely on it for security. The same validators who maintain the Beacon Chain also maintain all shard chains. The Beacon Chain is responsible for assigning validators the roles necessary to build and extend shard chains.
 
-[image]
-
-Eth2 uses a shard model more like a hub-and-spoke, where the beacon chain is hub. Each shard directly connects to the beacon chain and can interact with others shards by passing messages through the beacon chain like this:
-
-[image]
-
-We will explain these shards in more detail later.
+Eth2 follows a hub-and-spoke model, in which the Beacon Chain plays the role of the hub and shard chains are each their own spoke. Shards regularly publish summaries of their activity to the Beacon Chain. This is necessary for shards to derive security from the Beacon Chain and enables communication between shards.
