@@ -16,7 +16,16 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
 }
 
 exports.createPages = async ({ actions, graphql, reporter }) => {
-  const { createPage } = actions
+  const { createPage, createRedirect } = actions
+
+  // Create redirects.
+  createRedirect({
+    fromPath: `/`,
+    redirectInBrowser: true,
+    toPath: `/chapters/introduction`
+  })
+
+  // Create chapter pages.
   const chapterTemplate = path.resolve(`src/templates/chapter.js`)
 
   const result = await graphql(`
