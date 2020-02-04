@@ -9,6 +9,8 @@ DRAFT STATUS: 1/5
 
 We can only most effectively explore Eth2 by first understanding the core elements behind Eth1. Much of the Eth2 design draws explicitly from lessons learned throughout the lifetime of Eth1. Furthermore, as discussed later, Eth1 plays a central role in the early stages of Eth2. It's necessary, therefore, to understand certain key details about Eth1's operation.
 
+We begin this study with an overview of the basics of any blockchain system, the same basics that underpin both Eth1 and Eth2. It's through these basic elements that blockchain systems can come to life and provide useful properties to their users.
+
 ## State
 Blockchains are fundamentally designed to keep track of some sort of meaningful data. For example, if we want to create a financial system within a blockchain, we might want to track the balances of each of our users. We might also want to store information about unique digital assets, perhaps the ownership of some digital token that corresponds to an object in the physical world.
 
