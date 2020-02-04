@@ -1,11 +1,8 @@
 ---
 path: "/chapters/proof-of-stake/weak-subjectivity"
 title: "Weak Subjectivity"
+status: "1"
 ---
-
-```text
-DRAFT STATUS: 1/5
-```
 
 Casper FFG guarantees that $\smash{\frac{2}{3}}$ of validators have made a decision about the chain that they will not revert later. Whenever a client sees a new finalized checkpoint, they will never accept a fork from before the checkpoint. Clients are effectively immune from long range attacks because they've received a promise from validators in advance.
 

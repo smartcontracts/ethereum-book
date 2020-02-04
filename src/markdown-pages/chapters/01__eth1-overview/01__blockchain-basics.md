@@ -1,11 +1,8 @@
 ---
 path: "/chapters/eth1-overview/blockchain-basics"
 title: "Blockchain Basics"
+status: "1"
 ---
-
-```text
-DRAFT STATUS: 1/5
-```
 
 We can only most effectively explore Eth2 by first understanding the core elements behind Eth1. Much of the Eth2 design draws explicitly from lessons learned throughout the lifetime of Eth1. Furthermore, as discussed later, Eth1 plays a central role in the early stages of Eth2. It's necessary, therefore, to understand certain key details about Eth1's operation.
 

@@ -1,8 +1,5 @@
 ---
 path: "/chapters/eth2-overview"
 title: "Eth2 Overview"
+status: "0"
 ---
-
-```text
-DRAFT STATUS: 0/5
-```

@@ -1,8 +1,5 @@
 ---
 path: "/chapters/building-blocks"
 title: "Building Blocks"
+status: "0"
 ---
-
-```text
-DRAFT STATUS: 0/5
-```

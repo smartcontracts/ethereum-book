@@ -1,11 +1,8 @@
 ---
 path: "/chapters/beacon-chain/validator-life-cycle"
 title: "Validator Life-Cycle"
+status: "1"
 ---
-
-```text
-DRAFT STATUS: 1/5
-```
 
 ```text
 NOTE: Section needs some a stronger vision.

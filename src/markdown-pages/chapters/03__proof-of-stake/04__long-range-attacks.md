@@ -1,11 +1,8 @@
 ---
 path: "/chapters/proof-of-stake/long-range-attacks"
 title: "Long Range Attacks"
+status: "2"
 ---
-
-```text
-DRAFT STATUS: 2/5
-```
 
 LMD GHOST effectively blocks a minority chain from outrunning a majority chain. However, our chain has, until now, relied on a fixed validator set. The introduction of a dynamic validator set breaks certain properties of LMD GHOST.
 

@@ -1,11 +1,8 @@
 ---
 path: "/chapters/building-blocks/randomness"
 title: "RANDAO"
+status: "1"
 ---
-
-```text
-DRAFT STATUS: 1/5
-```
 
 ## Wait, What *is* Randomness?
 Our lives seem to be punctuated by an endless stream of random events. Whether we're thinking about packing an umbrella for that trip next week, or just sitting down for a game of D&D, we're taking small gambles every day.

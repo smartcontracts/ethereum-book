@@ -1,11 +1,8 @@
 ---
 path: "/chapters/introduction/motivation"
 title: "Motivation"
+status: "1"
 ---
-
-```text
-DRAFT STATUS: 1/5
-```
 
 ## Why do we care about blockchain systems?
 We can't talk about blockchain systems without first exploring the concept of *value*.

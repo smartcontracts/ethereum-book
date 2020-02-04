@@ -1,11 +1,8 @@
 ---
 path: "/chapters/introduction/content"
 title: "Content"
+status: "1"
 ---
-
-```text
-DRAFT STATUS: 1/5
-```
 
 Eth2 is a sprawling technical undertaking with countless moving parts. In creating an educational resource about this subject, we've spent significant time and energy developing a content flow intended to make Eth2 accessible to a wide and diverse audience. Here's a taste of the topics covered within this book.
 

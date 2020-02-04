@@ -1,11 +1,8 @@
 ---
 path: "/chapters/eth2-overview/shard-chains"
 title: "Shard Chains"
+status: "0"
 ---
-
-```text
-DRAFT STATUS: 0/5
-```
 
 Eth1 and most other blockchains follow a traditional structure in which a single blockchain is responsible for providing all the functionality within the system. Eth2 moves away from this model with the introduction of shard chains. Whereas the Beacon Chain can be thought of as Eth2's "system chain," shard chains are Eth2's "application chains."
 

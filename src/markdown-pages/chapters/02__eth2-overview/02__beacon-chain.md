@@ -1,11 +1,8 @@
 ---
 path: "/chapters/eth2-overview/beacon-chain"
 title: "The Beacon Chain"
+status: "1"
 ---
-
-```text
-DRAFT STATUS: 1/5
-```
 
 The Beacon Chain is the beating heart at the core of the Eth2 ecosystem. The Beacon Chain implements the Eth2 Proof of Stake protocol and thereby enables validators to build and extend the Eth2 blockchain. Community members often refer to the Beacon Chain as Eth's "system chain," as it holds responsibility for maintaining records of validator identities, validator balance changes, and many other validator-related data points.
 

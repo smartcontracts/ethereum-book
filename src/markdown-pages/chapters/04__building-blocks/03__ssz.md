@@ -1,8 +1,5 @@
 ---
 path: "/chapters/building-blocks/ssz"
 title: "Simple Serialize (SSZ)"
+status: "0"
 ---
-
-```text
-DRAFT STATUS: 0/5
-```

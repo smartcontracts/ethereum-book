@@ -22,7 +22,7 @@ Draft status levels are:
 
 | Status Rating | Status Meaning                                       |
 |---------------|------------------------------------------------------|
-| 0             | NOT PUBLISHED                                        |
+| 0             | NOT READY FOR REVIEW                                 |
 | 1             | NOT REVIEWED                                         |
 | 2             | REVIEWED INTERNALLY, CONTENT STRUCTURE NOT FINALIZED |
 | 3             | CONTENT STRUCTURE FINALIZED                          |
