@@ -1,0 +1,83 @@
+---
+path: "/chapters/consensus"
+title: "Consensus"
+status: "0"
+---
+
+The concepts behind modern blockchains can be traced back to distributed systems research carried out at the end of the 20th century. This research was particularly focused on replication of some state between different computers on a network. Quite early in the history of computing it was found to be useful to maintain multiple instances of a state machine in order to mitigate the impact of crashes. However, the process for doing so was not always straightforward.
+
+Let's begin by exploring some primitives of distributed systems. These are basically the elementary particles of any blockchain system. Our first primitive is the concept of state. State is information that represents something we care about for whatever reason. It's not a particularly straightforward concept in that it can really be anything.
+
+Actually let's instead start with the node. Fundamentally, participants in a system like this are individual machines. A simplified model might say that each "node" in a system is a machine. We can get more complex and instead say that each node is a unique network participant. Anyway this is an abstraction, it's ok to imagine each node as a separate computer.
+
+So these computers talk to one another over some sort of physical connection. Obviously on the internet we don't say that every computer is part of our distributed system. The specific computers that make up our system are our nodes, and the set of these nodes and the connections between them are our network.
+
+The goal of our network is to come to agreement -- consensus -- about some piece of information to store. Classic examples will often just consider agreement on a single bit as a simple way to demonstrate this concept. It can really be anything, though in practice we're usually dealing with state replication. For now we can think about state replication as trying to store a database on multiple different computers simultaneously, except whenever the database updates we need to copy those updates onto each machine holding a copy of the database.
+
+Okay so the nodes on our network talk to one another, the language they use to communicate is called the communication protocol. Nodes send "messages" to one another in a format that follows this communication protocol. It's worth knowing that any sort of message will always have some sort of delay between sending and receiving time. This delay can actually have a significant impact on the overall operation of our system. Basically, if we can assume that delay is always bounded, then we know that something has gone wrong when a response takes a very long time. This is not true if we make no such assumption; a node can be offline for eons before responding. An assumption like this is called a synchrony assumption, alternative is asynchrony.
+
+Initial research into this topic focused on trying to mitigate the effect of a computer crash on the entire system. Researchers were primarily interested in closed, well-secured systems that were unlikely to behave outside of their programming. Effectively, such models assume that nodes are either operating perfectly or not operating at all.
+
+Protocols for handling these sorts of crashes are pretty interesting and generally rely on having lots of computers so that the system can keep running in the faces of crashes. Early designs like the famous PAXOS protocol use a system in which a "leader" node coordinates changes with "accepter" nodes. Since we assume that we can only have crashes, we aren't worried about funny business like the leader saying different things to different nodes. Each node can, for each new message, assume they're getting the same message as everyone else.
+
+These protocols are relatively simple and widely popular. Most of the time, crash faults are all we're looking at. When nodes can start to behave in unexpected ways, we have more ground to cover. We might want to control for this possibility if we're running a high-value system that could become a target for attack. This is a harder problem because we now have to assume that a node could go rogue and carefully craft messages to manipulate the network.
+
+A simple way to demonstrate the impact of this is to go back to PAXOS. We originally had this leader-based system in which a single node would coordinate changes. However, if this node became corrupted, it could start sending different messages to different nodes. As a result, it could cause an error in the system in which two different operations are carried out at the same time step.
+
+This concept of malicious nodes is usually called a "byzantine fault," and corresponding fixes called "byzantine fault tolerant" protocols. The name here stems from a classic thought exercise known as the "byzantine generals problem," which attempts to replicate our dilemma in more abstract and entertaining terms. The basic problem statement is as follows.
+
+Imagine that the byzantine army has surrounded a vast city. The army is structured into a number of divisions, each led by a general. A single commanding general can issue orders to all other generals, the lieutenant generals via messenger. Unfortunately, some of the generals may be traitors. Even the commanding general might be a traitor.
+
+Under these conditions, we need to devise some sort of protocol that loyal generals follow such that all loyal generals will agree to the same battle plan, even while traitors do everything in their power to achieve the opposite. 
+
+This is quite a fun way to represent the thing we're trying to achieve, it's just replaced nodes with generals, wires with messengers, and state with battle plans. The original paper on the subject goes on to show that this problem is actually impossible to solve under certain circumstances. Particularly, it gives an informal proof that the problem is impossible with two loyal generals and one traitor. The intuition is as follows.
+
+If the commanding general is the traitor, then the general can give different orders to each lieutenant.
+
+If a lieutenant is the traitor, then the lieutenant can lie about their order.
+
+In either case, L1 sees the same thing. As a result, there's no way for L1 to distinguish whether the commanding general or the other lieutenant is the traitor.
+
+The paper goes on to show that this problem can only be solved if there are at least 2n+1 loyal generals when there are n traitors. Translating back to computer land, this means for n malicious nodes, we need at least 2n+1 properly behaving nodes for the system to remain functional.
+
+The exact solution described within the paper highlights the importance of certain elements now considered commonplace in blockchain systems. For instance, the paper requires that a traitor not be able to forge or tamper with messages from loyal generals. The authors suggest that each general use a digital signature algorithm to guarantee the authenticity of their messages. PAXOS required no such signature scheme as it could be trusted that nodes would not falsify their identities.
+
+Furthermore, the paper notes the necessity of some synchrony assumption to achieve liveness, in accordance with the FLP theorem. Every major blockchain system today also requires some sort of synchrony assumption, as we will explore in a later chapter. The byzantine generals problem effectively laid the groundwork for all of the study of problems within this class, so it's easy to understand why the name became so closely tied to the concept.
+
+Researchers would continue to expand and develop on the goal of byzantine fault tolerant consensus protocols throughout the 80s and 90s. Systems like Practical BFT (PBFT) simplified many of the ideas behind the solution as laid out in the Byzantine Generals paper. Towards the late 90s and early 00s, interest grew in the concept of applying these learnings to the development of a digital money system. Although the underlying technology of distributed systems is agnostic to its use cases, basic digital money seemed like a compelling and feasible goal.
+
+Digital money seemed to be both useful and relatively feasible at the time. Basic monetary systems would effectively require that nodes share a minimal ledger of currency transfers between users. A lightweight version of this would basically only require that nodes do some simple math for each new transfer. This core functionality alone was not particularly novel or difficult to achieve.
+
+However, money is also a fascinating social construction that tends to carry strong and varied meanings. Proponents of the early digital money movement generally felt that such a system should be not only robust to attackers, but also open to all new participants. TO string an analogy to the Byzantine Generals problem, these individuals wanted to create a system in which anyone could become a general at any time. Primarily, the aim of such a system was to circumvent the potential problems inherent when the nodes in control of a money system are fixed and unchanging. 
+
+This model of open access was not immediately compatible with traditional byzantine fault tolerant protocols. One fundamental problem was that an attacker could create virtually unlimited identities on the network, pretending to be different unique participants. Without a method to clearly assign an identity to a verifiable human, there was no apparent way to prevent this attack. To this day, the problem of assigning unique digital identities without the need for a third-party (e.g. passport assigned by the U.S. government) remains an extremely difficult and, by many standards, unsolved problem.
+
+A solution to this dilemma was found in research related to the prevention of email spam. In fact, spam prevention is, in many ways, a challenge directly related to the prevention or detection of "sybil identities" created by malicious spam producers. The basic mechanism employed here was to require that the sender perform some sort of verifiable computational effort in order to send a message. This effort had to be verifiable in the sense that the recipient could easily confirm to a high degree of certainty that the effort had been performed. 
+
+The theoretical basis of such a system was not to perfectly assign digital identities to real people, but to significantly increase the cost of spam email. If a single email expended 1c of electricity, then an attacker would quickly rack up quite the bill to send thousands or even millions of emails. Such a system could even be tuned by the user to remove or reduce costs for whitelisted addresses.
+
+Researchers quickly realized that a similar approach could enable "indirect" identity verification on a digital money system. Instead of needing explicitly assigned identities, users could participate in consensus by expending computational effort. The weight of a user's influence over the system would be measured not by their number of identities but by their expended computational effort. As a result, an attacker could no longer gain an advantage by creating multiple identities.
+
+Even if such a system could manage to skirt the need for explicit identities, it would face further dilemmas. Traditional BFT protocols called for some node to act as the "leader" and to propose a change in the network. Since participants were known in advance, these protocols would explicitly assign nodes to act as leaders, usually for some fixed period of time. Without known participants, the digital money protocols needed some new way to determine a leader at any given point in time.
+
+These systems settled on a model that satisfied the goal to attach influence to expenditure of computational resources. Participants would effectively participate in a continuous lottery system to determine the next leader. During each round of the lottery, participants would repeatedly search for some given target hash. The random nature of the hashing process guaranteed that, on average, a user's odds of winning are proportional to their percentage of total resource expenditure.
+
+However, this lottery system could not simply assign the winner as leader for a certain amount of time without also introducing the possibility that the winner's proposed changes go entirely ignored. Instead, he winner would actually perform their work on a reference to a specific set of proposed changes, and would publish these changes along with their winning lottery ticket. It's important to note here that proposed changes necessarily had to point to the state being changed. This prevents, for instance, two conflicting changes from being executed on the same state. However, this presents an interesting problem in that it's possible for two users to win the same lottery. In this case, participants may have different views of the network. Generally, the less amount of time the lottery takes, the more likely that we have multiple winners. It therefore makes sense to extend the lottery time to reduce the chance of having multiple winners. When the lottery time is high, we want to put many changes within a single proposal or the system would be unbearably slow. As a result, we get blocks of transactions.
+
+This problem of multiple leaders at the same time introduces the concept of forks in the network. When two users create a block at the same time, it's necessary for the rest of the network to figure out which block to build on. We need to decide on a single block because new blocks must reference some specific state as outputted by a block. Participants follow a "fork choice rule" to figure out what to do when presented with more than one block for the same height. A fork choice rule is an algorithm that picks a chain from a list of potential forks, based on some metric.
+
+Within Proof of Work, the simplest for choice rule is the longest chain rule.
+
+[LCR EXPLAINER]
+
+So far we've remained intentionally vague about the contents of the proposals that these participants are making. Traditional distributed systems could be used for any number of use cases from backing up important information to ensuring that critical software stays operational. Of course, some of our direction on this has already been covered as the original intention was to build a digital money system. As we previously noted, we actually need some incentive for our participants, which can be paid out via our own digital money system.
+
+At this point, we just need to figure out how we want to represent such a system. Early projects like Bitcoin made use of an interesting transactional model called the "unspent transaction output" or "UTXO." Under this model, all currency on the platform would be represented as unique "bundles" of coins that could be combined to broken apart. Transactions would take up to a certain number of these bundles as "inputs" and spit out any number of "outputs." These resulting outputs could then be used as inputs to further transactions.
+
+Within Bitcoin specifically, coins can only enter the system through the mining process. The creator of a block includes a special transaction that has no inputs but one output with a value equal to the block reward. This is the only instance in which the output amount can be greater than the input amount. For all other transactions, input amount must be greater than or equal to output amount. Any difference between input and output amounts is automatically considered to be a transaction fee paid to the miner.
+
+Although this model is not particularly intuitive, it does provide certain useful properties. Since a user can change their address between each transaction, their transactions become more difficult to trace. Someone would need to do a relatively extensive analysis of the graph of outputs in order to study a user's behavior. Furthermore, outputs are cleanly separated from one another in that transactions with no shared inputs can be executed simultaneously. This makes the model quite parallelizable.
+
+This sort of system is usually compared to the "account" model of blockchains like Ethereum. Account-based systems are generally more familiar to us than UTXOs. Under this model, users can create accounts that hold their funds. Transactions between accounts are effectively debits from one account and credits to another, much like a traditional bank account. This is somewhat simpler than the UTXO model but can also be more efficient in many cases.
+
+Ethereum took cues from Bitcoin's scripting language and adapted an advanced programming environment into the system.
