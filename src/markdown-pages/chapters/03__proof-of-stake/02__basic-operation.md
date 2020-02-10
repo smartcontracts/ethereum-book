@@ -1,11 +1,8 @@
 ---
 path: "/chapters/proof-of-stake/basic-operation"
 title: "Basic Operation"
+status: "2"
 ---
-
-```text
-DRAFT STATUS: 2/5
-```
 
 Many of the design decisions behind Eth2 can be best understood as incremental improvements over a "naive" Proof of Stake protocol. The remainder of this chapter will introduce new concepts as responses to attack vectors against such a naive protocol. By the end of the chapter, our naive system will have evolved into a robust Proof of Stake chain.
 

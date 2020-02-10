@@ -4,6 +4,15 @@ import { graphql } from "gatsby"
 import Layout from "../components/layout"
 import Sidebar from "../components/sidebar"
 
+const DRAFT_STATUS = {
+  '0': 'NOT READY FOR REVIEW',
+  '1': 'NOT REVIEWED',
+  '2': 'REVIEWED INTERNALLY, CONTENT STRUCTURE NOT FINALIZED',
+  '3': 'CONTENT STRUCTURE FINALIZED',
+  '4': 'READY FOR FINAL EDITS',
+  '5': 'FINAL DRAFT',
+}
+
 export default function Template({
   data,
 }) {
@@ -17,6 +26,8 @@ export default function Template({
     }
   })
 
+  const status = `DRAFT STATUS ${frontmatter.status}/5: ${DRAFT_STATUS[frontmatter.status]}`
+
   return (
     <Layout>
       <Sidebar />
@@ -24,6 +35,13 @@ export default function Template({
         <div className="container">
           <div className="chapter">
             <h1>{frontmatter.title}</h1>
+            <div className="draft-status">
+              <pre>
+                <code class="language-text">
+                  {status}
+                </code>
+              </pre>
+            </div>
             <div
               className="chapter-content"
               dangerouslySetInnerHTML={{ __html: html }}
@@ -42,6 +60,7 @@ export const pageQuery = graphql`
       frontmatter {
         path
         title
+        status
       }
     }
   }

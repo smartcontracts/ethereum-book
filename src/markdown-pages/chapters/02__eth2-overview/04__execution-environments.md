@@ -1,11 +1,8 @@
 ---
 path: "/chapters/eth2-overview/execution-environments"
 title: "Execution Environments"
+status: "1"
 ---
-
-```text
-DRAFT STATUS: 1/5
-```
 
 Although the EVM was a massive improvement over the fixed or limited transaction types in older blockchains, it too ultimately proved limiting in some respects. The EVM was built from the ground up as a special-purpose environment for applications on Ethereum. Certain quirks in the design of the EVM, such as the use of 256-byte words as opposed to traditional 32-byte or 64-byte words, reduced overall performance in comparison to other virtual machines. Furthermore, the EVM's custom instruction set necessitated entirely new compilers and smart contract programming languages.
 

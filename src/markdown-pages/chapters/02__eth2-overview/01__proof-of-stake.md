@@ -1,11 +1,8 @@
 ---
 path: "/chapters/eth2-overview/proof-of-stake"
 title: "Proof of Stake"
+status: "1"
 ---
-
-```text
-DRAFT STATUS: 1/5
-```
 
 Proof of Work blockchain protocols have faced significant backlash in the past several years. Many critics point to the protocol's excessive energy consumption as cause for concern over its long-term sustainability. At the time of writing, for context, Proof of Work mining on Bitcoin alone consumes power at an annual rate comparable to that of the country of Austria. Such a wasteful protocol is likely to find little sympathy in the modern socio-political reality of global warming.
 

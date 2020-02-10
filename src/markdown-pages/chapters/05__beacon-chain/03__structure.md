@@ -1,8 +1,5 @@
 ---
 path: "/chapters/beacon-chain/structure"
 title: "Structure"
+status: "0"
 ---
-
-```text
-DRAFT STATUS: 0/5
-```

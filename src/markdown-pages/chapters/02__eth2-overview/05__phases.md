@@ -1,11 +1,8 @@
 ---
 path: "/chapters/eth2-overview/phases"
 title: "Rollout Phases"
+status: "1"
 ---
-
-```text
-DRAFT STATUS: 1/5
-```
 
 Eth2 is, as we now know, composed of many interlocking elements. The size and complexity of these elements necessitates a phased rollout process in which components are deployed individually over time. The Eth2 community has largely settled on a series of three initial deployment phases. Each phase builds upon the last until, after the third phase, Eth2 can be considered mostly operational.
 

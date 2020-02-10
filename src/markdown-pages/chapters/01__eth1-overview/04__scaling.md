@@ -1,11 +1,8 @@
 ---
 path: "/chapters/eth1-overview/scaling"
 title: "Scaling"
+status: "1"
 ---
-
-```text
-DRAFT STATUS: 1/5
-```
 
 ```text
 NOTE: Not very happy with this draft yet. Needs a clearer vision.

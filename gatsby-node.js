@@ -17,6 +17,8 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
 
 exports.createPages = async ({ actions, graphql, reporter }) => {
   const { createPage } = actions
+
+  // Create chapter pages.
   const chapterTemplate = path.resolve(`src/templates/chapter.js`)
 
   const result = await graphql(`

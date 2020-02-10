@@ -1,11 +1,8 @@
 ---
 path: "/chapters/eth1-overview/evm"
 title: "The Ethereum Virtual Machine"
+status: "1"
 ---
-
-```text
-DRAFT STATUS: 1/5
-```
 
 ```text
 LEARNING GOALS:

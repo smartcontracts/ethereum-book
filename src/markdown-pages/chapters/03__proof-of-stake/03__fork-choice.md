@@ -1,11 +1,8 @@
 ---
 path: "/chapters/proof-of-stake/fork-choice"
 title: "Fork Choice"
+status: "2"
 ---
-
-```text
-DRAFT STATUS: 2/5
-```
 
 Since forks are always a possibility in any blockchain, we need to extend our basic Proof of Stake chain with a fork-choice rule that allows validators to find the "correct" chain.
 
