@@ -1,5 +1,5 @@
 ---
-path: "/chapters/eth1-overview/scaling"
+path: "/chapters/eth1/scaling"
 title: "Scaling"
 status: "1"
 ---

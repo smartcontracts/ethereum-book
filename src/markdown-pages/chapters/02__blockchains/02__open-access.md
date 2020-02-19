@@ -4,6 +4,24 @@ title: "Open Access"
 status: "0"
 ---
 
+## Outline
+- Issues with earlier systems highlight problems of centralization
+    - e-Gold shutdown
+    - Beenz investigation
+- Realization that distributed systems could apply to cash
+    - Computers can share a ledger
+    - Database transactions map to financial transactions
+- Access
+    - Open access crucial to a financial system
+    - Existing systems based on known identities with voting power
+    - Unclear at the time how to keep fixed identities without a central entity
+- Open systems
+    - Simply opening up the system creates problems with sybil attacks
+    - Solutions to sybil problems found in related research into emails (hashcash & co)
+    - Realizations that a similar system could be used for cash, just needed to figure out how to apply it
+
+---
+
 This model of open access was not immediately compatible with traditional byzantine fault tolerant protocols. One fundamental problem was that an attacker could create virtually unlimited identities on the network, pretending to be different unique participants. Without a method to clearly assign an identity to a verifiable human, there was no apparent way to prevent this attack. To this day, the problem of assigning unique digital identities without the need for a third-party (e.g. passport assigned by the U.S. government) remains an extremely difficult and, by many standards, unsolved problem.
 
 A solution to this dilemma was found in research related to the prevention of email spam. In fact, spam prevention is, in many ways, a challenge directly related to the prevention or detection of "sybil identities" created by malicious spam producers. The basic mechanism employed here was to require that the sender perform some sort of verifiable computational effort in order to send a message. This effort had to be verifiable in the sense that the recipient could easily confirm to a high degree of certainty that the effort had been performed. 

@@ -1,7 +1,21 @@
 ---
-path: "/chapters/eth1-overview/evm"
+path: "/chapters/eth1/evm"
 title: "The Ethereum Virtual Machine"
 status: "1"
+---
+
+## Outline
+- Introduce EVM 
+- Run programs in contract accounts
+    - Contract accounts are actors with functions
+    - Functions can be called with parameters
+- Defines set of instructions that can be executed when function is called
+    - Instructions can either do computation or read/write storage
+    - Gives access to world state, can call other functions or other contracts
+    - Events can be written but not read from within EVM
+    - Everyone has the same instructions so execution is deterministic
+
+
 ---
 
 ```text

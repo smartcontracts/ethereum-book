@@ -4,6 +4,21 @@ title: "Digital Cash"
 status: "0"
 ---
 
+## Outline
+- Digital cash as an interesting use-case
+    - Large societal impact
+    - Relatively simple construction
+    - Privacy and cryptography mix well
+- Centralized systems
+    - e-gold, other similar digital schemes
+    - Today with Venmo and PayPal
+    - Include Beenz for fun
+- Early research into more "independent" systems
+    - David Chaum and DigiCash (Ecash)
+        - Protocol overview
+
+---
+
 Many improved versions of the protocol described in "The Byzantine Generals Problem" have been published in the decades since the paper's debut. However, the core elements of the protocol, including the use of cryptographic signatures and peer-to-peer messaging have remained largely the same. The ability for these systems to remain operational in the face of malicious nodes have made them particularly useful for critical systems in healthcare and finance, where disruptions could cause massive and long-lasting damage to society.
 
 Even with these advantages, BFT systems remained a niche subject until a renaissance in the late 90s and early 00s changed the field forever. BFT protocols along the lines of those proposed in "The Byzantine Generals Problem" made it possible for machines connected over the internet to share a "log of events." Their use among financial institutions made obvious that such protocols could potentially underpin a digital money system. Perhaps this money system could even live exclusively within the network and remain entirely free of attachments to traditional state-operated currencies.
