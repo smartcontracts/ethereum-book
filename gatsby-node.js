@@ -5,7 +5,7 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
     const { createNodeField } = actions
 
     const nodePath = getNode(node.parent).relativePath
-    const pageIndex = nodePath.match(/\d{2}__/g).map(index => index.replace('__', '')).join(',')
+    const pageIndex = nodePath.match(/\d+__/g).map(index => index.replace('__', '')).join(',')
     
     createNodeField({
       node,

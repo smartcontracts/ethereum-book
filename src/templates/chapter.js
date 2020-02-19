@@ -26,7 +26,9 @@ export default function Template({
     }
   })
 
-  const status = `DRAFT STATUS ${frontmatter.status}/5: ${DRAFT_STATUS[frontmatter.status]}`
+  const status = frontmatter.status ?
+    `DRAFT STATUS ${frontmatter.status}/5: ${DRAFT_STATUS[frontmatter.status]}` :
+    null
 
   return (
     <Layout>
@@ -35,13 +37,16 @@ export default function Template({
         <div className="container">
           <div className="chapter">
             <h1>{frontmatter.title}</h1>
-            <div className="draft-status">
-              <pre>
-                <code class="language-text">
-                  {status}
-                </code>
-              </pre>
-            </div>
+            { 
+              status &&
+              <div className="draft-status">
+                <pre>
+                  <code className="language-text">
+                    {status}
+                  </code>
+                </pre>
+              </div>
+            }
             <div
               className="chapter-content"
               dangerouslySetInnerHTML={{ __html: html }}

@@ -1,5 +1,5 @@
 ---
-path: "/chapters/notes"
+path: "/chapters/dev/notes"
 title: "Notes"
 ---
 
