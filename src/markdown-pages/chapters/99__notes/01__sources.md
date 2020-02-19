@@ -7,6 +7,8 @@ status: "0"
 ## SOURCES TO BE ADDED
 - Vitalik reference for "nobility" in fixed validator sets.
 - Vitalik reference for "swiss army knife" blockchain protocols.
+- https://cs.stanford.edu/people/eroberts/courses/soco/projects/2001-02/distributed-computing/html/history.html
+
 
 ## Eth2 General
 - [Serenity Design Rationale, The Ethereum Foundation](https://notes.ethereum.org/@vbuterin/rkhCgQteN)

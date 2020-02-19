@@ -1,6 +1,7 @@
 ---
 path: "/chapters/notes"
 title: "Notes"
+status: "0"
 ---
 
 ```text
