@@ -34,5 +34,19 @@ Although this system sounds ideal in theory, it still requires the existence of 
 Adam Back's HashCash is likely the most widely recognized of these constructions today. Crucially, HashCash popularized the concept of using hashing algorithms as a mechanism for proving that a certain amount of computational effort had been expended. This mechanism, which we often now call "Proof-of-Work," became a keystone of the peer-to-peer digital currencies to come. Proof-of-Work's importance is so crucial that it's necessary to fully understand its basic operation before we continue with our analysis of its eventual use.
 
 ```
-TODO: Finish out this section. Needed a break.
+TODO: Transfer hash explained here from older draft.
 ```
+
+Cryptographic hash functions are designed to be highly resistant to collisions, cases in which two different inputs produce the same output value. SHA256, a commonly used hash function, effectively renders hash collisions infeasible under the current state of computer processing power. Barring any discoveries of flaws in the algorithm, it would take an incomprehensible amount of time to find such a collision even with the processing power of the entire world at your fingertips. However, it is possible to find "partial" hash collisions in which two inputs share some small number of bytes.
+
+We can demonstrate a simple partial collision under SHA256 quite easily. In the following example, two different inputs produce hashes that share the same first few bytes:
+
+Partial hash collisions no significant impact on the security of a hash function. We find them useful, however, because the amount of computational effort required to find a collision depends on the number of bytes we're aiming to share between the two resulting hashes. Cryptographic hash functions are constructed to be almost entirely random, such that it's infeasible to "guess" the hash of an input without actually running it through the algorithm. From this property, we can determine the probability of finding a particular collision with some light mathematics.
+
+Each byte of the hash output has sixteen possible values, represented as 0-9 and A-F. The probability of finding an input with "1" or any other particular digit, as the first value of its hash is therefore one in sixteen, meaning it takes sixteen hash attempts on average to find such an input. Similarly, the probability of finding an input with "12" as its first two bytes is 1/16 * 1/16 = 1/256, a total of 256 attempts on average. For each additional byte we want to match, the number of hash attempts required is multiplied by sixteen. Clearly, the number of required attempts grows extremely quickly as the number of bytes to match increases.
+
+Proof-of-Work asks a user to find this sort of partial collision with a given number of matching bytes. By adjusting the number of bytes to match, we can also adjust the required attempts and, as a result, the total computational power and electricity expenditure necessary to find a valid partial collision. Returning to our email use-case, one could pick the number of required matching bytes such that the associated electricity cost of computing such a collision is roughly equivalent to one US cent. L
+
+We can further fine-tune the number of required hashes by expanding the list of acceptable matches. For instance, one could specify that the sender should find a collision where the first bytes is equal to "0" and the second byte is anything less than "8." Since this now permits eight possible values for the second byte (0 through 7), or half of the total possible values for that byte, the odds of finding such a collision become 1/16 * 1/2 = 1/32. Note that this is smaller than the than the 1/256 chance for an exact two-byte match. 
+
+Proof-of-Work is valuable in the field of email spam prevention, but it also provides us with an interesting primitive. Each collision gives us information about the resources expended in order to generate the value. Next, we'll explore how this primitive was applied to digital finance systems.
