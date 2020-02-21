@@ -4,7 +4,6 @@ title: "Open Access"
 status: "0"
 ---
 
-## Outline
 Digital finance in the new millennium was undoubtedly a game of centralized management. Given the strength of governmental regulation within financial markets, centralization proved a necessity for companies looking to develop internet-based currencies. Without central control, these companies would almost certainly be unable to comply with the various restrictions on what was essential digital banking. Centralized systems were also often significantly simpler than any decentralized alternatives. The server-client model that came to dominate internet applications shaped the structure of the internet itself, further enshrining the concept of a central service provider.
 
 The internet was clearly evolving from its strange origins, a world once populated by millions of pages on GeoCities, into a more rigid environment with a largely top-down structure. Any remaining glimmers of hope for a primarily peer-to-peer internet system were quickly beginning to fade. Some individuals, many of whom had witnessed this rapid shift, turned their attention away from the internet base-layer and instead to decentralization on the growing application layer. Once again, digital money systems became a prime target for ideologically-driven, and typically computer-savvy, researchers.
