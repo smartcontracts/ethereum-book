@@ -33,4 +33,6 @@ Although this system sounds ideal in theory, it still requires the existence of 
 
 Adam Back's HashCash is likely the most widely recognized of these constructions today. Crucially, HashCash popularized the concept of using hashing algorithms as a mechanism for proving that a certain amount of computational effort had been expended. This mechanism, which we often now call "Proof-of-Work," became a keystone of the peer-to-peer digital currencies to come. Proof-of-Work's importance is so crucial that it's necessary to fully understand its basic operation before we continue with our analysis of its eventual use.
 
-Proof-of-Work 
+```
+TODO: Finish out this section. Needed a break.
+```
