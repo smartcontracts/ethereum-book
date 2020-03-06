@@ -109,6 +109,7 @@ div.chapter ul,
 div.chapter ol {
   margin-top: 30px;
   margin-bottom: 0px;
+  list-style-type: disc;
 }
 
 .MJXc-display {

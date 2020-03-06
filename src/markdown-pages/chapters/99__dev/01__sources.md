@@ -3,6 +3,9 @@ path: "/chapters/dev/sources"
 title: "Sources"
 ---
 
+## Not Categorized
+- [State Transitions](https://www.youtube.com/watch?v=XIsn8-5Xekc)
+
 ## Eth2 General
 - [Serenity Design Rationale, The Ethereum Foundation](https://notes.ethereum.org/@vbuterin/rkhCgQteN)
 - [Ethereum 2.0 Phases, EthHub](https://docs.ethhub.io/ethereum-roadmap/ethereum-2.0/eth-2.0-phases/)

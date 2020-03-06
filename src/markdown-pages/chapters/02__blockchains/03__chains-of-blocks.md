@@ -4,26 +4,6 @@ title: "Chains of Blocks"
 status: "0"
 ---
 
-## Outline
-- Realization that hashing could replace leader election
-    - Mirrors process in traditional BFT
-    - Each update to the system requires winning a lottery
-    - Winner rewarded financially for their effort
-    - Ticket must be tied to update and to previous state, or same ticket could be used for multiple updates
-- Possible for multiple to find ticket around the same time
-    - Impossible to tell who won "first"
-    - Leads to concept of forks, multiple possible pathways
-    - Brief note on fork choice rules in prep for next chapter
-- Reward tied generally to "value" of things happening within the update
-    - Small, frequent updates means not worth giving high reward, means needs to be easier to find winning ticket
-    - Easier to find winning ticket means more likely for multiple to find ticket around the same time
-    - Instead, bundle transactions into larger "blocks" that take longer to find.
-    - Difficulty adjusts automatically to maintain a constant rate of blocks
-    - Note that some chain systems do actually use DAG approach
-- Since blocks refer to their parents, we get "chains"
-
----
-
 Proof-of-Work provided researchers with a useful building block with which digital money systems could be constructed. At its core, the mechanism made it possible for people to prove that they'd expended a given amount of resources in the form of the electricity and wear necessary to find a given partial collision. Moreover, this proof could be easily verified without the need to communicate with the user who created the proof.
 
 Additionally, the ability for someone to generate such a proof was linked directly to their access to adequate physical resources. That users weren't required to register with any specific governing body was strongly in alignment with the early decentralized mentality. Individuals could produce these proofs as long as they were participants of some society willing to secure their ownership of the necessary machinery. If Proof-of-Work could somehow act as a replacement for "voting power" in a fault-tolerant system, it would satisfy most of the qualities of the "ideal" decentralized digital currency.
