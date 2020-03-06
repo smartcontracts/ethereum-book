@@ -15,6 +15,11 @@ status: "1"
     - Events can be written but not read from within EVM
     - Everyone has the same instructions so execution is deterministic
 
+---
+
+```
+TODO: Rework this entire section.
+```
 
 ---
 
