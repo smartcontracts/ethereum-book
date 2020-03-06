@@ -4,43 +4,64 @@ title: "Fork Choice Rules"
 status: "0"
 ---
 
-## Outline
-- Reiterate problem statement
-    - User sees multiple blocks or chains at the same time
-    - Not possible to tell which came first, must use some other metric
-    - Tool used to determine a chain to follow is fork choice rule
-- Fork choice properties
-    - Should be easy to compute 
-    - Should reinforce economics of chain itself
-    - Should be deterministic so clients can converge
-- LCR
-    - Simple, effective
-    - Protocol explanation
-- GHOST
-    - More complex, accounts for more information when latency:block ratio is high (ommers)
-    - Protocol explanation
-    - Not actually used in Eth1 even though everyone thinks it is
-- Others exist but not as frequently used
----
+In the previous section, we mentioned that forks occur when multiple published blocks reference the same previous state. We might face such an event by accident, perhaps if two blocks are published at approximately the same time. However, this could also happen on purpose, as would be the case if a malicious actor were attempting to create a fork in order to "remove" a payment from the chain generally accepted by other users. In either case, it's necessary that there be some mechanism that allows users to determine which fork is the correct or "canonical" one. We refer to such a mechanism as a "fork choice rule."
 
-ok let's reiterate the problem. We previously mentioned that forks could happen when multiple people publish an update against the same state. This could happen by accident if two people find lottery tickets at the same time, but it could also happen deliberately. For instance someone could try to make a payment and then create a different chain that does not include the payment, effectively wiping the payment out if that otehr chain becoems the accepted one. It's actually not possible to tell whether a block jsut came really late or if the person made the block really late, since they look the same from info-theoretical standpoint. But basically the problem here is that someone might see two potential chains at some point and have to decide which chain is the "correct" one or something we often call "canonical." The strategy that someone uses to determine the canonical chain given a set of possible chains is called the fork choice rule.
+Fork choice rules are extremely important for the proper functioning of the underlying blockchain. Fork choice rules determine which chain is to be widely accepted and, therefore, which block producers are to be rewarded. A poorly designed fork choice rule can quite quickly lead to unexpected or undesired behavior on the part of both users and block producers.
 
-Now fork choice rules need to have some particualr properties in order to be useful. An obvious first requirement is that they should be easy to compute. It should be possible to relatively qucikly determine from a list of forks without too much effort. This is really just a logical statement since we dont' want to add a bunch of extra work on the side of clients.
+All fork choice rules must have certain properties in order to be maximally useful. In keeping with the notion of openness and accessibility, fork choice rules should be easy to compute. Nodes should be able to select a canonical chain from a set of forks without significant computational effort. Furthermore, many protocol designers feel that fork choice rules should have limited reliance on external parties. Essentially, nodes should be able to execute the rule without needing to confer with some "trusted" central entity or group. 
 
-However the fork choice rule also should probably reinforce the requirements of teh chain to remain open and accessible. Part of this typically means that the fork choice rule is constructed so that it doesn't rely on a central party to tell you which fork is the correct one. You're typically able to determine this result for yourself simply by looking at the potential options. Howver its important to also note that clients don't necessarily need to follow the same fork choice rule in theory. It's really up to the client. Yet of course clients are going to want to agree on a chain or they won't be able to itneract since they have different histories.
+Perhaps most crucially, fork choice rules must reinforce the economic incentives within the system as a whole. Block producers are typically rewarded with some digital currency transaction contained within the blocks they produce. When a fork choice rule rejects their block, this reward transaction is no longer included within the canonical chain. Generally speaking, if the fork choice rule does not reward the producer who carried out the most computational work, then the direct link between voting power and resource expenditure is broken.
 
-We do want to generally guarantee that the economics of the system make sense. before we mentioned that people get rewarded for making proposals. A proposal is a block, and the reward for that block gets given to the creator within that very block. If the block is removed from the "canonical" list of a client, then the person doesn't get paid in the eyes of that client. They did not get that reward. So it makes sense that the immediate reaction for a fork choice rule is one that basically chooses forks based on whichever one has the most amount of cumulative effort on it. The idea is that since that chain did the most amount of cumulative work, we want to reward them. If you used any other metric, then suddenly doing the most work doesn't necessarily mean getting paid, which creates a weird disparity between the stated goals of the system and the actual functionality. 
+It's perhaps no surprise then that the earliest fork choice rules simply selected the chain with the most total work.
 
-So one of the simplest mechanisms for this is literally to just choose the chain with the most amount of cumulative work expended. When faced with a fork, you look at the total difficulty of the blocks within the possible chains. Whichever chain has the most work behind it is the "canonical" chain and clients pick that chain. This satisfies our properties because it's easy to check the difficulty given the block and it only relies on having the blocks. 
+```
+TODO: LCR explainer
+```
 
-[LCR EXPLAINER]
+An important property of the Longest Chain Rule is that forks from some target block become less likely as additional blocks are produced on top of the target. Any chain attempting to fork out a specific block would need to carry out more work than the sum of the work on that block and any blocks that follow. An attacker must carry out even more additional work as more blocks are added to the canonical chain. Generally speaking, this means that an attacker would need access to more than 50% of all hash power to successfully carry out an attack.
 
-Another reason we want this is that it becomes harder for someone to make a long distance fork as more blocks are created on the other chain. Since in order to become the winning chain they would need to do more work than the other chain, each new block added to the other chain means more work for the other person. Generally speaking, this means that in order to start outpacing the "main" chain, someone would need 51% of hash power. So anyone with 51% of ahsh power could theoretically, over time, build an alternative chain that becomes the main chain. One thing with this is that there are social considerations, hard to explain. Also, really the best you can get out of this is to wipe a transaction out of the other chain.
+```
+TODO: Expand on the above.
+```
 
-An alternative to LCR is called GHOST, which is sort of like LCR but takes uncles into account. The general idea of GHOST is that uncles on a block are actually sort of implicitly doing work on that block, even if they aren't part of the chain itself. If we dont take uncles into account, then we're ignoring the work expended and it effectively becomes wasted. This is especially necessary when uncles are more common like in blockchains with smalelr blocks and faster block times.
+**GHOST** (Greedy Heaviest Observed Subtree) is an alternative to the longest-chain rule. GHOST, unlike the LCR, doesn't simply look at the length of a chain, but also factors in any **uncle blocks**.
 
-[GHOST EXPLAINER]
+An uncle block to a chain is any block that *builds upon some block in that chain*, but isn't actually part of the chain itself. Let's go through this by example. In the following diagram, duplicated from above, we have a fork at `Block A`:
 
-So GHOST basically makes it easier to determine forks when latency:block ratio is high. 
+![Uncle Blocks](./images/fork-choice-rules/uncle-blocks.png)
 
----
+Here, we say that `Block B'` is an *uncle of the chain headed by* `Block D` because it builds on one of its components (in this case, `Block A`).
+
+Uncle blocks are not unusual occurrences. The main Eth1 chain is currently approaching ten million blocks in length and has almost *one million* uncles. But why do we care about them?
+
+Though uncle blocks don't directly add to the length of a chain, they *do* imply that the creator of the uncle block meant to extend that chain. Which chain would you follow, a chain with two blocks and no uncles or a chain with one block and a thousand uncles? If we simply ignore uncle blocks, then we're "wasting" the work put into these blocks by their creators. 
+
+Here's how GHOST finds the "best" fork to follow:
+
+1. First, we start at the genesis block.
+2. Next, we look at all of the available forks from the current block, if any.
+3. If there are no more blocks in the chain, we select the current block as the head of our chain and stop our search.
+4. If we only have one potential chain (no forks), then we move onto the next block.
+5. If we have more than one potential chain (a fork), then we move on to the first block of the fork with the most *total* blocks, including uncle blocks.
+4. Head back to step (2) with our current block.
+
+### GHOST vs. LCR
+GHOST often agrees with the longest-chain rule:
+
+![GHOST and LCR Agree](./images/fork-choice-rules/lcr-ghost-agree.png)```
+
+Here, the LCR picks `Block F` because it's part of the longest chain (six blocks in total). Our GHOST rules really only apply at `Block B`, where we have our first fork. The chain after `Block C'` has a total of three blocks, whereas the chain after `Block C` has a total of four blocks. GHOST therefore moves onto `Block C` and doesn't find any other forks until stopping at `Block F`.
+
+However, in some cases, GHOST will disagree with the longest-chain rule: 
+
+![GHOST and LCR Disagree](./images/fork-choice-rules/lcr-ghost-disagree.png)
+
+In this chain, the LCR picks `Block G` because it's part of the longest chain (seven blocks). GHOST diverges from the LCR after `Block B`. Although the chain following `Block C` is longer at five blocks, there are a total of *six* blocks in the fork starting at `Block C'` when we count uncle blocks.
+
+```
+TODO: Expand on GHOST as useful for high latency.
+```
+
+```
+TODO: Any others to touch on?
+```
