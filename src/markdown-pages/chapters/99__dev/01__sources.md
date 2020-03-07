@@ -5,6 +5,7 @@ title: "Sources"
 
 ## Not Categorized
 - [State Transitions](https://www.youtube.com/watch?v=XIsn8-5Xekc)
+- [EVM](https://www.youtube.com/watch?v=OYfy1-5nB64)
 
 ## Eth2 General
 - [Serenity Design Rationale, The Ethereum Foundation](https://notes.ethereum.org/@vbuterin/rkhCgQteN)
