@@ -50,8 +50,8 @@ const Sidebar = () => {
   }, {})
 
   return (
-    <nav className="sidebar">
-    <div className="sidebar-title">THE ETH2 BOOK</div>
+    <nav className="sidebar no-print">
+      <div className="sidebar-title">THE ETH2 BOOK</div>
       <ul className="chapters">
         {Object.values(layout).map((chapter, index) => {
           return (

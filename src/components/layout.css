@@ -109,6 +109,7 @@ div.chapter ul,
 div.chapter ol {
   margin-top: 30px;
   margin-bottom: 0px;
+  list-style-type: disc;
 }
 
 .MJXc-display {
@@ -128,4 +129,14 @@ table, th, td {
 
 th, td {
   padding: 5px;
+}
+
+@media print {
+  .no-print, .no-print * {
+    display: none;
+  }
+
+  div.main-content {
+    margin-left: 0;
+  }
 }
