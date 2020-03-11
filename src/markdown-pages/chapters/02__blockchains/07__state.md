@@ -7,7 +7,7 @@ status: "0"
 First junk draft of State and State Transition Function section.
 
 In order to understand what happens inside of a blockchain we need to look at the concept of state. Basically blockchains are responsible for giving us the ability to share a list of events and the ordering of those events. What this means is that with a blockchain protocol we share information so that nodes come to agreement about a series of events, each of which contains information inside the event. This ends up looking like this:
-
+  
 todo
 
 Events alone aren't really very useful. We need to ascribe some sort of meaning to these events. Luckily, we can actually represent almost any sort of application through this type of strucutre. To undertsand this, let's look at the concept of an application at a high level. Basically, the basis of any sort of application is the "state" of that application. State isn't a very descriptive term, but it essentially means the information that the application represents. 
