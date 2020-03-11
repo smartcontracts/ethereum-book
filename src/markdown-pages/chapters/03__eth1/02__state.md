@@ -35,13 +35,42 @@ TODO: World state diagram.
 
 Given the ID, or address, of a particular account, the world state returns some information associated with the account. This information is called the "account state." The account state for all accounts, for instance, contain a "balance" field that represents the account's current balance of a currency known as Ether, or ETH. ETH can be transferred between accounts. ETH is also used as the reward for block producers and the fee users must pay for any transactions on the system.
 
-Eth1 allows for two types of accounts. The first is the "user account," which is controlled by a cryptographic private key. The address of a user account is derived from the public key associated with its private key and is therefore guaranteed to be unique. A user account can make a transactions, perhaps an ETH balance transfer, by signing the transaction with the private key. Besides a balance, user account state includes a field for a "nonce," which counts the total number of transactions sent from that account.
+Eth1 allows for two types of accounts. The first is the "user account," which is controlled by a cryptographic private key. The address of a user account is derived from the public key associated with its private key and is therefore guaranteed to be unique. A user account can make a transactions, perhaps an ETH balance transfer, by signing the transaction with the private key. Besides a balance, user account state includes a field for a "nonce," which counts the total number of transactions sent from that account. A user account takes the following structure within Ethereum:
 
-Ethereum also allows for accounts that are controlled by some code and not by a private key. These "contract accounts" can send and receive transactions like any other. We eaxmine the strucutre and behavior of these accounts in the next section. Contract account state also contains a "balance" field. Unlike user accounts, however, they contain an additional "codehash" field that stores the hash of the code that defines the contract's behavior. Furthermore, contracts have an associated "nonce," which counts the total number of contracts deployed by that contract.
+```json
+{
+    "nonce": <number>,
+    "balance": <number>
+}
+```
 
-Contract accounts also contain a final field called the "storageroot." This is a compact reference to the information that the contract wishes to store for later. User accounts are not allowed to store information in this manner. We use the word "root" because the actual information is stored in a special data structure called a "Merkle-Patricia Trie." A Merkle-Patricia Trie is much like a Merkle Tree, except it allows for key-value access. Since this structure appears in multiple places throughout Ethereum, we will explain it here.
+Ethereum also allows for accounts that are controlled by some code and not by a private key. These "contract accounts" can send and receive transactions like any other. We examine the structure and behavior of these accounts in the next section. Contract account state also contains a `balance` field. Unlike user accounts, however, they contain an additional `codeHash` field that stores the hash of the code that defines the contract's behavior. Furthermore, contracts have an associated `nonce`, which counts the total number of contracts deployed by that contract.
 
-The Merkle-Patricia Trie is a way to store key-value pairs. The "trie" component of the name stems from a special tree data structure called a "radix trie," in which branches represent some key. At each node, there are some children each associated with a given key. For instance, the root of such a trie might look like this:
+Contract accounts also contain a final field called the `storageRoot`. This is a compact reference to the information that the contract wishes to store for later. User accounts are not allowed to store information in this manner. We use the word "root" because the actual information is stored in a special data structure called a "Merkle-Patricia Trie." A Merkle-Patricia Trie is much like a Merkle Tree, except it allows for key-value access. Since this structure appears in multiple places throughout Ethereum, we explain in thoroughly below.
+
+The structure of a contract account in Ethereum is as follows:
+
+```json
+{
+    "nonce": <number>,
+    "balance": <number>,
+    "codeHash": "<string>",
+    "storageRoot": "<string>"
+}
+```
+
+In practice, we use the above structure for both user accounts and contract accounts. As user accounts have no `codeHash` or `storageRoot`, the entries for these fields are set to certain default values. The `storageRoot` for a user account is simply the empty string, whereas the `codeHash` for a user account is the `keccak256` hash of the empty string. For instance, a user account may contain the following state:
+
+```json
+{
+    "nonce": 1,
+    "balance": 10000,
+    "codeHash": "0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470",
+    "storageRoot": ""
+}
+```
+
+We now briefly turn our attention to the Merkle-Patricia Trie, a data structure frequently used in the world of Ethereum. The Merkle-Patricia Trie allows us to store key-value pairs within a traditional Merkle Tree structure. The "trie" component of the name stems from a special tree data structure called a "radix trie," in which branches represent some key. At each node, there are some children each associated with a given key. For instance, the root of such a trie might look like this:
 
 ```
 TODO: First diagram.
