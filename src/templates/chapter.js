@@ -3,6 +3,7 @@ import { graphql } from "gatsby"
 
 import Layout from "../components/layout"
 import Sidebar from "../components/sidebar"
+import Toolbar from "../components/toolbar"
 
 const DRAFT_STATUS = {
   '0': 'NOT READY FOR REVIEW',
@@ -32,6 +33,7 @@ export default function Template({
 
   return (
     <Layout>
+      <Toolbar />
       <Sidebar />
       <div className="main-content">
         <div className="container">

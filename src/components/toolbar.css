@@ -1,0 +1,38 @@
+nav.toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 50px;
+  width: 100%;
+  background: white;
+  border-bottom: 1px solid lightgray;
+  z-index: 3;
+  line-height: 50px;
+}
+
+main:not(.collapsed) nav.toolbar {
+  left: calc(16.5em + 1px);
+}
+
+.collapse-button {
+  background: none;
+  border-style: none;
+  position: relative;
+  margin-left: 15px;
+}
+
+.collapse-button:hover {
+  cursor: pointer;
+}
+
+.collapse-button:active,
+.collapse-button:focus {
+  outline: none;
+}
+
+.toolbar-title {
+  display: inline-block;
+  position: relative;
+  left: 15px;
+  bottom: 1px;
+}

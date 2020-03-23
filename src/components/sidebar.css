@@ -2,14 +2,20 @@ nav.sidebar {
   position: fixed;
   top: 0;
   left: 0;
-  height: 100%;
+  height: 100vh;
   width: 16.5rem;
   border-right: 1px solid lightgray;
   overflow-y: auto;
 }
 
+main.collapsed nav.sidebar {
+  left: -16.5rem;
+  border-right: none;
+}
+
 nav.sidebar ul {
   padding-left: 20px;
+  margin: 0;
 }
 
 nav.sidebar ul a {

@@ -51,7 +51,7 @@ const Sidebar = () => {
 
   return (
     <nav className="sidebar no-print">
-      <div className="sidebar-title">THE ETH2 BOOK</div>
+      <div className="sidebar-title">Table of Contents</div>
       <ul className="chapters">
         {Object.values(layout).map((chapter, index) => {
           return (
