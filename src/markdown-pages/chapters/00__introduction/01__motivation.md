@@ -4,98 +4,20 @@ title: "Motivation"
 status: "1"
 ---
 
-## Why do we care about blockchain systems?
-We can't talk about blockchain systems without first exploring the concept of *value*.
-We don't often understand exactly *what* value is or *how* value works, but we rarely go a day without exchanging it.
-We deal with value, in the form of money, every time we buy groceries or pay a bill.
-We experience some form of value exchange when we clock in at work and get our paycheck two weeks later.
-Value is so deeply ingrained in our daily lives that it's often difficult to imagine a world without it.
+*The Eth2 Book* is, perhaps unsurprisingly, an attempt to solidify the state of written educational content regarding Eth2. We've chosen to develop this subject at this point in time for a couple main reasons. Knowledge of Eth2 has, until now, been largely stored in the collective brain bank of researchers and developers focused on the project. Deep understanding of Eth2 is unlikely to come under these circumstances without access to key individuals. Existing published content additionally tends to fall too far on the extremes of simplicity or complexity. This reality is unfortunate given the current timeline and importance of Eth2. A transition to a better Ethereum -- one that addresses many of the shortcomings of Eth1 -- is clearly necessary for the project's long-term prospects. Further given that development of Eth2 has accelerated quickly within the past year, it's time for an approachable resource that can help readers understand and prepare for changes to come.
 
-It's easy to understand, therefore, why the Internet and smart phones ushered in such massive influx of tools designed to simplify the way we interact with value.
-Online services make it easier than ever to send money across the room, or across the globe.
-Apps can get us trading on the stock market in under ten minutes.
-Insurance plans are only a few taps away.
-When transaction costs are high, simple and accessible transactions are, in themselves, valuable.
-The last two decades have marked a revolution in the way we interact with value and, as a result, one another.
+Whether you're an application developer, researcher, or simply somehow invested in the Eth2 ecosystem, it's extremely valuable to build a comprehension of Eth2 as a whole. Eth2 shares many similarities with its predecessor, but simultaneously introduces new quirks that impact the structure and operation of Ethereum-based applications. Developers many need to rework certain aspects of their applications. Researchers may discover new tools that allow them to design novel constructions. End-users may wish to understand how these changes will impact functionality and user experiences. Specifications of Eth2 have finally reached the point that most anyone can derive valuable information about advances to come.
 
-Value is, however, being represented and exchanged in ever-more complex ways.
-The simple financial contracts of yesterday, fixed mortgages and the like, are being replaced with complicated agreements only understood the few who created them.
-We've seen first hand the ways in which these complex tools, when left in the hands of wealthy minority, can be used to exploit us.
-The 2008 financial crisis can be largely blamed on the deployment of complicated and exploitative contracts by wealthy organizations against vulnerable populations.
-These tools, although not inherently malicious, are powerful because they can carefully define value and its exchange within a given transaction.
-More often than not, these definitions are designed such that one party is at a significant disadvantage to the other.
+Eth2 provides a unique opportunity for interested parties to positively influence the future of blockchain projects as a whole. Although much of the project's initial direction is well defined, many design decisions, particularly on the application layer, are still open for debate. Eth2 research and development is community-driven, and therefore accessible to anyone seeking to provide input. This book aims, in part, to connect readers to projects or research efforts they may find interesting. We include pipelines that help readers become familiar with the process of entering and contributing to these projects. We strongly encourage interested readers to explore these pipelines and the possibilities they hold.
 
-Furthermore, many people are systematically and unfairly denied access to even basic financial services.
-In a world where value is so critical to everyday life, the lack of access to a bank account can be extraordinarily destructive.
-Those lucky enough to have access to these services are often faced with an unfriendly and nebulous system designed to extract as much value from its "customers" as possible.
-These systemic failures create a void in which the only available options tend to be ill-regulated services like payday loan or check cashing providers.
-Many no longer feel that the modern financial infrastructure serves the public interest, and for good reason.
+Eth2 additionally represents an opportunity to become deeply acquainted with the fundamental elements of any blockchain system. Eth2 has been designed largely from the ground up in response to lessons learned throughout the lifespan of Eth1. The project challenges many of the assumptions made by earlier efforts. Its transition from "Proof-of-Work" to "Proof-of-Stake" brings Eth2 closer to older, more established constructions in the field of computer science. Readers have a change to understand what really makes a blockchain tick, and to relate the novel components of Eth2 back to the inner workings of previous designs. Readers will, as a result, not only comprehend Eth2, but also build an intuitive understanding of blockchain principles that can  be applied in countless other contexts.
 
-Blockchain systems are a response to these failures on multiple fronts.
-Blockchains present a vision for a future in which access to a financial system is no longer controlled by a few private entities.
-Indeed, blockchains are fully-featured financial systems within themselves.
-For the first time, perhaps, entire economies can be deployed to large communities with relatively minimal effort.
-Blockchains also introduce the concept of "programmable money" to the general public.
-These novel and accessible mechanisms for controlling the representation and flow of value are a strong challenge to that power once held solely by expensive private law firms.
+In line with the method by which Eth2 has been developed, this book revisits and challenges subjects with which readers may already be familiar. We kick off our study with an examination of the roots of the modern blockchain in the field of distributed systems. We then take a look at how these elements give rise to the blockchain in the face of a shifting problem space. Core blockchain components -- Proof-of-Work, transactions, and even the concept of blocks themselves -- are reconstructed not as inevitabilities but as potential solutions to concrete problems. In this manner the reader may begin to imagine alternative approaches to these same problems. We are all capable of exploring novel solutions once we've developed a complete picture of our constraints.
 
-Clearly powerful, this newfound control over value has also proven massively popular.
-Bitcoin and Ethereum have, in a little over a decade, captured enough economic value to rival the GDP of a small country.
-Countless similar blockchain systems have gone into production since Bitcoin's inception.
-It's very likely that these systems will continue to grow in both size and capability over the coming decade.
-It's also very likely, however, that these systems will experience pressure from the institutions they aim to displace.
-We can only hope to face this pressure by educating the general public about the benefits of open finance.
+*The Eth2 Book* generally attempts to avoid assumptions of existing background knowledge. Of course, this expands teh potential audience for the work. However, this methodology is also intended to deconstruct common misconceptions of key subject matter. Blockchain systems are the emergent result of relatively self-contained building blocks. We systematically develop bases of knowledge that aim to provide readers with all of the tools necessary to fully grasp subsequent topics. Certain subjects not necessary to understand in order to continue our study are left to external resources for interested readers. All other key information can be found contained entirely within this work.
 
-We find it important, for all of the above reasons, that the widest possible population be knowledgeable about and influential over tomorrow's blockchains.
+The design of this book intends to be approachable by readers with any level of relevant background knowledge. Given our initial focus on blockchain fundamentals, *The Eth2 Book* provides content for readers interested in Eth2 or in blockchains as a whole. We attempt to detail basic concepts in clear, complete language without trending too far towards unnecessary simplicity or complexity. The subjects covered in this text are undeniably cut from a "technical" cloth. Still, we aim to make technical topics accessible to any potential reader. The linear layout of the book, based on our system of building blocks, allows those with background knowledge to enter the work at whichever point they deem most valuable. That said, even weathered blockchain researchers may find a new perspective from content covered in early chapters.
 
-## Why do we care about Ethereum?
-Blockchain systems are critical to the future of open and programmable finance.
-Early notions of "programmable money," e.g. Bitcoin Script, though revolutionary, were often quite limited.
-Truly flexible financial systems need to support a wide range of applications or risk lacking the features to drive mass adoption.
-Many models ultimately proved insufficient for applications that needed "rich" state to represent complex forms of value.
-Ethereum was one of the first projects to challenge this model with an ambitious blockchain-based "virtual machine."
+To the end of maximal utility, *The Eth2 Book* is structured as something between a traditional printed book and a more modern digital wiki. Content is laid out as to be consumable both in isolation or in series with other sections. Readers will find sidebars within each section that point to topics previously covered that serve as required background knowledge for the subject at hand. Those interested in specific topics may derive value from revisiting linked background sections. We additionally provide frequent links and references to earlier sections as one might expect from the wiki format. Readers on the web will also find a search bar at the top of each page and have the option to view certain figures in an interactive or animated form.
 
-Ethereum's gamble has, obviously, proven successful in the long-term.
-Many of Ethereum's early innovations are now often taken for granted, and its major features are staples in other blockchain protocols.
-Ethereum's power and longevity, however, can now be attributed more to its community than its technical achievements.
-Ethereum has nurtured a large community of contributors who find themselves connected by a shared vision for an open financial future.
-This community gives Ethereum a "social robustness" and long-term sustainability unknown to any other blockchain system outside, perhaps, Bitcoin.
-Any potential "Ethereum killer" would first have to undermine the Ethereum community.
-Ethereum, therefore, seems to be here to stay.
-
-Blockchains, as social constructions, must carefully manage development as to avoid capture by private interests.
-The Ethereum community has demonstrated a willingness to treat complex social issues like governance with the same respect as technical issues.
-This is critical for any project of Ethereum's scale, but especially so for a project with the potential to so radically alter our social contract.
-We believe that this community-first approach will keep Ethereum healthier than its competitors and will, as a result, attract a much larger potential set of contributors.
-
-## What's Eth2 and why do we care about it?
-All blockchain systems have faced certain fundamental restrictions on their theoretical scale of operation.
-Although many have attempted to address these limitations, significant research hurdles remained for the better part of a decade.
-Ethereum, as an iteration on early blockchain systems, was no exception to these restrictions.
-Ethereum's early developers understood that the initial protocol needed improvement if Ethereum were ever to operate on a global scale.
-
-Although Ethereum has seen various minor upgrades since its launch, Ethereum's mainnet has remained mostly unchanged.
-However, much has been learned from observations of system during its time in production.
-Researchers and developers, empowered by Ethereum's success, have spent significant time addressing those early limitations.
-Many major recent advances in the fields of cryptography and distributed systems can be attributed to the Ethereum community.
-This work has culminated in a specific series of major planned protocol improvements often simply referred to as "Eth2."
-Eth2 significantly improves Ethereum's scalability by introducing new mechanisms that increase throughput without also increasing hardware requirements.
-
-A more scalable Ethereum is also a more accessible, and therefore impactful, Ethereum.
-Open finance cannot be truly "open" if it's only usable by a small subset of individuals.
-Eth2 is the pathway through which the ideological vision behind Ethereum can come to fruition.
-
-## Why did we decide to create this resource?
-Ethereum represents the potential for a more equitable future, a future that democratizes access to financial services and complex financial instruments.
-Eth2 is critical to the vision of an Ethereum operating at global scale.
-
-Unfortunately, access to Eth2 itself has been largely hindered by a lack of strong educational resources.
-Existing information about Eth2 is spread thinly across various corners of the internet.
-Accessible resources are often written in highly technical language or assume an unreasonable level of knowledge on the part of the reader.
-Although high-level Eth2 summaries do exist, they typically fail to go into the level of detail required to truly understand and eventually contribute back to Eth2.
-We clearly see a necessity for an effective and accessible Eth2 educational resource.
-
-Furthermore, we see a failure in the lack of pipelines between educational resources and relevant Eth2 projects.
-Readers will only become contributors if it's completely clear where and how they can do so.
-Currently, any potential contributor needs to weed through dozens of potential projects before they'll find one relevant to their own interests.
-Although it seems that researchers and developers working on Eth2 don't have enough bandwidth to develop these pipelines, they're clearly necessary.
-We therefore see value in a resource that not only educates readers about Eth2, but also helps those readers access interesting projects in which their skills are valued.
+As we come to the close of this introduction, we'll briefly restate the primary goals of this work. *The Eth2 Book*, at its core, aims to help readers build a strong understanding of block Eth2 and blockchain systems in general. We tackle this task by developing bases of knowledge and revisiting certain subjects that some may take for granted. We simultaneously provide readers with relevant links to external reference material and clear pathways to become involved with various projects. At the end of the day, *The Eth2 Book* looks to help readers gather the tools necessary to become independent and well-equipped thinkers. It's through the free exchange of information that we can construct a better and stronger Ethereum community. We hope that you enjoy your journey!
