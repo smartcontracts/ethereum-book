@@ -147,5 +147,10 @@ th, td {
 
   div.main-content {
     margin-left: 0;
+    height: 100%;
+  }
+
+  html, body {
+    overflow-y: auto;
   }
 }
