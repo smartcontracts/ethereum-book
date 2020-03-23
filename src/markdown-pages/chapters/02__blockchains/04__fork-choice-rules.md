@@ -18,25 +18,11 @@ It's perhaps no surprise then that the earliest fork choice rules simply selecte
 TODO: LCR explainer
 ```
 
-An important property of the Longest Chain Rule is that forks from some target block become less likely as additional blocks are produced on top of the target. Any chain attempting to fork out a specific block would need to carry out more work than the sum of the work on that block and any blocks that follow. An attacker must carry out even more additional work as more blocks are added to the canonical chain. Generally speaking, this means that an attacker would need access to more than 50% of all hash power to successfully carry out an attack.
+The longest chain rule has the effect that a competing fork can only become canonical once its total difficulty overtakes that of any other chain. Difficulty essentially acts as a proxy for resource expenditure, so we can say that the chain chosen by the LCR generally follows whichever parties control, jointly, more than half the total current hash power. The probability of producing a valid block increases with the amount of hash power dedicated to doing so. A group of miners with more than half total hash power will always be slightly more likely than any other group to find a valid block. Over time, this ensures with increasing probability that a minority chain cannot overtake a majority one.
 
-```
-TODO: Expand on the above.
-```
+One significant shortcoming of the longest chain rule is that it favors smaller groups with more hash power per member over larger groups with the same total hash power. This stems from the fact that a group working on many different blocks on the same chain can only produce a single block to be factored in by the LCR. The total rate of block production between the two groups will be approximately equal, as s the first generates fewer blocks with higher frequency and the second many blocks with lower frequency. However, a larger percentage of these blocks become ommers and are thereby ignored by the LCR. The LCR effectively weighs the "winning" block as if only its producer, and not any others in the group, had performed any work to extend the target chain.
 
-**GHOST** (Greedy Heaviest Observed Subtree) is an alternative to the longest-chain rule. GHOST, unlike the LCR, doesn't simply look at the length of a chain, but also factors in any **uncle blocks**.
-
-An uncle block to a chain is any block that *builds upon some block in that chain*, but isn't actually part of the chain itself. Let's go through this by example. In the following diagram, duplicated from above, we have a fork at `Block A`:
-
-![Uncle Blocks](./images/fork-choice-rules/uncle-blocks.png)
-
-Here, we say that `Block B'` is an *uncle of the chain headed by* `Block D` because it builds on one of its components (in this case, `Block A`).
-
-Uncle blocks are not unusual occurrences. The main Eth1 chain is currently approaching ten million blocks in length and has almost *one million* uncles. But why do we care about them?
-
-Though uncle blocks don't directly add to the length of a chain, they *do* imply that the creator of the uncle block meant to extend that chain. Which chain would you follow, a chain with two blocks and no uncles or a chain with one block and a thousand uncles? If we simply ignore uncle blocks, then we're "wasting" the work put into these blocks by their creators. 
-
-Here's how GHOST finds the "best" fork to follow:
+The alternative GHOST fork choice rule attempts to address this problem by accounting for the existence of ommer blocks. When computing a score for each block, GHOST sums the difficulty of all chains that stem from the block and not only the heaviest one. This modification to the LCR guarantees that a majority group will always outpace a minority one, even if the majority is poorly coordinated. In general, GHOST has a positive effect on the extent of decentralization among the mining population. The basic algorithm behind GHOST is:
 
 1. First, we start at the genesis block.
 2. Next, we look at all of the available forks from the current block, if any.
@@ -44,6 +30,8 @@ Here's how GHOST finds the "best" fork to follow:
 4. If we only have one potential chain (no forks), then we move onto the next block.
 5. If we have more than one potential chain (a fork), then we move on to the first block of the fork with the most *total* blocks, including uncle blocks.
 4. Head back to step (2) with our current block.
+
+GHOST is additionally useful when block production rate is closer to network latency. For instance, this would be the case when network latency and block production rate are both on the order of 5-15 seconds. Lower ratio between the two metrics leaders to an increase in the probability that a miner fails to see a new block and instead begins to work on a lock stemming from the same parent. If the miner later chooses to switch their efforts to the new block, any work carried out is essentially now wasted. GHOST ensures that the miner can still influence the canonical chain by continuing work on their initial block. GHOST is typically accompanied by a reward system that compensates the producers of ommer bocks in line with the probability of such an event.
 
 ### GHOST vs. LCR
 GHOST often agrees with the longest-chain rule:
@@ -58,10 +46,4 @@ However, in some cases, GHOST will disagree with the longest-chain rule:
 
 In this chain, the LCR picks `Block G` because it's part of the longest chain (seven blocks). GHOST diverges from the LCR after `Block B`. Although the chain following `Block C` is longer at five blocks, there are a total of *six* blocks in the fork starting at `Block C'` when we count uncle blocks.
 
-```
-TODO: Expand on GHOST as useful for high latency.
-```
-
-```
-TODO: Any others to touch on?
-```
+GHOST and the LCR have a lot in common, by clearly have certain key differences. Although GHOST consumes more information, it also introduces complexities for implementation. The LCR has seen significantly more use within existing blockchains running in production today. Our study of GHOST will, however, prove valuable when we later analyze its modification and adoption in Eth2.
