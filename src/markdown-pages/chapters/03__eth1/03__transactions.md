@@ -4,52 +4,55 @@ title: "Transactions"
 status: "1"
 ---
 
-## Outline
-- Transaction basics
-    - Transactions operate on a specific state and mutate it
-    - Remind that term comes from transactional databases, not finance
-    - Transactions contain some sort of information that tells clients how to mutate the state
-- Transactions in Eth1
-    - Transactions must be sent from an account
-    - If sent from user account, must include a signature
-        - Not necessary for contracts because don't have private keys, only legit way to send is code
-    - Enshrined tx type for eth transfers from user accounts
-    - Enshrined tx type for contract deployment
-    - Otherwise must call a contract
-        - Specify contract to call
-        - Specify data to send to the contract (which method to call, plus input data)
-    - If a transaction fails for any reason, changes made are reverted
-- Fees
-    - Contract call time indeterminate
-        - Want to charge users based on computational and storage expense of their transaction
-        - Otherwise could abuse miners and break economics
-    - Gas metering system
-        - Each opcode has an associated cost in "gas"
-        - Each transaction has an associated "gas cost"
-        - Transactions must include a "gas price" in "eth per gas"
-        - Transactions must include a "gas limit"
-            - Anything beyond limit is a revert
-        - Gas used, whether success or revert, paid to miner
-            - Unused gas is returned to user
-- Transactions generate a receipt   
-    - Info about transaction outcome, with logs
+As shown in our analysis of blockchain systems in general, the next component after a system's state model is its transaction structure. Consensus mechanisms come to agreement about a specific ordered set of these transactions. Clients can then determine the current state of a system by passing each transaction, in order, through some specified state transition function. We examine Eth1's state transition function in detail throughout the next section. However, we must first understand the structure and purpose of Eth1's transactions. Here, we explore Eth1's various transaction types, the contents of each transaction, and the basic steps necessary to generate a valid transaction.
 
----
+Eth1 represents state as a set of accounts that correspond to, and thereby "own," an ETH balance and some arbitrary storage space. All transactions in Eth1 are sent "from" one account "to" another, both of which must be specified within the transaction itself. Transactions sent from a user account are only valid if they include a signature over the transaction created with the sending account's private key. Transactions may be sent by contract accounts, but only during the course of the execution of some transaction from a user account. These contract account transactions do not include signatures as they can only be created when a contracts code permits. These fields form the basic contents of any transaction.
 
-Transactions change the state as described earlier. Transactions contain information that tell nodes how the state should be changed. The impact of any given transaction depends on the contents of that transaction. Most important is what action the transaction represents. Nodes parse this information and then carry out changes according to some agreed upon rules.
+```
+NOTE: Forgot to add nonce and fee fields to the above.
+NOTE: Change *all* must contain recipient to most w/ exceptions.
+```
 
-For all transactions there are rules we need to consider depending on if the transaction is coming from a user account or a contract account. If a transaction is coming from a user account, it must contain a signature from the private key associated with that account. We do not need a signature if the transaction is coming from a contract account, as the only valid way to generate such transactions is through a code path within the contract. Since the contract itself must've triggered that code path, the transaction is implicitly considered valid.
+Eth1 allows for three primary types of transactions. Simple ETH transfers allow one account to send ETH to another. These transactions only include the fields defined above:
 
-Eth1 defines two special transaction types. A transfer transaction includes a sender, recipient, and an ETH balance to transfer between the two. The other special transaction is the contract deployment transaction. Since they aren't directed to anyone in particular, they have no recipient. Instead, they include the code for the new contract. They optionally also include some ETH balance to send to the new contract and input data to pass to the constructor function if required.
+```
+TODO: Simple ETH transfer tx structure.
+```
 
-All other transactions must be contract invocations. These include the address of the contract to call, the ID of the specific method to call, and any input data to the method. Contract invocations can also include an ETH balance if necessary for the method being called. When a node executes a contract call, it retrieves the contract and its storage. It then runs the method in the EVM and sees what storage values change. If the transaction runs without error, then the new state is changed in the world state trie. Otherwise, the whole transaction is reverted.
+Contract deployment transactions make it possible for an account to upload a new contract to Eth1. Contract deployments are identified by the lack of a recipient account address and are the only transactions that do not include the recipient field. Code for the new contract is attached in a "calldata" field. Calldata may additionally contain extra code and input data to be executed as soon as the contract has been deployed. Lastly, contract deployment transactions can include an ETH balance to be transferred to the new contract from the sending account. Altogether, these transactions take the following form:
 
-Transaction execution in any blockchain system requires some amount of computational effort on the part of users creating new blocks. Miners in a Proof of Work system, for instance, must execute the transactions within their blocks in order to compute the resulting state of the system. As such, it seems logical that these miners be paid a fee for the resources expended while executing these transactions.
+```
+TODO: Contract deployment tx structure.
+```
 
-Earlier systems with fixed transaction types or limited scripting systems could guarantee that transactions would execute in a timely manner. Transaction fees within these systems are typically more influenced by the limited space within each block rather than the computational intensity of each transaction. Ethereum's intricate EVM model, however, introduced the possibility that a transaction be exceedingly costly to execute. As a result, the EVM also introduces a fee system that charges users based on the complexity of their transaction.
+The third and final transaction type defined by Eth1 is the "contract interaction." This transaction type allows accounts to trigger the code associated with a given contract. Contract interactions contain all basic transaction information, including an optional ETH balance to be sent to the target contract. Like contract deployments contract interactions contain a calldata field that may be used to provide the contract with relevant input data. Contract code often uses this calldata to determine the exact action the sending account wishes to take. A complete contract interaction transaction appears as follows:
 
-Ethereum's metering system charges users for the EVM instructions in their transaction. Each EVM instruction includes a corresponding cost denominated in a unit called "gas." The total "gas cost" of a transaction is the sum of the cost of each instruction carried out during the execution of the transaction. Transactions then include a "gas price," denominated in Ether, that when multiplied by the "gas cost" gives the total fee paid to the miner for the transaction.
+```
+TODO: Contract interaction tx structure.
+```
 
-In order to prevent runaway transactions (an accidental infinite loop, perhaps), transactions additionally include a "gas limit." If the gas used within a transaction reaches this limit, execution is halted and the transaction is failed. However, because this still requires execution on the part of the miner, the failed transaction is still included within the block, unexecuted, and the transaction fee is rewarded to the miner.
+```
+NOTE: "Gas" references below to be edited into second paragraph of this section.
+```
 
-Transactions generate a receipt that explains what happened during execution. Receipts contain the cumulative block gas used, any logs produced, a bloom filter for those logs, and a status code signalling the result of the transaction. This is useful to easily verify that the state was updated correctly. It also gives a justification for rejected transactions and the reduction of sender balances they include.
+We've alluded to the fact that transactions must include a fee in the form of "gas." We discuss the exact calculation for this fee in the following section. In a nutshell, gas is a virtual currency used to pay for any transaction. All transactions must contain a base amount of gas (currently 21,000 gas) and a fixed amount of gas depending on the size of calldata in bytes (currently 68 gas per byte). Transactions then must additionally include an amount of gas generally proportional to the resource expenditure necessary for the transaction's execution. So that gas values can remain fixed in the presence of price fluctuations, transactions specify a "gas price," the amount in ETH to be paid per unit gas. This mechanism generally guarantees that nodes who mine a transaction are compensated according to the cost of doing so.
+
+```
+NOTE: Not sure whether to include receipt info (below) here or in next section.
+```
+
+Once executed and included within a block, transactions are paired with a "transaction receipt." Transaction receipts act as concise summaries of the impact of a transaction on the system. They include, for instance, a status code that signals whether or not a transaction was completed successfully. Clients will often use information within the receipt to make a determination about any additional actions to take. A full receipt contains the following fields:
+
+```
+TODO: Receipt structure.
+```
+
+Most of these fields are likely self explanatory. However, we have yet to cover the concept of "logs." Essentially, a log is a piece of information that can be attached to a transaction receipt by a contract account. Logs are typically employed to relay some useful data about the effect or events of a transaction without directly manipulating the storage of a contract. For instance, a contract may generate a log to efficiently signal that an ETH balance was transferred out of the contract. Logs may alternatively be called events in some circles.
+
+All logs contain basic identifying information, including the address of the contract that generated the log and references to the block and transaction in which the log was produced. Logs then additionally define a "topic" and some "data." Log topics allow users to identify the particular event represented by the log. Log data provides more detailed information about the topic at hand. For example, if a contract is acting as a marketplace for virtual cats, it may choose to emit a log of the following form whenever a sale is completed:
+
+```
+TODO: Sample log.
+```
+
+In the following section, we take a look at Eth1 state transition function. We make use of the concepts discussed in this section and the one preceding it to build a complete picture of Eth1's application layer. Certain details of Eth1's transaction structure do change in Eth2, but the general concepts remain largely in place. Transaction receipts become particularly important in Eth2, as we'll soon come to discover. We're now ready to see how a modern production blockchain system processes transactions that have complex effects.

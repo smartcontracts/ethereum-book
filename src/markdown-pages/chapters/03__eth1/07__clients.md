@@ -4,28 +4,50 @@ title: "Clients"
 status: "1"
 ---
 
-## Outline
-- Ethereum allows for three primary client types
-- Archival nodes
-    - Store everything that's ever happened
-- Full nodes
-    - Store everything in the current state
-    - Usually does not include very old state, like deleted storage or history of changes (old wiki lists > 1k blocks, not sure what people settled on)
-- Light clients
-    - Sort of a thing in Eth1, but not as good as bitcoin SPV b/c more info needed to verify
-    - Need to research this a little more
----
+Blockchain clients can access and participate in the system in various ways and to differing degrees. We previously explored the general concepts of full, archival, and light clients. Many users choose to operate full nodes that process all transactions but prune components of the system state after it's not longer likely to be useful. Some others run archival nodes that do not prune state, primarily for the purpose of searching and analyzing blockchain data. Others still maintain light clients that can store significantly less information at the cost of some hit to security. Within this section, we take a look at some of the techniques used in Eth1 to support these different operational modes.
 
-Only thing that really needs to be explained here is the light clients protocol. Perhaps also a brief explanation of full client protocol.
+Full nodes are the most common form of client amongst those that download and execute all new transactions. It's valuable to understand how these nodes implement state pruning in order to reduce storage requirements. Specifics can vary between different client software packages, but many high-level goals are universal. Recall that the Eth1 world state takes the form of a mapping from account addresses to account state structures. Contract accounts in particular include a "storage" field within this structure. Each block updates the world state in some way. We're most interested in finding and "forgetting" elements of the world state that exist in one block but are removed in the next.
 
-Full nodes as we described earlier are capable of verifying everything that happens on the network for themselves. They download all blocks including the header and the body. They then execute the transactions in these blocks themselves, verify the work in the header, and generally make sure that the transactions are valid. They can be sure that no invalid transactions will slip by and also have the information necessary to generate any transaction they'd like. The flow for a full node is as follows:
+One way in which such a removal from the world state can occur is through the storage deletion operation available to contract accounts. Contract storage takes the form of a key-value database accessible only to the contract itself. Contracts may occasionally decide to delete the value associated with some key when that value is no longer useful. Eth1's state tree would be modified by this action such that the particular tree node corresponding to this key-vale pair no longer exists:
 
-Node sees new block header, verifies work, sees if it would win fork choice rule, downloads content, verifies content, stores it. Repeats this process for every new block header that it receives such that it has a record of all blocks and transactions on the system. If the block would not win fork choice rule, typically strategy is to store the header until something new comes that would make that header useful, download full chain. Since headers are pretty small, this overhead is relatively limited. 
+```
+TODO: Deletion operation impact diagram.
+```
 
-Sometimes full nodes use pruning to remove older information. Pruning in ETH means removing parts of the state trie that are no longer used. Also might mean removing transactions where the effect is not useful anymore. This is a little more subjective, clients can implement this differently for differing effects. Overall pruning makes a full node less secure if there's a very long term fork, but since this becomes more difficult as time goes on, it's usually reasonable. Nodes that perform no pruning are called archival nodes. Certain archival nodes are implemented with special software called instrumentation that logs the EVM steps and other low-level information in a manner more easily parsed.
+Although the original node has been dropped from the trie, clients should generally hold on to the node for the possibility of a chain fork. If a fork lacking the deletion operation were to become canonical, the original node would once again be relevant:
 
-Finally we have light clients. These are clients that don't store all block bodies, but usually just store block headers instead. Since we use lots of Merkle tries in the headers, light clients can access specific pieces of information through a full node. This process is basically that the light clients will request a piece of information from the full node, perhaps the balance of a specific account. The full node then returns the balance along with a proof that the value is in the tree of the header of some recent block as specified by the light client. Light client verifies this proof and can then ensure that the value was actually correct. Algorithm for this is:
+```
+TODO: Effect of a fork diagram.
+```
 
-Light clients can also pull transaction data by asking a full node for the index and block, then pulling nodes of the tree to verify that the tx was included:
+It's for this reason that client software typically defines a large threshold of blocks that must be appended to any given block before state pruning can be considered. Thresholds often fall on the order of several thousand blocks. If some particular node in the state trie was removed and not later re-inserted before the threshold was crossed, the node can relatively safely be deleted in its entirety. This strategy only puts full nodes at risk in the event of a fork spanning a number of blocks greater than the threshold (for context, the largest fork in Eth1's history spanned `TODO: ??` blocks). If this were ever to happen, full nodes would be forced to rely on the relatively small population of archival nodes to retrieve any relevant historical data.
 
-Finally, also works for event logs, but requires a little more work. Light clients see what block headers have bloom filters with matching logs for their filter. Then download transaction receipts of all txs in matching blocks. For any that match, check full rlp log and ensure it matches. More complex since there's more to download, approx sqrtN. 
+Eth1 archival nodes are somewhat resource intensive and therefore out reach of many network participants. At the time of writing, these nodes store on the order of several terabytes of data. Some services, like block explorers, take nodes a step further and implement custom logging, or "instrumentation," features. These additions serve to record useful information often related to the inner details of transaction execution. For instance, popular block explorer EtherScan captures the complete list of EVM instructions carried out during each contract interaction. Users of the service can then step through and carefully analyze the effects of any given transaction. Though beneficial, this information is not necessary for normal network participation and can greatly increase cost and storage requirements.
+
+Eth1 natively supports light client modes for the sake of resource-constrained environments. As is typical, light clients follow slightly different protocols when carrying out different actions. We'll first take a look at the process by which a light client can ascertain the state of a given account. Much of Eth1's support for this behavior comes from its distinction between in block headers and block bodies. Block bodies include complete block information, such as the full list of executed transactions. Block headers, on the other hand, contain identifying information about a block and, crucially, the roots of Merkle trees generated from the contents of the body.
+
+The root of the world state trie can be found in every block header. Light clients can download headers at the relatively small cost of 508 bytes per header. Clients can them make use of this root to find the state of an account at some block by following a simple procedure. Given that the state trie is designed to be easily traversable, light clients can request specific nodes from the trie one-by-one until they reach their target node. The following diagram depicts this process:
+
+```
+TODO: Diagram showing requests necessary to get state element.
+```
+
+Light clients can employ a very similar protocol to check for the inclusion of a transaction within a block. Transaction receipts already contain the index of a transaction in the full list of a transactions in a block. Light clients can therefore simply request nodes from a block's transaction trie until they find their desired transaction:
+
+```
+TODO: Diagram showing requests necessary to get transaction.
+```
+
+```
+NOTE: Need to figure out where to first bring up Bloom filters, probably should be explained before this.
+```
+
+Light clients can also watch for specific transaction logs with some additional effort. Block headers contain a Bloom filter populated by the logs of all transactions in the corresponding block. Light clients can first use this filter to find blocks that may include relevant logs. For each matching block, the client must then download the full list of transaction receipts to check whether they do, in fact, contain relevant logs. This process can be visualized as follows:
+
+```
+TODO: Diagram showing light client log process.
+```
+
+Light client protocols allow users to retrieve and verify data from the system at a significantly decreased storage cost. However, without the full block data, these clients cannot be certain that the block is entirely valid. Light clients would not, for instance, necessarily be aware of the presence of a transaction that was not properly executed. Light clients instead typically rely on presence of later blocks to judge the authenticity of a block at hand. Under standard network conditions, a majority of hash power should be dedicated to the extension of a valid chain. Light clients can therefore somewhat safely assume a block to be valid after sufficiently many blocks have been produced to follow it. Of course, this metric is less secure than full validation of every block.
+
+Client flexibility continues to be improved in Eth2. Light client support is particularly expanded with the addition of new tree structures. Eth2 light clients will be able to drill down into significant more detailed elements of a block before having to download chunks of data. These changes aim to bring Ethereum to a much wider range of platforms, perhaps even opening the door to efficient light client implementations designed as applications on other blockchain systems. We explore these new possibilities in greater detail within our later chapter on Eth2 light client protocols. Many of the techniques applied to client constructions in Eth2 will come in handy not only in our discussion of Eth2, but in study of nearly any blockchain system.
