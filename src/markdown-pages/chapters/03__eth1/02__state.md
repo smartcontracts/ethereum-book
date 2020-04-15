@@ -4,27 +4,6 @@ title: "State"
 status: "1"
 ---
 
-## Outline
-- Purpose: Explanation of state in Eth1
-- World state
-    - Representation of the universe of Ethereum
-    - Mapping from accounts to some account state
-    - This is what's changed by updates to the system
-- State storage
-    - Nodes store state in a mp-trie 
-    - explanation of merkle trees and mp trie
-- Account state
-    - Two types of accounts
-        - user and contract
-    - Components
-        - Nonce
-        - Balance
-            - intro eth here
-        - Storageroot
-        - Codehash
-
----
-
 The manner in which a blockchain represents activities has a massive impact on the type of activities it can support. We saw in our analysis of the UTXO model that UTXOs are well suited for relatively simple value-transfer systems. However, they were much less appropriate for applications that required some form of autonomous "agent" to handle transfers. Without the ability to maintain some state, UTXOs could essentially only be used to control the flow of individual transactions.
 
 Ethereum forever changed the blockchain landscape with the introduction of the account-based state model. State in Ethereum is represented as a mapping between account identifiers and information about those accounts. Essentially, Ethereum is a database where accounts are stored and can be modified. This mapping is called the Ethereum "world state." On an abstract level, it looks something like this:
