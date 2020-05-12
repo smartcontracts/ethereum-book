@@ -2,7 +2,11 @@ const fs = require('fs')
 const path = require('path')
 
 const count_words = (text) => {
-    const normalized = text.replace(/[.,?!;()"'-]/g, ' ').replace(/s+/g, ' ').toLowerCase().split(' ')
+    const normalized = text
+                        .replace(/[.,?!;()"'-]/g, ' ')
+                        .replace(/\s+/g, ' ')
+                        .toLowerCase()
+                        .split(' ')
     return normalized.length
 }
 
