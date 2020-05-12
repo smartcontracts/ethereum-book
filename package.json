@@ -37,6 +37,7 @@
     "serve": "gatsby serve",
     "clean": "gatsby clean",
     "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
+    "wordcount": "node ./src/util/word-count.js ./src/markdown-pages/chapters",
     "start": "npm run develop"
   },
   "repository": {
