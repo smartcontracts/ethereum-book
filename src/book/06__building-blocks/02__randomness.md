@@ -52,18 +52,19 @@ The simplest version of RANDAO is to have each member of a group come up with a 
 
 RANDAO systems need some sort of "mixing" function that input values from each participant and produces some output value. In a very high-level sense, mixing functions always take the form:
 
-$$
-\text{mix}(\text{input}_1, \text{input}_2, \ldots, \text{input}_n) \rightarrow \text{output}
-$$
+$$\text{mix}(\text{input}_1, \text{input}_2, \ldots, \text{input}_n) \rightarrow \text{output}$$
 
 Where each $\text{input}$ value corresponds to a number contributed by a RANDAO participant.
 
 When picking a mixing function, we need to be careful to preserve the key property that each input value has equal "influence" on the output value. We can get an intuitive feel for this property by looking for "bad" mixing functions. We clearly want to avoid, for example, mixing functions that completely throw out every second input value or simply always return the same constant output value.
 
-```text
-NOTE: A more rigorous explanation of mixing functions can be found at (https://tools.ietf.org/html/rfc4086#section-5)
-QUESTION: Should we go into further detail about the mathematical concepts behind a "strong" mixing function?
-```
+::: tip NOTE
+A more rigorous explanation of mixing functions can be found at https://tools.ietf.org/html/rfc4086#section-5
+:::
+
+::: tip QUESTION
+Should we go into further detail about the mathematical concepts behind a "strong" mixing function?
+:::
 
 The inputs to our RANDAO system are numbers, so we can represent them as strings of zeros and ones (bits). We can therefore create a simple mixing algorithm with the Exclusive Or ("XOR," written mathematically as $\oplus$) function, which takes two input bits and produces a single output bit according to the following table:
 
@@ -78,71 +79,55 @@ For example, reading from our table, $1 \oplus 0 = 1$.
 
 Our RANDAO inputs are typically going to be larger than just a single bit. When operating on inputs with multiple bits, we use the same notation:
 
-$$
-1010 \oplus 1001 = \text{?}
-$$
+$$1010 \oplus 1001 = \text{?}$$
 
 However, we apply the XOR operation "bitwise," i.e., we compute the nth bit of the output as the XOR of the nth bit of each input. For instance, from our above formula, the first bit of our output will be equal to $1 \oplus 1 = 0$.
 
 Completing this calculation bit-by-bit:
 
-$$
-\begin{eqnarray}
+$$\begin{eqnarray}
 1 \oplus 1 = 0 \\
 0 \oplus 0 = 0 \\
 1 \oplus 0 = 1 \\
 0 \oplus 1 = 1
-\end{eqnarray}
-$$
+\end{eqnarray}$$
 
 Which gives us:
 
-$$
-1010 \oplus 1001 = 0011
-$$
+$$1010 \oplus 1001 = 0011$$
 
 We can also perform XOR operations on multiple inputs by moving from left to right:
 
-$$
-\begin{eqnarray}
+$$\begin{eqnarray}
 01 \oplus 10 \oplus 00 = \\
 (01 \oplus 10) \oplus 00 = \\
 11 \oplus 00 = 11
-\end{eqnarray}
-$$
+\end{eqnarray}$$
 
 Using our knowledge about XOR, we can create a simple RANDAO mixing function as follows:
 
-$$
-input_1 \oplus input_2 \oplus \ldots \oplus input_n = output
-$$
+$$input_1 \oplus input_2 \oplus \ldots \oplus input_n = output$$
 
 Let's go through this mixing function by diving into an example. We're going to use this function as part of a RANDAO system with four participants. Each of our participants gets to pick a random number by selecting eight random bits (corresponding to the integers 0 - 255 when converted to decimal).
 
 Our participants give us 00110101, 11110011, 00001010, and 10110100 as inputs, so our mixing function need to determine:
 
-$$
-00110101 \oplus 11110011 \oplus 00001010 \oplus 10110100 = \text{?}
-$$
+$$00110101 \oplus 11110011 \oplus 00001010 \oplus 10110100 = \text{?}$$
 
 We compute our XOR values left-to-right:
 
-$$
-\begin{eqnarray}
+$$\begin{eqnarray}
 00110101 \oplus 11110011 \oplus 00001010 \oplus 10110100 = \\
 ((00110101 \oplus 11110011) \oplus 00001010) \oplus 10110100 = \\
 (11000110 \oplus 00001010) \oplus 10110100 = \\
 11001100 \oplus 10110100 = 01111000
-\end{eqnarray}
-$$
+\end{eqnarray}$$
 
 And our final random value is, therefore, 01111000.
 
 This XOR mixing algorithm isn't our only option, of course. We can also use a cryptographic hash function to combine the various input elements:
 
-$$
-hash(input_n + hash(input_{n-1} + \ldots hash(input_2 + input_1))) = output
-$$
+$$hash(input_n + hash(input_{n-1} + \ldots hash(input_2 + input_1))) = output$$
 
 ### Attacking RANDAO
 
@@ -162,34 +147,26 @@ $$
 
 Our attacker can easily pick an input to change the output into any value they'd like. For example, if our attacker wants to generate an output value of 11111111, they can simply flip each of the bits (turn each zero into a one) in the current value:
 
-$$
-11001100 \oplus 00110011 = 11111111
-$$
+$$11001100 \oplus 00110011 = 11111111$$
 
 The attacker can use this same method to pick any output number they'd like. Clearly this isn't a very good way to generate random numbers.
 
 If we use the mixing algorithm with a hashing function, the attacker's task becomes a little more difficult. Let's use the same numbers as above to demonstrate.
 
-$$
-\begin{eqnarray}
+$$\begin{eqnarray}
 sha256(11110011 + 00110101) = 438f0d9d4843b13780f4c12f58d8c0b529632ab9b58c9ceca2448e817d5c0330 \\
 sha256(438f0d9d4843b13780f4c12f58d8c0b529632ab9b58c9ceca2448e817d5c0330 + 00001010) = 5d2a20f524210a8a5ca1c186d245f94cca2cb27ccc450a290a4e2fce4a7f93ab
-\end{eqnarray}
-$$
+\end{eqnarray}$$
 
 An attacker now needs to find some input string that, when hashed alongside our current output, gives an output that starts with `FF`. Since `sha256` is designed so that it's effectively impossible to "guess" what its output will be, our attacker will need to test out a bunch of potential values. Interestingly, there is no possible 8 bit value that, when hashed alongside the output, gives us a value starting with `FF`! However, it is possible to get a value of 00000000 (starts with `00`) if we pick 01000101:
 
-$$
-sha256(5d2a20f524210a8a5ca1c186d245f94cca2cb27ccc450a290a4e2fce4a7f93ab + 01000101) = 00ec3dd5399bf1e1867d3fca18f30e117f8e48805ba5f941019b213f3040e2df
-$$
+$$sha256(5d2a20f524210a8a5ca1c186d245f94cca2cb27ccc450a290a4e2fce4a7f93ab + 01000101) = 00ec3dd5399bf1e1867d3fca18f30e117f8e48805ba5f941019b213f3040e2df$$
 
 It's clear that certain mixing algorithms are better than others. Generally speaking, we prefer to use this hashing method because it's not as easy to "cheat" the final value. An attacker definitely needs to grind out potential values in order to find a specific interesting value.
 
 One way to implement a commitment is simply to use a hash function:
 
-$$
-commitment = hash(value)
-$$
+$$commitment = hash(value)$$
 
 We can't get $value$ from $commitment$, but if we have $possible_value$ then we can easily check that $hash(possible_value) = commitment$ and therefore $possible_value = value$.
 
@@ -225,15 +202,11 @@ It's possible to improve upon the "commit-reveal" version of RANDAO using some m
 
 VDFs have the following function signature:
 
-$$
-input \rightarrow (output, proof)
-$$
+$$input \rightarrow (output, proof)$$
 
 VDFs have a corresponding verification algorithm that, given `proof` tells us whether `output` is correct for the given `input`:
 
-$$
-(input, output, proof) \rightarrow \{true, false\}
-$$
+$$(input, output, proof) \rightarrow \{true, false\}$$
 
 Although it takes a long time to compute the `output`, it only takes a short period of time to use the `proof` to verify that the `output` was, indeed, correct. We can tune a parameter in the VDF to change the amount of time that an average computer will take to find an `output`.
 
