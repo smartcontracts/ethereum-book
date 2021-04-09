@@ -1,7 +1,5 @@
 ---
-path: "/chapters/proof-of-stake"
 title: "Proof of Stake in Eth2"
-status: "2"
 ---
 
 Proof of Stake in Eth2 represents a large departure from the Proof of Work rules that governed Eth1. Our deep dive into Eth2 begins with an explanation of the theoretical basis of Proof of Stake. This basis allows us to explore in later chapters the Beacon Chain, Eth2's implementation of a Proof of Stake chain based on the ideas described here.

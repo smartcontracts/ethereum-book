@@ -1,7 +1,5 @@
 ---
-path: "/chapters/eth2-overview/development-process"
 title: "Development Process"
-status: "1"
 ---
 
 # {{ $frontmatter.title }}
@@ -12,9 +10,9 @@ Early work on Eth2 began, in some ways, even before the launch of Eth1. Time and
 
 The Eth2 landscape shifted drastically during 2018. Increased demand on the Eth1 platform once again highlighted the need for improvements in the name of long-term sustainability. Between 2018 and 2019 Eth2 went from a theoretical future to a highly-specified reality. Contributors from countless corners of the Ethereum ecosystem helped to develop a series of concrete design documents that detailed Eth2's proposed operation. By the end of 2019, these documents culminated in the first interactions among seven unique Eth2 client software packages. Though it may have once seemed a farfetched concept, Eth2 is now very much a reality.
 
-```
+::: tip TODO
 TODO: Insert phases here.
-```
+:::
 
 Rapid development of Eth2 in the recent past highlights the power of Ethereum's open community structure. Quickly after its launch, Eth1 managed to attract a diverse base of individuals willing to contribute back to the ecosystem. To this day, most Ethereum-related research is carried out in public. Platforms like Ethresearch act as forums in which anyone may read, publish, or give feed back on new ideas. Eth2 development efforts are chronicled in various conference calls held on regular intervals. Almost all Ethereum-related software projects are hosted on platforms like GitHub that actively encourage participation from new contributors.
 

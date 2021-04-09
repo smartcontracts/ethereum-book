@@ -1,7 +1,5 @@
 ---
-path: "/chapters/eth2-overview/learning-goals"
 title: "Learning Goals"
-status: "1"
 ---
 
 # {{ $frontmatter.title }}

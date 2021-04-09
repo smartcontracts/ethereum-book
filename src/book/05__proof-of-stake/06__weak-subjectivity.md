@@ -1,7 +1,5 @@
 ---
-path: "/chapters/proof-of-stake/weak-subjectivity"
 title: "Weak Subjectivity"
-status: "1"
 ---
 
 # {{ $frontmatter.title }}
@@ -12,6 +10,6 @@ However, we face one final, fundamental dilemma. An attacker might not be able t
 
 This dilemma sits at the heart of Proof of Stake. Termed the "weak subjectivity problem," it requires that anyone offline longer than the time for $\smash{\frac{2}{3}}$ of validators to withdraw their funds rely on some external source to determine the "primary" chain.
 
-```text
-TODO: Need to finish this section about weak subjectivity.
-```
+::: tip TODO
+Need to finish this section about weak subjectivity.
+:::

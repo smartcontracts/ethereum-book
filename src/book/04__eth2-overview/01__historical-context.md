@@ -1,7 +1,5 @@
 ---
-path: "/chapters/eth2-overview/historical-context"
 title: "Historical Context"
-status: "1"
 ---
 
 # {{ $frontmatter.title }}
@@ -18,6 +16,6 @@ Though aware of challenges ahead, the teams that brought Eth1 to fruition can ha
 
 Ethereum's community serves as the final motivator we discuss here, though one can likely identity many more. Eth1's growth has quickly outpaced its capacity for interactions on the network. As countless teams begin to turn some attention to long term sustainability, Eth2 research and development efforts have only accelerated. Ethereum's open community structure attracts individuals with a wide of backgrounds and perspectives. Much research on Eth2 is conducted in public over forums like Ethresearch or on large conference calls held on a regular basis. The ethereum community can very reasonably be attributed with tipping the scale that took Eth2 from a vague idea to a near-future reality in only the recent past.
 
-```
-TODO: Needs conclusion.
-```
+::: tip TODO
+Needs conclusion.
+:::
