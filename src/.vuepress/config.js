@@ -42,8 +42,8 @@ module.exports = {
           sidebarDepth: 1,
           children: [
             {
-              title: 'Index',
-              path: '/book/00__introduction/00__index.md'
+              title: 'Forward',
+              path: '/book/00__introduction/00__forward.md'
             },
             {
               title: 'Motivation',
