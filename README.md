@@ -1,7 +1,5 @@
 # The Eth2 Book
 
-## Some background
-
 I started working on this book on Eth2 more than two years ago while taking a year-long leave of absence from more traditional work in the crypto space.
 The Quilt team over at [ConsenSys](https://consensys.net/) was kind enough to sponsor development of this work for a period of several months.
 I also recieved a grant for parts of this book via [MolochDAO](https://molochdao.com/) for which I'm extremely grateful.
@@ -53,6 +51,14 @@ Anyway, this is all to say that the book is definitely not complete in any sense
 It's also worth noting that Eth2 has changed quite a bit since this project was started.
 Some parts of this book (particularly in the later chapters) are likely wholly inaccurate or outdated.
 As referenced in the above section regarding the Eth2 rebrand, it's a top priority to review the book for any inaccuracies and to make sure that it matches the narrative around Eth2 as it stands today.
+
+## Reading the book
+
+Now that you've read all of my disclaimers, you can find the latest version of the book at the following link:
+
+https://eth2.incessant.ink
+
+Content on that page should update automatically whenever changes are made to this repository.
 
 ## Contributing
 
