@@ -27,10 +27,11 @@ module.exports = {
    * ref：https://v1.vuepress.vuejs.org/theme/default-theme-config.html
    */
   themeConfig: {
-    repo: '',
-    editLinks: false,
-    docsDir: '',
-    editLinkText: '',
+    repo: 'smartcontracts/eth2-book',
+    editLinks: true,
+    docsDir: 'src',
+    docsBranch: 'main',
+    editLinkText: 'Edit this page on GitHub',
     lastUpdated: false,
     nav: [],
     sidebar: {
