@@ -1,5 +1,5 @@
 ---
-title: "Blocks"
+title: "Ethereum Blocks"
 ---
 
 # {{ $frontmatter.title }}
