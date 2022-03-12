@@ -1,5 +1,5 @@
 ---
-title: "Participation"
+title: "Network Participation"
 ---
 
 # {{ $frontmatter.title }}
