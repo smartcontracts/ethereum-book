@@ -1,0 +1,37 @@
+name: Build
+
+on:
+  push:
+    branches:
+    - main
+
+  pull_request:
+    branches:
+    - main
+
+jobs:
+  tests:
+    runs-on: ubuntu-18.04
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16.x'
+    
+    - uses: actions/setup-java@v2
+      with:
+        distribution: 'temurin'
+        java-version: '8'
+    
+    - run: yarn
+
+    - run: yarn pdf
+
+    - run: mv 'The Eth2 Book.pdf' book.pdf
+
+    - uses: aquiladev/ipfs-action@v0.2.1-alpha.4
+      with:
+        path: './book.pdf'        

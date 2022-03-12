@@ -253,5 +253,14 @@ module.exports = {
         delimiters: 'dollars'
       },
     ],
+    [
+      'vuepress-plugin-export',
+      {
+        bundles: [{
+          filter: /\/book\//,
+          dest: (siteConfig) => `${siteConfig.title}.pdf`,
+        }]
+      }
+    ]
   ]
 }
