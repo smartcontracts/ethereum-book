@@ -1,5 +1,5 @@
 ---
-title: "Forward"
+title: "Foreword"
 ---
 
 # {{ $frontmatter.title }}

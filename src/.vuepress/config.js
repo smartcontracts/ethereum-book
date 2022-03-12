@@ -26,7 +26,7 @@ module.exports = {
           collapsable: false,
           sidebarDepth: 1,
           children: [
-            '/book/00__introduction/00__forward.md',
+            '/book/00__introduction/00__foreword.md',
             '/book/00__introduction/01__motivation.md',
             '/book/00__introduction/02__content.md',
           ]
