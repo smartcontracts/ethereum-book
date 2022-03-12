@@ -1,0 +1,5 @@
+---
+title: "Committees"
+---
+
+# {{ $frontmatter.title }}
