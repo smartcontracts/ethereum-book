@@ -1,5 +1,5 @@
 ---
-title: "State"
+title: "State Model"
 ---
 
 # {{ $frontmatter.title }}
