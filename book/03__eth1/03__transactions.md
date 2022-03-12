@@ -1,5 +1,5 @@
 ---
-title: "Transactions"
+title: "Transaction Model"
 ---
 
 # {{ $frontmatter.title }}

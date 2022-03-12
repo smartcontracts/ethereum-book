@@ -1,5 +1,5 @@
 ---
-title: "Applications"
+title: "Blockchain Applications"
 ---
 
 # {{ $frontmatter.title }}

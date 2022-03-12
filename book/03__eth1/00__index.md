@@ -1,3 +1,3 @@
 ---
-title: "Eth1"
+title: "An Introduction to Eth1"
 ---

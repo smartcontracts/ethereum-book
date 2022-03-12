@@ -1,5 +1,5 @@
 ---
-title: "Applications"
+title: "Stateful Applications"
 ---
 
 # {{ $frontmatter.title }}
