@@ -1,5 +1,5 @@
 ---
-title: "Clients"
+title: "Client Types"
 ---
 
 # {{ $frontmatter.title }}
