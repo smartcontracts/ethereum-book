@@ -1,0 +1,5 @@
+---
+title: "Notes"
+---
+
+# {{ $frontmatter.title }}
