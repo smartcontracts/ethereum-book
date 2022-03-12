@@ -14,7 +14,7 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "vuepress": "^1.5.3",
-    "vuepress-plugin-mathjax": "^1.2.8"
+    "@maginapp/vuepress-plugin-katex": "^1.0.11",
+    "vuepress": "^1.5.3"
   }
 }

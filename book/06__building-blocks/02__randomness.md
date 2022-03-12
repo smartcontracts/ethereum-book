@@ -79,34 +79,45 @@ For example, reading from our table, $1 \oplus 0 = 1$.
 
 Our RANDAO inputs are typically going to be larger than just a single bit. When operating on inputs with multiple bits, we use the same notation:
 
-$$1010 \oplus 1001 = \text{?}$$
+$$
+1010 \oplus 1001 = \text{?}
+$$
 
 However, we apply the XOR operation "bitwise," i.e., we compute the nth bit of the output as the XOR of the nth bit of each input. For instance, from our above formula, the first bit of our output will be equal to $1 \oplus 1 = 0$.
 
 Completing this calculation bit-by-bit:
 
-$$\begin{eqnarray}
+$$
+\begin{aligned} 
 1 \oplus 1 = 0 \\
 0 \oplus 0 = 0 \\
 1 \oplus 0 = 1 \\
 0 \oplus 1 = 1
-\end{eqnarray}$$
+\end{aligned}
+$$
 
 Which gives us:
 
-$$1010 \oplus 1001 = 0011$$
+$$
+1010 \oplus 1001 = 0011
+$$
 
 We can also perform XOR operations on multiple inputs by moving from left to right:
 
-$$\begin{eqnarray}
+$$
+\begin{aligned} 
 01 \oplus 10 \oplus 00 = \\
 (01 \oplus 10) \oplus 00 = \\
-11 \oplus 00 = 11
-\end{eqnarray}$$
+11 \oplus 00 = \\
+11
+\end{aligned}
+$$
 
 Using our knowledge about XOR, we can create a simple RANDAO mixing function as follows:
 
-$$input_1 \oplus input_2 \oplus \ldots \oplus input_n = output$$
+$$
+\text{input}_1 \oplus \text{input}_2 \oplus \ldots \oplus \text{input}_n = \text{output}
+$$
 
 Let's go through this mixing function by diving into an example. We're going to use this function as part of a RANDAO system with four participants. Each of our participants gets to pick a random number by selecting eight random bits (corresponding to the integers 0 - 255 when converted to decimal).
 
@@ -116,18 +127,21 @@ $$00110101 \oplus 11110011 \oplus 00001010 \oplus 10110100 = \text{?}$$
 
 We compute our XOR values left-to-right:
 
-$$\begin{eqnarray}
+$$
+\begin{aligned}
 00110101 \oplus 11110011 \oplus 00001010 \oplus 10110100 = \\
 ((00110101 \oplus 11110011) \oplus 00001010) \oplus 10110100 = \\
 (11000110 \oplus 00001010) \oplus 10110100 = \\
-11001100 \oplus 10110100 = 01111000
-\end{eqnarray}$$
+11001100 \oplus 10110100 = \\
+01111000
+\end{aligned}
+$$
 
 And our final random value is, therefore, 01111000.
 
 This XOR mixing algorithm isn't our only option, of course. We can also use a cryptographic hash function to combine the various input elements:
 
-$$hash(input_n + hash(input_{n-1} + \ldots hash(input_2 + input_1))) = output$$
+$$\text{hash}(\text{input}_n + \text{hash}(\text{input}_{n-1} + \ldots \text{hash}(\text{input}_2 + \text{input}_1))) = \text{output}$$
 
 ### Attacking RANDAO
 
@@ -138,43 +152,52 @@ Let's demonstrate how someone might execute this attack against our simple XOR s
 Our last participant can see these three values, so they can easily compute the current result of our mixing function:
 
 $$
-\begin{eqnarray}
+\begin{aligned}
 00110101 \oplus 11110011 \oplus 00001010 = \\
 (00110101 \oplus 11110011) \oplus 00001010 = \\
-11000110 \oplus 00001010 = 11001100
-\end{eqnarray}
+11000110 \oplus 00001010 = \\
+11001100
+\end{aligned}
 $$
 
 Our attacker can easily pick an input to change the output into any value they'd like. For example, if our attacker wants to generate an output value of 11111111, they can simply flip each of the bits (turn each zero into a one) in the current value:
 
-$$11001100 \oplus 00110011 = 11111111$$
+$$
+11001100 \oplus 00110011 = 11111111
+$$
 
 The attacker can use this same method to pick any output number they'd like. Clearly this isn't a very good way to generate random numbers.
 
 If we use the mixing algorithm with a hashing function, the attacker's task becomes a little more difficult. Let's use the same numbers as above to demonstrate.
 
-$$\begin{eqnarray}
-sha256(11110011 + 00110101) = 438f0d9d4843b13780f4c12f58d8c0b529632ab9b58c9ceca2448e817d5c0330 \\
-sha256(438f0d9d4843b13780f4c12f58d8c0b529632ab9b58c9ceca2448e817d5c0330 + 00001010) = 5d2a20f524210a8a5ca1c186d245f94cca2cb27ccc450a290a4e2fce4a7f93ab
-\end{eqnarray}$$
+$$
+\begin{aligned}
+\text{sha256}(11110011 + 00110101) = 438f0d9d... \\
+\text{sha256}(438f0d9d... + 00001010) = 5d2a20f5...
+\end{aligned}
+$$
 
 An attacker now needs to find some input string that, when hashed alongside our current output, gives an output that starts with `FF`. Since `sha256` is designed so that it's effectively impossible to "guess" what its output will be, our attacker will need to test out a bunch of potential values. Interestingly, there is no possible 8 bit value that, when hashed alongside the output, gives us a value starting with `FF`! However, it is possible to get a value of 00000000 (starts with `00`) if we pick 01000101:
 
-$$sha256(5d2a20f524210a8a5ca1c186d245f94cca2cb27ccc450a290a4e2fce4a7f93ab + 01000101) = 00ec3dd5399bf1e1867d3fca18f30e117f8e48805ba5f941019b213f3040e2df$$
+$$
+\text{sha256}(5d2a20f5... + 01000101) = 00ec3dd5...
+$$
 
 It's clear that certain mixing algorithms are better than others. Generally speaking, we prefer to use this hashing method because it's not as easy to "cheat" the final value. An attacker definitely needs to grind out potential values in order to find a specific interesting value.
 
 One way to implement a commitment is simply to use a hash function:
 
-$$commitment = hash(value)$$
+$$
+\text{commitment} = \text{hash}(value)
+$$
 
-We can't get $value$ from $commitment$, but if we have $possible_value$ then we can easily check that $hash(possible_value) = commitment$ and therefore $possible_value = value$.
+We can't get $\text{value}$ from $\text{commitment}$, but if we have $\text{possible\_value}$ then we can easily check that $\text{hash}(\text{possible\_value}) = \text{commitment}$ and therefore $\text{possible\_value} = \text{value}$.
 
-For example, let's say our first participant gives a commitment using `sha256` of 86f3445a32f0f77fa03bfd481bf7d8a249f394e6301eaaa40a9eae205e2b43c9. Later, they reveal their number to be 10100011. We do a simple check and, indeed, the hash of 10100011 is 86f3445a32f0f77fa03bfd481bf7d8a249f394e6301eaaa40a9eae205e2b43c9, and therefore the committed value was correct.
+For example, let's say our first participant gives a commitment using `sha256` of `86f3445a32f0f77fa03bfd481bf7d8a249f394e6301eaaa40a9eae205e2b43c9`. Later, they reveal their number to be `10100011`. We do a simple check and, indeed, the hash of `10100011` is `86f3445a32f0f77fa03bfd481bf7d8a249f394e6301eaaa40a9eae205e2b43c9`, and therefore the committed value was correct.
 
 An issue with this sort of commitment scheme is that it requires the party actually create and give this commitment to other parties in advance. Another way to create commitments is to use a cryptographic signature that's deterministic. If we know all signatures are deterministic, then we can create a commitment out of the signature on some known value. For example, we can give everyone an order in the selection process and require that their input value be the signature of their position in the order. Since signatures are just 0s and 1s, we can parse this as a random input.
 
-Here let's say that our first participant is required to make their input based on a signature on the number 00000001 (one). The participant gives the signature [TODO] and we `verify(signature, public_key, 00000001)`. If this check returns false, we reject the reveal as invalid.
+Here let's say that our first participant is required to make their input based on a signature on the number `00000001` (one). The participant gives the signature [TODO] and we `verify(signature, public_key, 00000001)`. If this check returns false, we reject the reveal as invalid.
 
 So how do we fix this? We use an old schoolyard trick: get everyone to write down their numbers before putting them together.
 
@@ -202,11 +225,15 @@ It's possible to improve upon the "commit-reveal" version of RANDAO using some m
 
 VDFs have the following function signature:
 
-$$input \rightarrow (output, proof)$$
+$$
+\text{input} \rightarrow (\text{output}, \text{proof})
+$$
 
 VDFs have a corresponding verification algorithm that, given `proof` tells us whether `output` is correct for the given `input`:
 
-$$(input, output, proof) \rightarrow \{true, false\}$$
+$$
+(\text{input}, \text{output}, \text{proof}) \rightarrow \{true, false\}
+$$
 
 Although it takes a long time to compute the `output`, it only takes a short period of time to use the `proof` to verify that the `output` was, indeed, correct. We can tune a parameter in the VDF to change the amount of time that an average computer will take to find an `output`.
 
