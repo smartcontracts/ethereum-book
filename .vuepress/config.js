@@ -17,7 +17,7 @@ module.exports = {
       title: 'The Eth2 Book',
       description: description,
     },
-    '/zh/book/': {
+    '/zh-CN/book/': {
       lang: 'zh-CN',
       title: 'The Eth2 Book',
       description: description, 
