@@ -1,0 +1,5 @@
+---
+title: "Structure"
+---
+
+# {{ $frontmatter.title }}
