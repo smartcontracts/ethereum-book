@@ -11,6 +11,19 @@ module.exports = {
     ['meta', { name: 'apple-mobile-web-app-status-bar-style', content: 'black' }],
   ],
 
+  locales: {
+    '/book/': {
+      lang: 'en-US',
+      title: 'The Eth2 Book',
+      description: description,
+    },
+    '/zh/book/': {
+      lang: 'zh-CN',
+      title: 'The Eth2 Book',
+      description: description, 
+    }
+  },
+
   themeConfig: {
     repo: 'smartcontracts/eth2-book',
     editLinks: true,
