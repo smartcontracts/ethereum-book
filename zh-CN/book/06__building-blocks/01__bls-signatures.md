@@ -36,18 +36,18 @@ Signature schemes have three algorithms in combination, each probabilistic polyn
 
 G: key generator, generates a public key and corresponding private key on input 1^n where n is security parameter
 
-$$ G(\text{security_parameter}) \rightarrow (\text{public_key}, \text{private_key}) $$
+$$G(\text{security_parameter}) \rightarrow (\text{public_key}, \text{private_key})$$
 
 S: Returns a signature on inputs pk and string
 
-$$ S(\text{private_key}, \text{message}) \rightarrow \text{signature} $$
+$$S(\text{private_key}, \text{message}) \rightarrow \text{signature}$$
 
 V: Outputs accepted or rejected on public key, message, signature
 
-$$ V(\text{public_key}, \text{message}, \text{signature}) \rightarrow \{\text{accepted}, \text{rejected}\} $$
+$$V(\text{public_key}, \text{message}, \text{signature}) \rightarrow \{\text{accepted}, \text{rejected}\}$$
 
 Correctness:
 
-$$ Pr[ (pk, sk) \leftarrow G(1^n), V(pk, x, S(sk, x)) = \text{accepted}] = 1 $$
+$$Pr[ (pk, sk) \leftarrow G(1^n), V(pk, x, S(sk, x)) = \text{accepted}] = 1$$
 
-$$ Pr[ (pk, sk) \leftarrow G(1^n), (x, t) \leftarrow A^{S(sk, -)}(pk, 1^n), x notin Q, V(pk, x, t) = accepted] < negligible $$
+$$Pr[ (pk, sk) \leftarrow G(1^n), (x, t) \leftarrow A^{S(sk, -)}(pk, 1^n), x notin Q, V(pk, x, t) = accepted] < negligible$$

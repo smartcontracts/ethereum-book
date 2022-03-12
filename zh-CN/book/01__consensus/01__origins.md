@@ -1,5 +1,5 @@
 ---
-title: "Origins"
+title: "The Origins of Consensus"
 ---
 
 # {{ $frontmatter.title }}
