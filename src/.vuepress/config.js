@@ -32,7 +32,7 @@ module.exports = {
           ]
         },
         {
-          title: 'Consensus',
+          title: 'The Basics of Consensus',
           collapsable: false,
           sidebarDepth: 1,
           children: [
@@ -44,7 +44,7 @@ module.exports = {
           ]
         },
         {
-          title: 'Blockchains',
+          title: 'The Origins of Blockchains',
           collapsable: false,
           sidebarDepth: 1,
           children: [
@@ -58,7 +58,7 @@ module.exports = {
           ]
         },
         {
-          title: 'Eth1',
+          title: 'Revisiting Eth1',
           collapsable: false,
           sidebarDepth: 1,
           children: [
@@ -73,7 +73,7 @@ module.exports = {
           ]
         },
         {
-          title: 'Eth2 Overview',
+          title: 'Exploring Eth2',
           collapsable: false,
           sidebarDepth: 1,
           children: [
@@ -86,7 +86,7 @@ module.exports = {
           ]
         },
         {
-          title: 'Proof of Stake',
+          title: 'Proof of Stake in Ethereum',
           collapsable: false,
           sidebarDepth: 1,
           children: [
@@ -100,7 +100,7 @@ module.exports = {
           ]
         },
         {
-          title: 'Building Blocks',
+          title: 'Eth2 Building Blocks',
           collapsable: false,
           sidebarDepth: 1,
           children: [
@@ -113,7 +113,7 @@ module.exports = {
           ]
         },
         {
-          title: 'Beacon Chain',
+          title: 'Building the Beacon Chain',
           collapsable: false,
           sidebarDepth: 1,
           children: [
