@@ -1,0 +1,4 @@
+---
+title: "The Beacon Chain"
+---
+
