@@ -9,8 +9,8 @@
   },
   "repository": "/the-eth2-book",
   "scripts": {
-    "dev": "vuepress dev src",
-    "build": "vuepress build src"
+    "dev": "vuepress dev .",
+    "build": "vuepress build ."
   },
   "license": "MIT",
   "devDependencies": {

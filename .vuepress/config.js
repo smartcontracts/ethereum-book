@@ -1,4 +1,4 @@
-const { description } = require('../../package')
+const { description } = require('../package')
 
 module.exports = {
   title: 'The Eth2 Book',
