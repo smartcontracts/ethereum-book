@@ -54,7 +54,7 @@ Let's take a look at the perspective of any one node in the system. For simplici
 TODO: Diagram
 :::
 
-AS discussed in our sections regarding state and state transitions, a transaction acts as an input to some state transition function, which in turn mutates some initial state. The initial state can have an effect on the result of the transaction, so it's important that all nodes execute any given transaction against the same state. Therefore, a record of a transaction in the system must always include a reference to the specific state on which the transaction operates. Since the state may be quite large, we often use some commitment to the state, like a hash, instead of the full state.
+As discussed in our sections regarding state and state transitions, a transaction acts as an input to some state transition function, which in turn mutates some initial state. The initial state can have an effect on the result of the transaction, so it's important that all nodes execute any given transaction against the same state. Therefore, a record of a transaction in the system must always include a reference to the specific state on which the transaction operates. Since the state may be quite large, we often use some commitment to the state, like a hash, instead of the full state.
 
 Let's assume that our node has selected some transaction, `T0`, to attempt to process. We required that all nodes share the same initial state, which we'll call `S0`. The "thing" that our node wants to have recognized is that other nodes should accept `T0` as the transaction that mutates `S0` into some second new state, `S1`. We can describe this as the message `(S0, T0, S1)`.
 
