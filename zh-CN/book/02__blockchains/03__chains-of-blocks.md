@@ -28,7 +28,7 @@ Perhaps, depending on the hash function, `hash(10, "Hello!", 6)` provides us wit
 
 ::: tip TODO TODO: Diagram :::
 
-At this point, we are still emulating traditional BFT system, though we've replaced the way in which votes are generated. Now, we begin to partially diverge. Most BFT systems will elect a "leader" responsible for proposing potential updates to all other nodes in the system. Within a Proof-of-Work system, nodes will most likely not be aware of all other nodes in the network. If a designated leader were to exist, then it is possible that a node not be aware of the leader and, as a result, not be able to participate. Therefore, we need to eliminate the need for a designated leader.
+At this point, we are still emulating traditional BFT system, though we've replaced the way in which votes are generated. Now, we begin to partially diverge. Most BFT systems will elect a "leader" responsible for proposing potential updates to all other nodes in the system. Within a Proof-of-Work system, nodes will most likely not be aware of all other nodes in the network. If a designated leader were to exist, then it is possible that a node could not be aware of the leader and, as a result, not be able to participate. Therefore, we need to eliminate the need for a designated leader.
 
 ::: tip TODO TODO: Diagram :::
 
