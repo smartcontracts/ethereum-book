@@ -18,7 +18,7 @@ Computers are, unsurprisingly, the foundation of computational systems. However,
 
 Communication lines between computers are similarly abstracted to remove any notion of an underlying physical medium. Whether information is transferred via electromagnetic waves, sound waves, or even carrier pigeon makes no difference to our analysis. We instead depict "logical" connections between nodes, over which nodes can send distinct packets of information called "messages." We further assume that some unknown amount of time must elapse between the moment that a message is sent and the moment at which it is received.
 
-Lines of communication are necessary but not sufficient for collaboration between nodes. Just as humans need languages, nodes must share a vocabulary of sorts in oder to successfully send and receive information. These communication "protocols" allow nodes to understand the meaning of messages on the network. We generally do not define any specific communication protocol in theoretical network studies, though we do assume that one exists.
+Lines of communication are necessary but not sufficient for collaboration between nodes. Just as humans need languages, nodes must share a vocabulary of sorts in order to successfully send and receive information. These communication "protocols" allow nodes to understand the meaning of messages on the network. We generally do not define any specific communication protocol in theoretical network studies, though we do assume that one exists.
 
 ### Protocols as a set of behaviors
 
