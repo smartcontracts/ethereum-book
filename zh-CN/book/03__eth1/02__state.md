@@ -12,7 +12,7 @@ Ethereum forever changed the blockchain landscape with the introduction of the a
 
 Given the ID, or address, of a particular account, the world state returns some information associated with the account. This information is called the "account state." The account state for all accounts, for instance, contain a "balance" field that represents the account's current balance of a currency known as Ether, or ETH. ETH can be transferred between accounts. ETH is also used as the reward for block producers and the fee users must pay for any transactions on the system.
 
-Eth1 allows for two types of accounts. The first is the "user account," which is controlled by a cryptographic private key. The address of a user account is derived from the public key associated with its private key and is therefore guaranteed to be unique. A user account can make a transactions, perhaps an ETH balance transfer, by signing the transaction with the private key. Besides a balance, user account state includes a field for a "nonce," which counts the total number of transactions sent from that account. A user account takes the following structure within Ethereum:
+Eth1 allows for two types of accounts. The first is the "user account," which is controlled by a cryptographic private key. The address of a user account is derived from the public key associated with its private key and is therefore guaranteed to be unique. A user account can make a transaction, perhaps an ETH balance transfer, by signing the transaction with the private key. Besides a balance, user account state includes a field for a "nonce," which counts the total number of transactions sent from that account. A user account takes the following structure within Ethereum:
 
 ```json
 {

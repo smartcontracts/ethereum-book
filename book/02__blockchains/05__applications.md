@@ -60,7 +60,7 @@ def state_transition_function(old_state, transaction):
         assert tx_input.spent == False
         # Make sure the input corresponds to a valid signature
         assert is_valid_signature(signatures[x], tx_input["owner"], transaction)
-    
+
     # Find the sum of all input values
     tx_input_sum = 0
     for x in range(0, len(transaction["inputs"])):
@@ -88,9 +88,9 @@ def state_transition_function(old_state, transaction):
     for x in range(0, len(transaction["outputs"])):
         tx_output = transaction["outputs"][x]
         new_state["outputs"][tx_output["id"]] = tx_output
-    
+
     return new_state
-        
+
 ```
 
 Let's run through this system with an example. Suppose that our initial state is as follows:
@@ -171,7 +171,7 @@ This transaction consumes `Output #1` as an input and simultaneously generates t
 
 We now see one "spent" output and three "unspent" outputs, as expected. If one attempts to run the same transaction through the state transition function against this new state, the function will throw an error as `Output #1` is now marked as "spent." We've successfully managed to design a basic UTXO currency system in only a few lines of code. In practice, we may wish to support more complex behavior within our application. Bitcoin, for instance, replaces the "owner" of each output with a "verification script," essentially a small piece of code that defines the conditions under which an output may be spent. This allows users to attach elaborate ownership models to an output that go beyond simple ownership managed by a digital keypair.
 
-The early ubiquity of the UTXO model was challenged by the introduction of the "account model," popularized by Ethereum. This alternative representation of value exchange more closely resembles digital banking than physical bank notes. In essence, the state of an account-based system consists of a mapping between unique user accounts and information about those accounts. PArt of this information typically includes the "balance" of each account in the unit of the system. Once again examining a simple state of such a model:
+The early ubiquity of the UTXO model was challenged by the introduction of the "account model," popularized by Ethereum. This alternative representation of value exchange more closely resembles digital banking than physical bank notes. In essence, the state of an account-based system consists of a mapping between unique user accounts and information about those accounts. Part of this information typically includes the "balance" of each account in the unit of the system. Once again examining a simple state of such a model:
 
 ```json
 {

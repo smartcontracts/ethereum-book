@@ -32,7 +32,7 @@ The root of the world state trie can be found in every block header. Light clien
 Diagram showing requests necessary to get state element.
 :::
 
-Light clients can employ a very similar protocol to check for the inclusion of a transaction within a block. Transaction receipts already contain the index of a transaction in the full list of a transactions in a block. Light clients can therefore simply request nodes from a block's transaction trie until they find their desired transaction:
+Light clients can employ a very similar protocol to check for the inclusion of a transaction within a block. Transaction receipts already contain the index of a transaction in the full list of transactions in a block. Light clients can therefore simply request nodes from a block's transaction trie until they find their desired transaction:
 
 ::: tip TODO
 Diagram showing requests necessary to get transaction.
