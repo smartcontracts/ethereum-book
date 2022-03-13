@@ -56,7 +56,7 @@ Before we continue our analysis, we should briefly touch on the topic of reward 
 
 Let's now shift our attention back to our individual node. Take the scenario in which `T0` is only valuable enough such that its associated reward covers a few seconds of work. After this short period of time, our node picks its smallest result and attaches it as the voting power for the message `(S0, T0, S1)`. The node then broadcasts the combined message and vote to the network of other nodes.
 
-To understand what happens next, we must zoom out of the perspective of an individual node and look again at the network as a whole. IF we assume that all nodes are similar to our particular node, we find a network flooded with potential transactions to be executed against the genesis state. We chose the work time of a few seconds quite deliberately. At this interval, many nodes will finish their votes before the votes from others have enough time to propagate through the network. If nodes selected different transactions from the pool, there are now many conflicting messages of the form `(S0, T?, S1)`.
+To understand what happens next, we must zoom out of the perspective of an individual node and look again at the network as a whole. If we assume that all nodes are similar to our particular node, we find a network flooded with potential transactions to be executed against the genesis state. We chose the work time of a few seconds quite deliberately. At this interval, many nodes will finish their votes before the votes from others have enough time to propagate through the network. If nodes selected different transactions from the pool, there are now many conflicting messages of the form `(S0, T?, S1)`.
 
 ::: tip TODO TODO: Diagram :::
 
