@@ -47,4 +47,4 @@ However, in some cases, GHOST will disagree with the longest-chain rule:
 
 In this chain, the LCR picks `Block G` because it's part of the longest chain (seven blocks). GHOST diverges from the LCR after `Block B`. Although the chain following `Block C` is longer at five blocks, there are a total of *six* blocks in the fork starting at `Block C'` when we count uncle blocks.
 
-GHOST and the LCR have a lot in common, by clearly have certain key differences. Although GHOST consumes more information, it also introduces complexities for implementation. The LCR has seen significantly more use within existing blockchains running in production today. Our study of GHOST will, however, prove valuable when we later analyze its modification and adoption in Eth2.
+GHOST and the LCR have a lot in common, but clearly have certain key differences. Although GHOST consumes more information, it also introduces complexities for implementation. The LCR has seen significantly more use within existing blockchains running in production today. Our study of GHOST will, however, prove valuable when we later analyze its modification and adoption in Eth2.
