@@ -4,7 +4,7 @@ title: "Digital Cash"
 
 # {{ $frontmatter.title }}
 
-From the ubiquity of money as a dominant system of social coordination it's no challenge to understand why attempts at digital financial products have been plentiful. Given the inherently social nature of money and finance, it should also come as no surprise that these projects gained significant traction with the launch of the world wide web in 1989. As the dotcom bubble made undeniably clear, the internet-connected universe was enamoured with a wholly digital vision of the future. Digital reality held limitless possibility, but it most certainly help digital money.
+From the ubiquity of money as a dominant system of social coordination it's no challenge to understand why attempts at digital financial products have been plentiful. Given the inherently social nature of money and finance, it should also come as no surprise that these projects gained significant traction with the launch of the world wide web in 1989. As the dotcom bubble made undeniably clear, the internet-connected universe was enamoured with a wholly digital vision of the future. Digital reality held limitless possibility, but it most certainly helped digital money.
 
 Beyond the apparent social impact of such a system, already confirmed by the success of other financial conveniences like the ATM, money was ultimately relatively straightforward to construct. Accounts, balances, and transactions translated cleanly into the computer databases necessary to represent finance in cyberspace. Even the ATM required the development of digital banking tools as early as the 1960s. With most of its raw components sitting in plain sight, digital money was simply waiting to be plugged into the internet.
 
