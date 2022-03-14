@@ -6,32 +6,33 @@ on:
     - main
 
 jobs:
-  tests:
+  build-pdf:
     runs-on: ubuntu-18.04
 
     steps:
     - uses: actions/checkout@v2
 
-    - name: Setup node.js
+    - name: Setup Node.js
       uses: actions/setup-node@v2
       with:
         node-version: '16.x'
     
-    - uses: actions/setup-java@v2
+    - name: Setup Java
+      uses: actions/setup-java@v2
       with:
         distribution: 'temurin'
         java-version: '8'
-    
-    # install dependencies
-    - run: yarn
 
-    # build the pdf
-    - run: yarn pdf
+    - name: Install dependencies    
+      run: yarn
 
-    # move pdf to correct output file name
-    - run: mv 'The Eth2 Book.pdf' book.pdf
+    - name: Build PDF
+      run: yarn pdf
 
-    # upload pdf to ipfs
-    - uses: aquiladev/ipfs-action@v0.2.1-alpha.4
+    - name: Create PDF output file
+      run: mv 'The Eth2 Book.pdf' book.pdf
+
+    - name: Upload PDF to IPFS
+      uses: aquiladev/ipfs-action@v0.2.1-alpha.4
       with:
         path: './book.pdf'        

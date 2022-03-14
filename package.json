@@ -1,19 +1,18 @@
 {
-  "name": "the-eth2-book",
+  "name": "eth2-book",
   "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
-  "authors": {
-    "name": "",
-    "email": ""
+  "description": "A book about Ethereum",
+  "author": "Kelvin Fichter",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/smartcontracts/eth2-book.git"
   },
-  "repository": "/the-eth2-book",
   "scripts": {
     "dev": "vuepress dev .",
     "build": "vuepress build .",
     "pdf": "vuepress export ."
   },
-  "license": "MIT",
   "devDependencies": {
     "@maginapp/vuepress-plugin-katex": "^1.0.11",
     "vuepress": "^1.5.3",
