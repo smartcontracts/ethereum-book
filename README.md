@@ -66,8 +66,4 @@ Any and all contributions to this work are very much appreciated.
 As a way of saying thank you to contributors, I will be creating hand-drawn NFTs for everyone who submits suggestions, edits, or other similar contributions (on Optimism, because I'm biased and also because it's way cheaper than sending NFTs on L1 and I'm not made of money).
 You'll also be credited as a contributor within the book itself.
 
-If you're interested in contributing frequently, I've set up a [Telegram group](https://t.me/+QdbYrQtP0zE3ZDVh) to coordinate the project.
-As far as the contributing process goes, here are my initial thoughts:
-
-- For small typos and other similar minor corrections, please make a [pull request](https://github.com/smartcontracts/eth2-book/pulls) that includes the change. I'll usually merge these without any back-and-forth, assuming the correction is correct.
-- For larger suggestions (like comments about inaccuracies, content structure suggestions, etc.), please start by creating an [issue](https://github.com/smartcontracts/eth2-book/issues) so that I can review the change before a pull request gets made. I may have thoughts on the subject and I don't want to waste your time with a pull request until we've been able to come to consensus about the validity of a larger change.
+Please see the [Contributing Guide](CONTRIBUTING.md) for more information about the contributing process. If you're interested in contributing frequently, I've set up a [Telegram group](https://t.me/+QdbYrQtP0zE3ZDVh) to coordinate the project.
