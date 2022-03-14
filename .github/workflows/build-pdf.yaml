@@ -1,11 +1,7 @@
-name: Build
+name: Generate and upload PDF
 
 on:
   push:
-    branches:
-    - main
-
-  pull_request:
     branches:
     - main
 
@@ -26,12 +22,16 @@ jobs:
         distribution: 'temurin'
         java-version: '8'
     
+    # install dependencies
     - run: yarn
 
+    # build the pdf
     - run: yarn pdf
 
+    # move pdf to correct output file name
     - run: mv 'The Eth2 Book.pdf' book.pdf
 
+    # upload pdf to ipfs
     - uses: aquiladev/ipfs-action@v0.2.1-alpha.4
       with:
         path: './book.pdf'        
