@@ -10,8 +10,5 @@ export default ({
   router, // the router instance for the app
   siteData // site metadata
 }) => {
-  router.addRoutes([
-    { path: '/book/00__introduction/00__forward', redirect: '/book/00__introduction/00__foreword' },
-    { path: '/book/00__introduction/00__forward.html', redirect: '/book/00__introduction/00__foreword' },
-  ])
+  // Empty for now
 }
