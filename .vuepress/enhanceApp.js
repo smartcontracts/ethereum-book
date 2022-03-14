@@ -10,5 +10,8 @@ export default ({
   router, // the router instance for the app
   siteData // site metadata
 }) => {
-  // ...apply enhancements for the site.
+  router.addRoutes([
+    { path: '/book/00__introduction/00__forward', redirect: '/book/00__introduction/00__foreward' },
+    { path: '/book/00__introduction/00__forward.html', redirect: '/book/00__introduction/00__foreward' },
+  ])
 }
