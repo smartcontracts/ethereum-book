@@ -11,7 +11,7 @@ export default ({
   siteData // site metadata
 }) => {
   router.addRoutes([
-    { path: '/book/00__introduction/00__forward', redirect: '/book/00__introduction/00__foreward' },
-    { path: '/book/00__introduction/00__forward.html', redirect: '/book/00__introduction/00__foreward' },
+    { path: '/book/00__introduction/00__forward', redirect: '/book/00__introduction/00__foreward.html' },
+    { path: '/book/00__introduction/00__forward.html', redirect: '/book/00__introduction/00__foreward.html' },
   ])
 }
