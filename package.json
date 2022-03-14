@@ -10,11 +10,13 @@
   "repository": "/the-eth2-book",
   "scripts": {
     "dev": "vuepress dev .",
-    "build": "vuepress build ."
+    "build": "vuepress build .",
+    "pdf": "vuepress export ."
   },
   "license": "MIT",
   "devDependencies": {
     "@maginapp/vuepress-plugin-katex": "^1.0.11",
-    "vuepress": "^1.5.3"
+    "vuepress": "^1.5.3",
+    "vuepress-plugin-export": "https://github.com/ulivz/vuepress-plugin-export#01418c8"
   }
 }
