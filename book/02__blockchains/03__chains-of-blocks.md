@@ -96,9 +96,9 @@ We can understand why this is the case by first examining why traditional BFT sy
 TODO: Diagram
 :::
 
-All of this is to say that once a decision as been made, traditional BFT nodes can safely assume no conflicting decisions will be seen in the future. This is primarily a result of the fact that nodes can be certain when the `2/3` threshold has been passed. In a Proof-of-Work system, on the other hand, nodes can never be sure of the total "voting power" at any given time. New nodes can always join the network and begin to participate in the consensus process. We cannot determine `2/3` of all nodes if we do not know how many votes can be cast.
+All of this is to say that once a decision has been made, traditional BFT nodes can safely assume no conflicting decisions will be seen in the future. This is primarily a result of the fact that nodes can be certain when the `2/3` threshold has been passed. In a Proof-of-Work system, on the other hand, nodes can never be sure of the total "voting power" at any given time. New nodes can always join the network and begin to participate in the consensus process. We cannot determine `2/3` of all nodes if we do not know how many votes can be cast.
 
-This particular problem is further complicated by the dimension of time. From an information-theoretical perspective, one cannot distinguish between a message crafted in the past but not received until the present, and a message crafted in the present but forged to look as it if it were from the past. This has the effect that, in an asynchronous network, we must consider newly received blocks that conflict with very old ones. Essentially, the voting process for the set and ordering of blocks can never come to any absolute consensus.
+This particular problem is further complicated by the dimension of time. From an information-theoretical perspective, one cannot distinguish between a message crafted in the past but not received until the present, and a message crafted in the present but forged to look as if it were from the past. This has the effect that, in an asynchronous network, we must consider newly received blocks that conflict with very old ones. Essentially, the voting process for the set and ordering of blocks can never come to any absolute consensus.
 
 ::: tip TODO
 TODO: Diagram
