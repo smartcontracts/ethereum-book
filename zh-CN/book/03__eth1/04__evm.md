@@ -6,7 +6,7 @@ title: "The Ethereum Virtual Machine"
 
 We've now examined the structure of both the state and the transaction in Eth1. At this point, we can construct Eth1's state transition function. Eth1 pioneered the concept of a highly generalized blockchain system. The contract accounts previously mentioned are capable of executing extremely complex operations that can not only transfer value, but also store and manipulate arbitrary data. Eth1's state transition function is responsible for actually running these operations whenever a transaction specifies that it wishes to interact with a contract account.
 
-Most of the state transition functions defined in this text so far have only performed relatively simply actions. Our basic state transition for an account-based currency system, for instance, was limited to increasing the balance of one account and decreasing the balance of another. We're now introducing a state transition in which state mutations are controlled not by some simple logic, but by entire software programs uploaded to the system by users. We therefore need to shift the way we think about these functions so that we can handle these intricate and unpredictable interactions.
+Most of the state transition functions defined in this text so far have only performed relatively simple actions. Our basic state transition for an account-based currency system, for instance, was limited to increasing the balance of one account and decreasing the balance of another. We're now introducing a state transition in which state mutations are controlled not by some simple logic, but by entire software programs uploaded to the system by users. We therefore need to shift the way we think about these functions so that we can handle these intricate and unpredictable interactions.
 
 In essence, our state transition function must parse and execute the instructions of any contract account deployed to the system. Some of these instructions may carry out arithmetic tasks, like adding two numbers together, others may perform logical checks, perhaps to confirm that a user has enough balance to execute some action. Contracts can even read or write arbitrary data to their storage, meaning the state transition function must be able to locate or manipulate the Eth1 world state. As the set of desired behaviors begins to grow, this function quickly starts to resemble the sort of thing we might find in a computer capable of running any number of potential programs.
 
@@ -60,7 +60,7 @@ Our contract uses the "CALLDATALOAD" instruction twice in order to get the input
 
 ::: tip TODO Something was supposed to go here but I forget what. :::
 
-Execution of this transaction begins with our intrinsic validity checks. We've developed a more complete version of these checks below. This version accounts for the concept of gas explain previously:
+Execution of this transaction begins with our intrinsic validity checks. We've developed a more complete version of these checks below. This version accounts for the concept of gas explained previously:
 
 ::: tip TODO Something was supposed to go here but I forget what. :::
 
