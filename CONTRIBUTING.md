@@ -4,6 +4,8 @@ Thank you for looking into contributing to the Eth2 Book! <3
 
 On this page you'll find the most important information about the contributing process. We've tried to make this as straightforward as possible. Thank you again for taking the time to contribute!
 
+The book is automatically created with [VuePress](https://vuepress.vuejs.org/).
+
 ## How can I contribute?
 
 ### Fixing small errors
