@@ -16,11 +16,6 @@ module.exports = {
       lang: 'en-US',
       title: 'The Eth2 Book',
       description: description,
-    },
-    '/zh-CN/book/': {
-      lang: 'zh-CN',
-      title: 'The Eth2 Book',
-      description: description, 
     }
   },
 
@@ -157,11 +152,9 @@ module.exports = {
           children: [
             '/zh-CN/book/01__consensus/00__index.md',
             '/zh-CN/book/01__consensus/01__origins.md',
-            '/zh-CN/book/01__consensus/02__terminology.md',
-            '/zh-CN/book/01__consensus/03__simple-consensus.md',
-            '/zh-CN/book/01__consensus/04__crash-faults.md',
-            '/zh-CN/book/01__consensus/05__byzantine-faults.md',
-            '/zh-CN/book/01__consensus/06__applications.md',
+            '/zh-CN/book/01__consensus/02__crash-faults.md',
+            '/zh-CN/book/01__consensus/03__byzantine-faults.md',
+            '/zh-CN/book/01__consensus/04__applications.md',
           ]
         },
         {
