@@ -26,6 +26,11 @@ module.exports = {
     docsBranch: 'main',
     editLinkText: 'Edit this page on GitHub',
     lastUpdated: false,
+    algolia: {
+      appId: '2KUJYE5BP1',
+      apiKey: 'f07e286e9f7cb070f2cd23fc10cc1517',
+      indexName: 'eth2-book'
+    },
     nav: [],
     sidebar: {
       '/book': [
