@@ -31,7 +31,7 @@ We can now design the structure of our transaction. In a UTXO system, transactio
 ```json
 {
     "inputs": [
-        "<number>"
+        <number>
     ],
     "outputs": [
         {
@@ -211,7 +211,7 @@ def state_transition_function(old_state, transaction):
     # Reduce the sender's balance by the transaction amount
     new_state["accounts"][sender]["balance"] = old_state["accounts"][sender]["balance"] - transaction["amount"]
     # Increase the recipient's balance by the transaction amount
-    new_state["accounts"][recipient]["balance"] = old_state["accounts"][recipient]["balance"] + transaction.amount
+    new_state["accounts"][recipient]["balance"] = old_state["accounts"][recipient]["balance"] + transaction["amount"]
 
     return new_state
 ```
