@@ -30,7 +30,7 @@ jobs:
       run: yarn pdf
 
     - name: Create PDF output file
-      run: mv 'The Eth2 Book.pdf' book.pdf
+      run: mv 'Kelvin\'s Ethereum Book.pdf' book.pdf
 
     - name: Upload PDF to IPFS
       uses: aquiladev/ipfs-action@v0.2.1-alpha.4

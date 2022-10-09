@@ -1,6 +1,6 @@
-# Contributing to the Eth2 Book
+# Contributing to Kelvin's Ethereum Book
 
-Thank you for looking into contributing to the Eth2 Book! <3
+Thank you for looking into contributing to Kelvin's Ethereum Book! <3
 
 On this page you'll find the most important information about the contributing process. We've tried to make this as straightforward as possible. Thank you again for taking the time to contribute!
 
@@ -22,15 +22,15 @@ This book is meant to be the best possible resource to learn about how Ethereum 
 
 ### Translating the book
 
-We're planning to translate the Eth2 Book into as many languages as we can get away with. Translations are being handled automatically via [Crowdin](https://crowdin.com/). If you're interested in helping to translate the book, please join the [Eth2 Book Working Group](https://t.me/+QdbYrQtP0zE3ZDVh) on Telegram. Please note that the book is still a work in progress and only certain parts of the book are ready for translation.
+We're planning to translate Kelvin's Ethereum Book into as many languages as we can get away with. Translations are being handled automatically via [Crowdin](https://crowdin.com/). If you're interested in helping to translate the book, please join the [Eth2 Book Working Group](https://t.me/+QdbYrQtP0zE3ZDVh) on Telegram. Please note that the book is still a work in progress and only certain parts of the book are ready for translation.
 
 ### Adding new features
 
-The Eth2 Book is, to an extent, an exploration of the website as a platform for long-form educational content. As a result, the Eth2 Book is about 50% book and 50% software project. We love suggestions for new features and capabilities that take the book to the next level. See [here](https://github.com/smartcontracts/eth2-book/pull/7) for a great PR that adds a new feature, for an example.
+Kelvin's Ethereum Book is, to an extent, an exploration of the website as a platform for long-form educational content. As a result, Kelvin's Ethereum Book is about 50% book and 50% software project. We love suggestions for new features and capabilities that take the book to the next level. See [here](https://github.com/smartcontracts/eth2-book/pull/7) for a great PR that adds a new feature, for an example.
 
 ## How to test a contribution
 
-The Eth2 Book can be served locally so that you're able to see and test your changes live. You'll need to install the following:
+Kelvin's Ethereum Book can be served locally so that you're able to see and test your changes live. You'll need to install the following:
 
 - [Node.js](https://nodejs.org/en/) (LTS should be fine, comes with `npm`)
 - [yarn](https://classic.yarnpkg.com/en/docs/install) (v1)
