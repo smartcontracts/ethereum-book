@@ -1,7 +1,7 @@
 const { description } = require('../package')
 
 module.exports = {
-  title: 'The Eth2 Book',
+  title: 'Kelvin\'s Ethereum Book',
 
   description: description,
 
@@ -14,13 +14,13 @@ module.exports = {
   locales: {
     '/book/': {
       lang: 'en-US',
-      title: 'The Eth2 Book',
+      title: 'Kelvin\'s Ethereum Book',
       description: description,
     }
   },
 
   themeConfig: {
-    repo: 'smartcontracts/eth2-book',
+    repo: 'smartcontracts/ethereum-book',
     editLinks: true,
     docsDir: 'src',
     docsBranch: 'main',
