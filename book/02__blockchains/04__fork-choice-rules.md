@@ -37,13 +37,13 @@ GHOST is additionally useful when block production rate is closer to network lat
 
 GHOST often agrees with the longest-chain rule:
 
-![GHOST and LCR Agree](/book/02__blockchains/images/fork-choice-rules/lcr-ghost-agree.png)
+![GHOST and LCR Agree](./images/fork-choice-rules/lcr-ghost-agree.png)
 
 Here, the LCR picks `Block F` because it's part of the longest chain (six blocks in total). Our GHOST rules really only apply at `Block B`, where we have our first fork. The chain after `Block C'` has a total of three blocks, whereas the chain after `Block C` has a total of four blocks. GHOST therefore moves onto `Block C` and doesn't find any other forks until stopping at `Block F`.
 
 However, in some cases, GHOST will disagree with the longest-chain rule:
 
-![GHOST and LCR Disagree](/book/02__blockchains/images/fork-choice-rules/lcr-ghost-disagree.png)
+![GHOST and LCR Disagree](./images/fork-choice-rules/lcr-ghost-disagree.png)
 
 In this chain, the LCR picks `Block G` because it's part of the longest chain (seven blocks). GHOST diverges from the LCR after `Block B`. Although the chain following `Block C` is longer at five blocks, there are a total of *six* blocks in the fork starting at `Block C'` when we count uncle blocks.
 
