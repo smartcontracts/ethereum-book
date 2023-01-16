@@ -36,15 +36,15 @@ Signature schemes have three algorithms in combination, each probabilistic polyn
 
 G: key generator, generates a public key and corresponding private key on input 1^n where n is security parameter
 
-$$G(\text{security_parameter}) \rightarrow (\text{public_key}, \text{private_key})$$
+$$G(\text{security\_parameter}) \rightarrow (\text{public\_key}, \text{private\_key})$$
 
 S: Returns a signature on inputs pk and string
 
-$$S(\text{private_key}, \text{message}) \rightarrow \text{signature}$$
+$$S(\text{private\_key}, \text{message}) \rightarrow \text{signature}$$
 
 V: Outputs accepted or rejected on public key, message, signature
 
-$$V(\text{public_key}, \text{message}, \text{signature}) \rightarrow \{\text{accepted}, \text{rejected}\}$$
+$$V(\text{public\_key}, \text{message}, \text{signature}) \rightarrow \{\text{accepted}, \text{rejected}\}$$
 
 Correctness:
 
